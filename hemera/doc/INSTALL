@@ -1,0 +1,48 @@
+About
+-----
+Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, form recognition ...); with applications in day tasks, domotics and robotics ...
+
+Quick Start
+-----------
+ - to get speech samples
+svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/samples
+
+Installation
+------------
+ - get the source code
+svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera
+
+REQUIREMENTS
+------------
+Each core piece requires third party element.
+ Speech
+ -------
+ - espeak
+   - yum install espeak
+   - ensure espeak binary is into the path or update the configuration file
+TODO: create configuration file system
+   
+ - mbrola
+   - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
+   - rename the wanted version to thirdParty/speech/mbrola/mbrola
+   
+ - language file
+   - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
+   - rename the fr4 file to thirdParty/speech/mbrola/languages/fr4
+
+
+ Speech Recognition
+ -------------------
+ - sphinx3
+   - yum install cmusphinx3
+   - ensure sphinx3_XXX binaries is into the path or update the configuration file
+TODO: create configuration file system
+
+ - models files; download them and put them under corresponding subfolder of thirdParty/speechRecognition/data/models
+   - Language model (LM)
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
+   - Lexical model
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz?dist=HDMAONV4OBTBYHOHXYGEE3DZAWDGMASX
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz?dist=KQLJAXZSMQZRTF9UC72KRHUHBVDTO1RX
+   - Acoustic model
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/acoustic_resources/lium_acoustic_models.tgz
