@@ -9,9 +9,8 @@
 #########################
 ## CONFIGURATION
 # general
-mypath=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$( dirname "$( dirname "$mypath" )" )" )
-source "$installDir/scripts/utilities.sh"
+currentDir=$( dirname "$( which "$0" )" )
+installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
 # Default.
@@ -22,8 +21,8 @@ espeakBin="espeak"
 additionalEspeakOption=""
 
 # mbrola configuration
-mbrolaBin="$mypath/../bin/mbrola"
-mbrolaLanguageFile="$mypath/../data/language/fr4"  # must be coherent with selected language (See DEFAULT_LANGUAGE)
+mbrolaBin="$currentDir/../bin/mbrola"
+mbrolaLanguageFile="$currentDir/../data/language/fr4"  # must be coherent with selected language (See DEFAULT_LANGUAGE)
 
 # sound player configuration
 soundPlayer="aplay -q -r22050 -fS16"
@@ -62,11 +61,15 @@ function speechSentence() {
     #  - prefixes each line beginning with a space character (not supported by mbrola) by a ';'; as a comment
     #  - uses mbrola to generate speech sound
     #  - uses finally the speech sound player
-    info "System will play speech '$1', using espeak, and mbrola"
+    info "System will play speech '$1', using espeak, and mbrola speechOutput=$speechOutput"
     [ "$speechOutput" = "-" ] && speechTmpFile="$workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
-    "$espeakBin" -v "$language" -p 45 -s 170 -qxz $additionalEspeakOption "$1" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" -e "$mbrolaLanguageFile" - "$speechTmpFile"
-    [ "$speechOutput" = "-" ] || writeMessage "Generated speech file: $speechTmpFile"
-    $soundPlayer "$speechTmpFile"
+    "$espeakBin" -v "$language" -p 45 -s 150 -qxz $additionalEspeakOption "$1" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" -e "$mbrolaLanguageFile" - "$speechTmpFile"
+    if [ "$speechOutput" = "-" ]; then
+      info "Generated temporary speech file: $speechTmpFile"
+      $soundPlayer "$speechTmpFile"
+    else
+      writeMessage "Generated speech file: $speechTmpFile"
+    fi
   fi
 }
 
