@@ -24,11 +24,11 @@ TODO: create configuration file system
    
  - mbrola
    - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
-   - rename the wanted version to thirdParty/speech/mbrola/mbrola
+   - rename the wanted version to thirdParty/speech/bin/mbrola
    
  - language file
    - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
-   - rename the fr4 file to thirdParty/speech/mbrola/languages/fr4
+   - rename the fr4 file to thirdParty/speech/data/language/fr4
 
 
  Speech Recognition
@@ -37,12 +37,30 @@ TODO: create configuration file system
    - yum install cmusphinx3
    - ensure sphinx3_XXX binaries is into the path or update the configuration file
 TODO: create configuration file system
+TODO: make sphinx3 case sensitive (thx to option or after source code update)
 
  - models files; download them and put them under corresponding subfolder of thirdParty/speechRecognition/data/models
    - Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
+WARNING: language file must be converted in UTF-8 (it must be convert before and after)
+TODO: instructions
+     
    - Lexical model
-     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz?dist=HDMAONV4OBTBYHOHXYGEE3DZAWDGMASX
-     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz?dist=KQLJAXZSMQZRTF9UC72KRHUHBVDTO1RX
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
+     - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz
+WARNING: lexical files must be converted in UTF-8:
+mv fillers_dict fillers_dictOld && iconv -f iso88591 -t utf8 fillers_dictOld > fillers_dict
+mv words_dict fillers_dictOld && iconv -f iso88591 -t utf8 words_dictOld > words_dict
    - Acoustic model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/acoustic_resources/lium_acoustic_models.tgz
+
+  - sox: Audio file converter
+    - yum install sox
+    - ensure vox binary is into the path or update the configuration file
+TODO: create configuration file system
+
+  - wave2feat: Feature file creator (included into SphinxTrain project)
+    - get the source code
+svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
+    - configure/compile with wanted options
+    - move wave2feat (from the created bin.XXX sub-directory) to thirdParty/speechRecognition/bin
