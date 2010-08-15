@@ -55,21 +55,27 @@ d->ht = hash_table_new(d->max_words, HASH_CASE_YES );
 TODO: define option to compile in i386/i586/i686 under x86_64 OS
   - then launch ./autogen.sh, ./configure and make install (See sphinx project README files)
 
- - models files; download them and put them under corresponding subfolder of thirdParty/speechRecognition/data/models
+ - models files
    - Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
+     - untar trigram_LM.tar, and gunzip trigram_LM.DMP.gz
 WARNING: language file must be converted in UTF-8 (it must be convert before and after)
 sphinx3_lm_convert does not seem to support utf8 encoding, but sphinx_lm_convert does (coming with sphinxbase).
 sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
+     - move trigram_LM.DMP.utf8 in thirdParty/speechRecognition/data/models/language/lium/3g/ (creates needed sub-folders)
      
    - Lexical model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz
 WARNING: lexical files must be converted in UTF-8:
-mv fillers_dict fillers_dictOld && iconv -f iso88591 -t utf8 fillers_dictOld > fillers_dict
-mv words_dict fillers_dictOld && iconv -f iso88591 -t utf8 words_dictOld > words_dict
+iconv -f iso88591 -t utf8 fillers_dict > fillers_dict.uft8
+iconv -f iso88591 -t utf8 words_dict > words_dict.uft8
+     - move fillers_dict.uft8 and words_dict.uft8 in thirdParty/speechRecognition/data/models/lexical/lium/ (creates needed sub-folders)
+
    - Acoustic model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/acoustic_resources/lium_acoustic_models.tgz
+     - uncompress in thirdParty/speechRecognition/data/models/acoustic
+     - rename lium_acoustic_models as lium
 
   - sox: Audio file converter
     - yum install sox
