@@ -44,18 +44,23 @@ Install cmusphinx3 from source code
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
   
+  - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
+TODO: create a patch file
+    - edit the line 377 of the file src/libs3decoder/libdict/dict.c of the sphinx3 project, replacing
+d->ht = hash_table_new(d->max_words, 1 /* no-case */ );
+by
+d->ht = hash_table_new(d->max_words, HASH_CASE_YES );
+
+  - WARNING: it seems using a x86-64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386)
+TODO: define option to compile in i386/i586/i686 under x86_64 OS
+  - then launch ./autogen.sh, ./configure and make install (See sphinx project README files)
 
  - models files; download them and put them under corresponding subfolder of thirdParty/speechRecognition/data/models
    - Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
 WARNING: language file must be converted in UTF-8 (it must be convert before and after)
-sphinx3_lm_convert refuses to convert from DMP to DMP, changing the encoding; it is needed to use temporary file.
-TODO: to be completed
-sphinx3_lm_convert -i trigram_LM.DMP -ienc iso8859-1 -ifmt DMP -o trigram_LM.DMP.arpa -ofmt TXT
-iconv -f iso88591 -t utf8 trigram_LM.DMP.arpa > trigram_LM.DMP.arpa.utf8
-sphinx3_lm_convert -i trigram_LM.DMP.arpa.utf8 -ienc utf8 -ifmt TXT -o trigram_LM.DMP.final -ofmt DMP -oenc utf8
-
-TODO: instructions
+sphinx3_lm_convert does not seem to support utf8 encoding, but sphinx_lm_convert does (coming with sphinxbase).
+sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
      
    - Lexical model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
