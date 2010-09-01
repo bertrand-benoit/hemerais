@@ -25,6 +25,7 @@ mbrolaBin="$currentDir/../bin/mbrola"
 mbrolaLanguageFile="$currentDir/../data/language/fr4"  # must be coherent with selected language (See DEFAULT_LANGUAGE)
 
 # sound player configuration
+soundPlayerBin="aplay"
 soundPlayer="aplay -q -r22050 -fS16"
 
 #########################
@@ -141,6 +142,11 @@ do
         h|[?]) usage;;
  esac
 done
+
+# Checks binaries availability.
+checkBin "$espeakBin" || exit 126
+checkBin "$mbrolaBin" || exit 126
+checkBin "$soundPlayerBin" || exit 126
 
 [ -z "$mode" ] && usage
 
