@@ -3,7 +3,7 @@
 -var ../models/acoustic/lium/parameters/F0/variances
 -mixw ../models/acoustic/lium/parameters/F0/mixture_weights
 -tmat ../models/acoustic/lium/parameters/F0/transition_matrices
--lm ../models/language/lium/3g/trigram_LM.DMP
+-lm ../models/language/lium/3g/trigram_LM.DMP.utf8
 -dict ../models/lexical/lium/words_dict.utf8
 -fdict ../models/lexical/lium/fillers_dict.utf8
 -agc max

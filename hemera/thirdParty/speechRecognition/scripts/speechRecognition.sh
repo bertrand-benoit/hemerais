@@ -15,11 +15,12 @@ source "$installDir/scripts/setEnvironment.sh"
 
 # Binary configuration.
 speechDecoder="sphinx3_decode"
+checkBin "$speechDecoder" || exit 126
 
 # data configuration
 lexicalModel="lium/words_dict.utf8"
 fillersModel="lium/fillers_dict.utf8"
-languageModel="lium/3g/trigram_LM.DMP"
+languageModel="lium/3g/trigram_LM.DMP.utf8"
 
 acousticModelName="F0"
 
@@ -46,8 +47,7 @@ export LC_ALL=fr_FR.iso88591
     -upperf 6800 \
     -silprob 0.01 \
     -fillprob 0.02 \
-    -input_endian little \
-    $*
+    $* >> "$logFile" 2>&1
 
 # to specify ? -input_endian
 
