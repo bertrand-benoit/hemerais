@@ -13,8 +13,8 @@
 [ -z "$installDir" ] && echo -e "This script must NOT be directly called. installDir variable not defined" >&2 && exit 1
 source "$installDir/scripts/utilities.sh"
 
-workDir="/tmp/ia"
-logDir="/tmp/ia/Logs"
+workDir="/tmp/Hemera"
+logDir="$workDir/Logs"
 fileDate=$(date +"%s")
 
 # Ensures various directories exists.
@@ -22,6 +22,6 @@ mkdir -p "$workDir" "$logDir"
 
 # Defines the log file if not already done.
 if [ -z "$logFile" ]; then
-  logFile="$logDir/"$(date +"%y-%m-%d-%H-%M-%S")"-Hemera.log"
+  export logFile="$logDir/"$(date +"%y-%m-%d-%H-%M-%S")"-Hemera.log"
   writeMessage "LogFile: $logFile"
 fi
