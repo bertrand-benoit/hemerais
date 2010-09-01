@@ -40,7 +40,7 @@ TODO: create configuration file system
 TODO: make sphinx3 case sensitive (thx to option or after source code update)
 
 Install cmusphinx3 from source code
-  - requirements: yum install libtool automake libsndfile libsndfile-devel
+  - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
   
