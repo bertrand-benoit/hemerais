@@ -17,6 +17,11 @@ Installation
  - get the source code
 svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera [HEMERA_ROOT_PATH]
 
+Configuration
+------------
+ - create a configuration file [HEMERA_ROOT_PATH]/config/hemera.conf (you should use the provided sample)
+ - each tools and data information can be set in this file
+
 REQUIREMENTS
 ------------
 Each core piece requires third party element.
@@ -45,25 +50,27 @@ TODO: create configuration file system
 
 Install cmusphinx3 from source code
   - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
-  - important: you must checkout sphinxbase and sphinx3 into the same root directory, such a way, you can use these tools without installing them in OS
-  - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
-  - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
+  - important: you should checkout sphinxbase and sphinx3 into the same root directory, such a way, the sphinx3 configuration system will automagically find sphinxbase headers and libraries
+svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
+svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
 
   - WARNING: it seems using a x86-64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386), so it is recommended to compile as i386 even on x86_64 bits OS using specific options
   - in this case, some other packages are required: yum install glibc-devel.i586 libsndfile.i586 libsndfile-devel.i586
 
-  - cd sphinxbase
-  - launch ./autogen.sh
-  - launch ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib" --without-python
-  - launch make all (See sphinx project README files)
+  - performed following instructions
+cd sphinxbase
+./autogen.sh
+./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib" --without-python
+make
   - libraries are available in src/libsphinxbase/.libs
-  
-  - cd ../sphinx3  
+
+    - performed following instructions
+cd ../sphinx3  
   - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
-  - launch patch -N -p1 -s src/libs3decoder/libdict/dict.c < [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/misc/sphinx3_caseSensitive.patch
-  - launch ./autogen.sh
-  - launch ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
-  - launch make all (See sphinx project README files)
+patch -N -p1 -s src/libs3decoder/libdict/dict.c < [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/misc/sphinx3_caseSensitive.patch
+./autogen.sh
+./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
+make
   - binaries are available in src/programs
 
  - models files
@@ -95,8 +102,11 @@ Install cmusphinx3 from source code
 TODO: create configuration file system
 
   - wave2feat: Feature file creator (included into SphinxTrain project)
-    - get the source code
+    - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries 
+    - performed following instructions (in the root directory you have checked out sphinxbase and sphinx3)
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
-    - configure/compile with wanted options
-    - move wave2feat (from the created bin.XXX sub-directory) to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin or update the configuration file
-TODO: create configuration file system
+cd SphinxTrain
+./autogen.sh
+./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
+make
+mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
