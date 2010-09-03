@@ -1,0 +1,79 @@
+#### Hemera configuration file sample.
+#### Copy this file to hemera.conf (won't be versioned) and adapt it.
+
+### Information
+## For each core module, are defined:
+# - a mode (allow to swith from some tools to others)
+# - a main tool path
+# - general data
+# - (according to the mode) additional specific information, like secondary/additional tools and data
+
+## Path can be absolute, relative to [HEMERA_ROOT_PATH]
+#   or "simple" if corresponding tool is available from PATH environment variable.
+
+## Special variables which will be replaced (when needed):
+# @INPUT@: input of the tool
+# @OUTPUT@: output of the tool
+
+### Speech core module.
+#######################
+## Speech core module - general.
+# Mode of tool(s) to use.
+# Possible values: espeak, espeak+mbrola
+hemera.core.speech.mode="espeak+mbrola"
+
+# The main tool to use (path and options).
+hemera.core.speech.tool.path="espeak"
+# espeak options samples:
+# with espeak mode: -s 130 --stdout
+# with espeak+mbrola mode: -p 45 -s 150 -zqx
+hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
+
+# The sound player (path and options).
+hemera.core.speech.soundPlayer.path="aplay"
+hemera.core.speech.soundPlayer.options="-q -r22050 -fS16"
+
+## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
+# Default language.
+# espeak language samples:
+# with espeak mode: en
+# with espeak+mbrola mode: mb/mb-fr4
+hemera.core.speech.espeak.language="mb/mb-fr4"
+
+## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
+# Path to mbrola tool.
+hemera.core.speech.mbrola.path="thirdParty/speech/bin/mbrola"
+# Language definition - relative to [HEMERA_ROOT_PATH]/thirdParty/speech/data/language
+hemera.core.speech.mbrola.language="fr4"
+
+
+### Speech recognition core module.
+###################################
+## Speech recognition core module - general.
+# Mode of tool(s) to use.
+# Possible values: sphinx3
+hemera.core.speechRecognition.mode="sphinx3"
+
+# The path to the (main) tool to use.
+hemera.core.speechRecognition.toolPath="sphinx3_decode"
+
+# The sound converted (path and options).
+hemera.core.speechRecognition.soundConverter.path="sox"
+hemera.core.speechRecognition.soundConverter.options="-s -r 16000 -c 1"
+
+# The sound feature file creator (path and options).
+hemera.core.speechRecognition.soundFeatureCreator.path="thirdParty/speechRecognition/bin/wave2feat"
+hemera.core.speechRecognition.soundFeatureCreator.options="-i @INPUT@ -o @OUTPUT@ -raw yes -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
+
+## Speech recognition core module - sphinx3 (ignored if mode is not sphinx3).
+# Lexical model (words and fillers) - relative to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/lexical
+hemera.core.speechRecognition.sphinx3.lexicalModel.words="lium/words_dict.utf8"
+hemera.core.speechRecognition.sphinx3.lexicalModel.fillers="lium/fillers_dict.utf8"
+# Language model - relative to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/language
+hemera.core.speechRecognition.sphinx3.languageModel="lium/3g/trigram_LM.DMP.utf8"
+# Acoustic model - relative to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/acoustic
+hemera.core.speechRecognition.sphinx3.acousticModel.definition="lium/architecture/F0.5500.mdef"
+hemera.core.speechRecognition.sphinx3.acousticModel.means="lium/parameters/F0/means"
+hemera.core.speechRecognition.sphinx3.acousticModel.variances="lium/parameters/F0/variances"
+hemera.core.speechRecognition.sphinx3.acousticModel.mixtureWeights="lium/parameters/F0/mixture_weights"
+hemera.core.speechRecognition.sphinx3.acousticModel.transitionMatrices="lium/parameters/F0/transition_matrices"
