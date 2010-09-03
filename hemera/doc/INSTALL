@@ -7,10 +7,15 @@ Quick Start
  - to get speech samples
 svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/samples
 
+Full documentation
+------------------
+You should prefer Wiki documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page
+
 Installation
 ------------
+ - let's call [HEMERA_ROOT_PATH] the directory where hemera project will be installed
  - get the source code
-svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera
+svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera [HEMERA_ROOT_PATH]
 
 REQUIREMENTS
 ------------
@@ -24,11 +29,11 @@ TODO: create configuration file system
    
  - mbrola
    - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
-   - rename the wanted version to thirdParty/speech/bin/mbrola
+   - rename the wanted version to [HEMERA_ROOT_PATH]/thirdParty/speech/bin/mbrola
    
  - language file
    - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
-   - rename the fr4 file to thirdParty/speech/data/language/fr4
+   - rename the fr4 file to [HEMERA_ROOT_PATH]/thirdParty/speech/data/language/fr4
 
 
  Speech Recognition
@@ -37,44 +42,51 @@ TODO: create configuration file system
    - yum install cmusphinx3
    - ensure sphinx3_XXX binaries is into the path or update the configuration file
 TODO: create configuration file system
-TODO: make sphinx3 case sensitive (thx to option or after source code update)
 
 Install cmusphinx3 from source code
   - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
+  - important: you must checkout sphinxbase and sphinx3 into the same root directory, such a way, you can use these tools without installing them in OS
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
   - svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
-  
-  - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
-TODO: create a patch file
-    - edit the line 377 of the file src/libs3decoder/libdict/dict.c of the sphinx3 project, replacing
-d->ht = hash_table_new(d->max_words, 1 /* no-case */ );
-by
-d->ht = hash_table_new(d->max_words, HASH_CASE_YES );
 
-  - WARNING: it seems using a x86-64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386)
-TODO: define option to compile in i386/i586/i686 under x86_64 OS
-  - then launch ./autogen.sh, ./configure and make install (See sphinx project README files)
+  - WARNING: it seems using a x86-64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386), so it is recommended to compile as i386 even on x86_64 bits OS using specific options
+  - in this case, some other packages are required: yum install glibc-devel.i586 libsndfile.i586 libsndfile-devel.i586
+
+  - cd sphinxbase
+  - launch ./autogen.sh
+  - launch ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib" --without-python
+  - launch make all (See sphinx project README files)
+  - libraries are available in src/libsphinxbase/.libs
+  
+  - cd ../sphinx3  
+  - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
+  - launch patch -N -p1 -s src/libs3decoder/libdict/dict.c < [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/misc/sphinx3_caseSensitive.patch
+  - launch ./autogen.sh
+  - launch ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
+  - launch make all (See sphinx project README files)
+  - binaries are available in src/programs
 
  - models files
    - Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
      - untar trigram_LM.tar, and gunzip trigram_LM.DMP.gz
-WARNING: language file must be converted in UTF-8 (it must be convert before and after)
-sphinx3_lm_convert does not seem to support utf8 encoding, but sphinx_lm_convert does (coming with sphinxbase).
-sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
-     - move trigram_LM.DMP.utf8 in thirdParty/speechRecognition/data/models/language/lium/3g/ (creates needed sub-folders)
+     - WARNING: language file must be converted in UTF-8 (it must be convert before and after)
+        sphinx3_lm_convert does not seem to support utf8 encoding, but sphinx_lm_convert does (coming with sphinxbase).
+        Use sphinxbase/src/sphinx_lmtools/.libs/lt-sphinx_lm_convert if you have compiled it, use sphinx_lm_convert otherwise.
+        sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
+     - move trigram_LM.DMP.utf8 in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/language/lium/3g/ (creates needed sub-folders)
      
    - Lexical model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz
-WARNING: lexical files must be converted in UTF-8:
-iconv -f iso88591 -t utf8 fillers_dict > fillers_dict.uft8
-iconv -f iso88591 -t utf8 words_dict > words_dict.uft8
-     - move fillers_dict.uft8 and words_dict.uft8 in thirdParty/speechRecognition/data/models/lexical/lium/ (creates needed sub-folders)
+        WARNING: lexical files must be converted in UTF-8:
+        iconv -f iso88591 -t utf8 fillers_dict > fillers_dict.uft8
+        iconv -f iso88591 -t utf8 words_dict > words_dict.uft8
+     - move fillers_dict.uft8 and words_dict.uft8 in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/lexical/lium/ (creates needed sub-folders)
 
    - Acoustic model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/acoustic_resources/lium_acoustic_models.tgz
-     - uncompress in thirdParty/speechRecognition/data/models/acoustic
+     - uncompress in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/acoustic
      - rename lium_acoustic_models as lium
 
   - sox: Audio file converter
@@ -86,5 +98,5 @@ TODO: create configuration file system
     - get the source code
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
     - configure/compile with wanted options
-    - move wave2feat (from the created bin.XXX sub-directory) to thirdParty/speechRecognition/bin
-
+    - move wave2feat (from the created bin.XXX sub-directory) to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin or update the configuration file
+TODO: create configuration file system
