@@ -13,7 +13,7 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
-category=" speech"
+category="speech"
 CONFIG_KEY="hemera.core.speech"
 SUPPORTED_MODE="espeak espeak+mbrola X"
 
@@ -28,7 +28,7 @@ checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported
 DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit 100
 
 # sound player configuration
-soundPlayerBin=$( getConfigValue "$CONFIG_KEY.soundPlayer.path" ) || exit 100
+soundPlayerBin=$( getConfigPath "$CONFIG_KEY.soundPlayer.path" ) || exit 100
 soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit 100
 
 # Gets functions specific to mode.

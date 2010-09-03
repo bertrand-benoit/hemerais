@@ -9,7 +9,7 @@
 [ "$moduleMode" != "espeak+mbrola" ] && exit 101
 
 # espeak configuration
-espeakBin=$( getConfigValue "$CONFIG_KEY.tool.path" ) || exit 100
+espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit 100
 espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit 100
 
 # mbrola configuration
