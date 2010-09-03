@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
-# Version: 1.0
-# Description: uses espeak as a front-end to Mbrola, to speech specified text.
+# Version: 1.1
+# Description: manages command line and use configured tool to perform text to speech.
 #
 # Usage: see usage function.
 
@@ -13,20 +13,26 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
+category=" speech"
+CONFIG_KEY="hemera.core.speech"
+SUPPORTED_MODE="espeak espeak+mbrola X"
+
+# Gets the mode, and ensures it is a supported one.
+moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit 100
+checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
+
+# "Not yet implemented" message to help adaptation with potential futur other speech tools.
+[[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]] && errorMessage "Not yet implemented mode: $moduleMode"
+
 # Default.
-DEFAULT_LANGUAGE="mb/mb-fr4"
-
-# espeak configuration
-espeakBin="espeak"
-additionalEspeakOption=""
-
-# mbrola configuration
-mbrolaBin="$currentDir/../bin/mbrola"
-mbrolaLanguageFile="$currentDir/../data/language/fr4"  # must be coherent with selected language (See DEFAULT_LANGUAGE)
+DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit 100
 
 # sound player configuration
-soundPlayerBin="aplay"
-soundPlayer="aplay -q -r22050 -fS16"
+soundPlayerBin=$( getConfigValue "$CONFIG_KEY.soundPlayer.path" ) || exit 100
+soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit 100
+
+# Gets functions specific to mode.
+source "$currentDir/speech_$moduleMode"
 
 #########################
 ## Functions
@@ -37,41 +43,14 @@ function usage() {
   echo -e "<url>\turl of page content to read"
   echo -e "<file>\tfile to read"
   echo -e "<terms>\tterms to define (using Wikipedia)"
-  echo -e "-i\t\tinteractive mode (generate and play speech file of each written line - CTRL+D to stop)"
-  echo -e "-l\t\tuse another language (Default: $DEFAULT_LANGUAGE)"
-  echo -e "-v\t\tactivate the verbose mode"
-  echo -e "-h\t\tshow this usage"
+  echo -e "-i\tinteractive mode (generate and play speech file of each written line - CTRL+D to stop)"
+  echo -e "-l\tuse another language (Default: $DEFAULT_LANGUAGE)"
+  echo -e "-v\tactivate the verbose mode"
+  echo -e "-h\tshow this usage"
   
   echo -e "\nYou must either use option -t, -u, -f, -d or -i."
   
   exit 1
-}
-
-# Usage: speechSentence <sentence>
-function speechSentence() {
-  # Checks if a specific language has been specified.
-  if [ "$language" != "$DEFAULT_LANGUAGE" ]; then
-    # Modus operandi:
-    #  - uses espeak to generate speech sound
-    #  - uses finally the speech sound player
-    info "System will play speech '$1', using only espeak"
-    "$espeakBin" -v "$language" -s 130 --stdout $additionalEspeakOption "$1" |$soundPlayer
-  else
-    # Modus operandi:
-    #  - uses espeak to produce "phoneme mnemonics"
-    #  - prefixes each line beginning with a space character (not supported by mbrola) by a ';'; as a comment
-    #  - uses mbrola to generate speech sound
-    #  - uses finally the speech sound player
-    info "System will play speech '$1', using espeak, and mbrola speechOutput=$speechOutput"
-    [ "$speechOutput" = "-" ] && speechTmpFile="$workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
-    "$espeakBin" -v "$language" -p 45 -s 150 -qxz $additionalEspeakOption "$1" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" -e "$mbrolaLanguageFile" - "$speechTmpFile"
-    if [ "$speechOutput" = "-" ]; then
-      info "Generated temporary speech file: $speechTmpFile"
-      $soundPlayer "$speechTmpFile"
-    else
-      writeMessage "Generated speech file: $speechTmpFile"
-    fi
-  fi
 }
 
 # usage: startInteractiveMode
@@ -95,8 +74,7 @@ function readURLContents() {
   urlContentsFile="$workDir/"$(date +"%s")"-urlContents.tmp"
   getURLContents "$url" "$urlContentsFile" || exit 11
 
-  additionalEspeakOption="-m -f"
-  speechSentence "$urlContentsFile"
+  speechFileContents "$urlContentsFile"
 }
 
 # usage: readDefinition
@@ -106,15 +84,12 @@ function readDefinition() {
   getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit 11
   sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"
   
-  additionalEspeakOption="-m -f"
-  speechSentence "$urlContentsFile"
+  speechFileContents "$urlContentsFile"
 }
-
 
 # usage: readFileContents
 function readFileContents() {
-  additionalEspeakOption="-m -f"
-  speechSentence "$filePath"
+  speechFileContents "$filePath"
 }
 
 #########################
@@ -144,9 +119,8 @@ do
 done
 
 # Checks binaries availability.
-checkBin "$espeakBin" || exit 126
-checkBin "$mbrolaBin" || exit 126
 checkBin "$soundPlayerBin" || exit 126
+checkConfiguration || exit 126
 
 [ -z "$mode" ] && usage
 

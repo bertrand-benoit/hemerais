@@ -12,6 +12,7 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
+category="speechRecognition"
 
 # Binary configuration.
 speechDecoder="sphinx3_decode"

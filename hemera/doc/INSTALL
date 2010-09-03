@@ -20,7 +20,8 @@ svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera [HEMER
 Configuration
 ------------
  - create a configuration file [HEMERA_ROOT_PATH]/config/hemera.conf (you should use the provided sample)
- - each tools and data information can be set in this file
+ - each tools and data information can be defined in this file
+ - for each tool, you can either update the corresponding configuration element or ensure it is available from the PATH environment variable
 
 REQUIREMENTS
 ------------
@@ -29,12 +30,12 @@ Each core piece requires third party element.
  -------
  - espeak
    - yum install espeak
-   - ensure espeak binary is into the path or update the configuration file
-TODO: create configuration file system
+   - update the hemera.core.speech.tool.path if needed
    
  - mbrola
    - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
    - rename the wanted version to [HEMERA_ROOT_PATH]/thirdParty/speech/bin/mbrola
+   - update the hemera.core.speech.mbrola.path if needed
    
  - language file
    - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
