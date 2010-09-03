@@ -31,8 +31,6 @@ acousticVariances="lium/parameters/$acousticModelName/variances"
 acousticMixtureWeights="lium/parameters/$acousticModelName/mixture_weights"
 acousticTransitionMatrices="lium/parameters/$acousticModelName/transition_matrices"
 
-export LANG=fr_FR.iso88591
-export LC_ALL=fr_FR.iso88591
 "$speechDecoder" \
     -mdef "$currentDir/../data/models/acoustic/$acousticModel"  \
     -mean "$currentDir/../data/models/acoustic/$acousticMeans"  \
@@ -49,8 +47,6 @@ export LC_ALL=fr_FR.iso88591
     -silprob 0.01 \
     -fillprob 0.02 \
     $* >> "$logFile" 2>&1
-
-# to specify ? -input_endian
 
 # Changed parameters:
 #    -wlen 0.0256    -> default: 0.025625
