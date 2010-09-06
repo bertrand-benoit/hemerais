@@ -12,8 +12,8 @@
 #   or "simple" if corresponding tool is available from PATH environment variable.
 
 ## Special variables which will be replaced (when needed):
-# @INPUT@: input of the tool
-# @OUTPUT@: output of the tool
+# $input: input of the tool
+# $output: output of the tool
 
 ### Speech core module.
 #######################
@@ -54,16 +54,17 @@ hemera.core.speech.mbrola.language="fr4"
 # Possible values: sphinx3
 hemera.core.speechRecognition.mode="sphinx3"
 
-# The path to the (main) tool to use.
-hemera.core.speechRecognition.toolPath="sphinx3_decode"
+# The main tool to use (path and options).
+hemera.core.speechRecognition.tool.path="sphinx3_decode"
+hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -upperf 6800 -silprob 0.01 -fillprob 0.02"
 
 # The sound converted (path and options).
 hemera.core.speechRecognition.soundConverter.path="sox"
-hemera.core.speechRecognition.soundConverter.options="-s -r 16000 -c 1"
+hemera.core.speechRecognition.soundConverter.options="$input -s -r 16000 -c 1 $output"
 
 # The sound feature file creator (path and options).
 hemera.core.speechRecognition.soundFeatureCreator.path="thirdParty/speechRecognition/bin/wave2feat"
-hemera.core.speechRecognition.soundFeatureCreator.options="-i @INPUT@ -o @OUTPUT@ -raw yes -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
+hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output -raw yes -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
 
 ## Speech recognition core module - sphinx3 (ignored if mode is not sphinx3).
 # Lexical model (words and fillers) - relative to [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/lexical
