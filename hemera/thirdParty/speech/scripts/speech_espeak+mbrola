@@ -13,14 +13,16 @@ espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit 100
 espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit 100
 
 # mbrola configuration
-mbrolaBin=$( getConfigValue "$CONFIG_KEY.mbrola.path" ) || exit 100
+mbrolaBin=$( getConfigPath "$CONFIG_KEY.mbrola.path" ) || exit 100
 # Language must be coherent with hemera.core.speech.espeak.language configuration.
-mbrolaLanguageFile="$currentDir/../data/language/"$( getConfigValue "$CONFIG_KEY.mbrola.language" ) || exit 100
+dataDir="$currentDir/../data"
+mbrolaLanguageFile="$dataDir/language/"$( getConfigValue "$CONFIG_KEY.mbrola.language" ) || exit 100
 
 # usage: checkConfiguration
 function checkConfiguration() {
   checkBin "$espeakBin" || return 1
   checkBin "$mbrolaBin" || return 1
+  checkDataFile "$mbrolaLanguageFile" || return 1
   
   [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
   

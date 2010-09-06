@@ -27,12 +27,12 @@ checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported
 # Default.
 DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit 100
 
+# Gets functions specific to mode.
+source "$currentDir/speech_$moduleMode"
+
 # sound player configuration
 soundPlayerBin=$( getConfigPath "$CONFIG_KEY.soundPlayer.path" ) || exit 100
 soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit 100
-
-# Gets functions specific to mode.
-source "$currentDir/speech_$moduleMode"
 
 #########################
 ## Functions
