@@ -2,7 +2,7 @@
 #
 # Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
 # Version: 1.1
-# Description: manages command line and use configured tool to perform text to speech.
+# Description: manages command line and uses configured tool to perform text to speech.
 #
 # Usage: see usage function.
 
