@@ -26,58 +26,87 @@ Configuration
 REQUIREMENTS
 ------------
 Each core piece requires third party element.
+
+ General
+ -------
+ - sox: Audio file converter (See http://sox.sourceforge.net/)
+    - yum install sox
+    - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
+
+ - aplay: Audio file player (See http://www.alsa-project.org/main/index.php/Main_Page)
+    - yum install alsa-utils
+    - check/update the hemera.core.speech.soundPlayer.* configuration elements
+
  Speech
  -------
- - espeak
+ - espeak (See http://espeak.sourceforge.net/)
    - yum install espeak
-   - update the hemera.core.speech.tool.path if needed
+   - check/update the hemera.core.speech.tool.* configuration elements
    
- - mbrola
+ - mbrola (See http://www.tcts.fpms.ac.be/synthesis/mbrola)
    - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
    - rename the wanted version to [HEMERA_ROOT_PATH]/thirdParty/speech/bin/mbrola
-   - update the hemera.core.speech.mbrola.path if needed
+   - check/update the hemera.core.speech.mbrola.path configuration element
    
  - language file
    - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
    - rename the fr4 file to [HEMERA_ROOT_PATH]/thirdParty/speech/data/language/fr4
+   - check/update the hemera.core.speech.mbrola.language configuration element
 
 
  Speech Recognition
  -------------------
- - sphinx3
-   - yum install cmusphinx3
-   - update the hemera.core.speechRecognition.tool.path if needed
+ - sox: Audio file converter (See http://sox.sourceforge.net/)
+    - yum install sox
+    - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
 
-Install cmusphinx3 from source code
-  - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
-  - important: you should checkout sphinxbase and sphinx3 into the same root directory, such a way, the sphinx3 configuration system will automagically find sphinxbase headers and libraries
+ - sphinx3   
+  - install cmusphinx3 from packages
+    - yum install cmusphinx3
+    - check/update the hemera.core.speechRecognition.tool.* configuration elements
+   
+  - install cmusphinx3 from source
+    - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
+    - important: you should checkout sphinxbase and sphinx3 into the same root directory, such a way, the sphinx3 configuration system will automagically find sphinxbase headers and libraries
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
 
-  - WARNING: it seems using a x86-64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386), so it is recommended to compile as i386 even on x86_64 bits OS using specific options
-  - in this case, some other packages are required: yum install glibc-devel.i586 libsndfile.i586 libsndfile-devel.i586
+    - WARNING: it seems using a x86_64 version of sphinx3_decode with utf8 language model fails in segmentation fault (no problem with i386), so it is recommended to compile as i386 even on x86_64 bits OS using specific options
+    - in this case, some additional packages are required: yum install glibc-devel.i586 libsndfile.i586 libsndfile-devel.i586
 
-  - performed following instructions
+    - performed following instructions
 cd sphinxbase
 ./autogen.sh
 ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib" --without-python
 make
-  - libraries are available in src/libsphinxbase/.libs
+    - libraries are available in src/libsphinxbase/.libs
 
     - performed following instructions
 cd ../sphinx3  
-  - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
+    - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
 patch -N -p1 -s src/libs3decoder/libdict/dict.c < [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/misc/sphinx3_caseSensitive.patch
 ./autogen.sh
 ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
 make
-  - binaries are available in src/programs
+    - binaries are available in src/programs
+    - check/update the hemera.core.speechRecognition.tool.* configuration elements
 
- - models files
+    - wave2feat: Feature file creator (included into SphinxTrain project)
+      - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries 
+      - performed following instructions (in the root directory you have checked out sphinxbase and sphinx3)
+svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
+cd SphinxTrain
+./autogen.sh
+./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
+make
+mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
+    - check/update the hemera.core.speechRecognition.soundFeatureCreator.* configuration elements
+
+  - models files
    - Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
      - untar trigram_LM.tar, and gunzip trigram_LM.DMP.gz
-     - WARNING: language file must be converted in UTF-8 (it must be convert before and after)
+     - WARNING: language file must be converted in UTF-8
         sphinx3_lm_convert does not seem to support utf8 encoding, but sphinx_lm_convert does (coming with sphinxbase).
         Use sphinxbase/src/sphinx_lmtools/.libs/lt-sphinx_lm_convert if you have compiled it, use sphinx_lm_convert otherwise.
         sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
@@ -96,16 +125,4 @@ make
      - uncompress in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/acoustic
      - rename lium_acoustic_models as lium
 
-  - sox: Audio file converter
-    - yum install sox
-    - update the hemera.core.speechRecognition.soundConverter.path if needed
-
-  - wave2feat: Feature file creator (included into SphinxTrain project)
-    - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries 
-    - performed following instructions (in the root directory you have checked out sphinxbase and sphinx3)
-svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
-cd SphinxTrain
-./autogen.sh
-./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
-make
-mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
+   - check/update the hemera.core.speechRecognition.sphinx3.* configuration elements
