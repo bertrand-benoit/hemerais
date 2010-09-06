@@ -46,8 +46,7 @@ Each core piece requires third party element.
  -------------------
  - sphinx3
    - yum install cmusphinx3
-   - ensure sphinx3_XXX binaries is into the path or update the configuration file
-TODO: create configuration file system
+   - update the hemera.core.speechRecognition.tool.path if needed
 
 Install cmusphinx3 from source code
   - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
@@ -99,8 +98,7 @@ make
 
   - sox: Audio file converter
     - yum install sox
-    - ensure vox binary is into the path or update the configuration file
-TODO: create configuration file system
+    - update the hemera.core.speechRecognition.soundConverter.path if needed
 
   - wave2feat: Feature file creator (included into SphinxTrain project)
     - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries 

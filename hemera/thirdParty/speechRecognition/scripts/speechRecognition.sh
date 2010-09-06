@@ -9,60 +9,135 @@
 #########################
 ## CONFIGURATION
 # general
-currentDir=$( dirname "$( which "$0" )" )
+myPath="$( which "$0" )"
+currentDir=$( dirname "$myPath" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
+
 category="speechRecognition"
+CONFIG_KEY="hemera.core.speechRecognition"
+SUPPORTED_MODE="sphinx3"
+DEFAULT_SPEECH_FILE_PATTEN="*.wav"
 
-# Binary configuration.
-speechDecoder="sphinx3_decode"
-checkBin "$speechDecoder" || exit 126
+# Gets the mode, and ensures it is a supported one.
+moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit 100
+checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
 
-# data configuration
-lexicalModel="lium/words_dict.utf8"
-fillersModel="lium/fillers_dict.utf8"
-languageModel="lium/3g/trigram_LM.DMP.utf8"
+# "Not yet implemented" message to help adaptation with potential futur other speechRecognition tools.
+[[ "$moduleMode" != "sphinx3" ]] && errorMessage "Not yet implemented mode: $moduleMode"
 
-acousticModelName="F0"
+# Gets functions specific to mode.
+source "$currentDir/speechRecognition_$moduleMode"
 
-acousticModel="lium/architecture/$acousticModelName.5500.mdef"
-acousticMeans="lium/parameters/$acousticModelName/means"
-acousticVariances="lium/parameters/$acousticModelName/variances"
-acousticMixtureWeights="lium/parameters/$acousticModelName/mixture_weights"
-acousticTransitionMatrices="lium/parameters/$acousticModelName/transition_matrices"
+LOG_FILE_END="SPEECH_RECOGNITION_COMPLETED"
 
-"$speechDecoder" \
-    -mdef "$currentDir/../data/models/acoustic/$acousticModel"  \
-    -mean "$currentDir/../data/models/acoustic/$acousticMeans"  \
-    -var "$currentDir/../data/models/acoustic/$acousticVariances" \
-    -mixw "$currentDir/../data/models/acoustic/$acousticMixtureWeights"  \
-    -tmat "$currentDir/../data/models/acoustic/$acousticTransitionMatrices"  \
-    -lm "$currentDir/../data/models/language/$languageModel"  \
-    -dict "$currentDir/../data/models/lexical/$lexicalModel"  \
-    -fdict "$currentDir/../data/models/lexical/$fillersModel"  \
-    -agc max \
-    -wlen 0.0256 \
-    -lowerf 130 \
-    -upperf 6800 \
-    -silprob 0.01 \
-    -fillprob 0.02 \
-    $* >> "$logFile" 2>&1
+# Tool configuration.
+soundConverterBin=$( getConfigPath "$CONFIG_KEY.soundConverter.path" ) || exit 100
+soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) || exit 100
 
-# Changed parameters:
-#    -wlen 0.0256    -> default: 0.025625
-#     -lowerf 130    -> default: 133.33334
-#     -upperf 6800   -> default: 6855.4976
-#     -silprob 0.01  -> default: 0.1
-#     -fillprob 0.02 -> default: 0.1
+#########################
+## Functions
+# usage: usage
+function usage() {
+  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-vh]"
+  echo -e "<sound file>\tthe sound file to decode"
+  echo -e "<list file>\tthe file containing the list of sound files to decode"
+  echo -e "<s. files dir>\tthe directory containing sound files to decode"
+  echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
+  echo -e "-v\t\tactivate the verbose mode"
+  echo -e "-h\t\tshow this usage"
+  echo -e "\nYou must use one of the following option: -f, -l or -d."
+  exit 1
+}
 
-# Default parameters:
-#     -varnorm no \
-#     -cmn current \
-#     -feat 1s_c_d_dd \
-#     -alpha 0.97 \
-#     -samprate 16000 \
-#     -frate 100 \
-#     -nfft 512 \
-#     -nfilt 40 \
-#     -ncep 13 \
-#     -lw 9.5 \
+# usage: markLogFileEnd
+function markLogFileEnd() {
+  echo "$LOG_FILE_END" >> "$logFile"
+}
+
+# usage: startLogAnalyzer
+function startLogAnalyzer() {
+  writeMessage "Launching result log analyzer ..."
+  logFile="$logFile" "$myPath" -Z "$logFile" & 
+}
+
+# usage: manageSpeechRecognition <prepared sound file list>
+function manageSpeechRecognition() {
+  local _preparedSoundFileList="$1"
+
+  # Ensures the prepared sound file list is not empty.
+  [ ! -s "$_preparedSoundFileList" ] && return 1
+  
+  #  3- launches log analyzer.
+  startLogAnalyzer
+
+  #  4- launches the speech recognition on the prepared sound file list.
+  writeMessage "Launching speech recognition on prepared sound list file $_preparedSoundFileList ..."
+  ! speechRecognitionFromList "$_preparedSoundFileList" && markLogFileEnd && exit 1
+  markLogFileEnd
+}
+
+#########################
+## Command line management
+SOURCE_MODE_SOUND_FILE=1
+SOURCE_MODE_LIST_FILE=2
+SOURCE_MODE_DIR=3
+verbose=0
+# N.B.: -Z is an hidden option allowing to analyze specified log file;
+#  it must be used for internal purposes only.
+while getopts "f:l:d:Z:P:vh" opt
+do
+ case "$opt" in
+        f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
+        l)      mode=$SOURCE_MODE_LIST_FILE; path="$OPTARG";;
+        d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
+        P)      speechFilePattern="$OPTARG";;
+        v)      verbose=1;;
+        Z)      logToAnalyze="$OPTARG";;
+        h|[?])  usage;;
+ esac
+done
+
+# Checks if special mode or analyzing log file.
+if [ ! -z "$logToAnalyze" ]; then
+  analyzeLog && exit 0 || exit 127
+fi
+
+checkBin "$soundConverterBin" || exit 126
+checkConfiguration || exit 126
+
+[ -z "$mode" ] && usage
+[ -z "$path" ] && usage
+[ ! -e "$path" ] && errorMessage "$path not found." 1
+[ -z "$speechFilePattern" ] && speechFilePattern="$DEFAULT_SPEECH_FILE_PATTEN"
+
+#########################
+## INSTRUCTIONS
+# Moves to root because all files are regarded as relative to it.
+cd /
+
+# According to the mode, create a sound file list.
+sourceSoundFileList="$workDir/$fileDate-sourceSoundFileList.txt"
+case "$mode" in
+  $SOURCE_MODE_SOUND_FILE)
+    echo "$path" > "$sourceSoundFileList";;
+  $SOURCE_MODE_LIST_FILE)
+    cat "$path" > "$sourceSoundFileList";;
+  $SOURCE_MODE_DIR)
+    rm -f "$sourceSoundFileList"
+    for rawFileRaw in $( find "$path" -type f -name "$speechFilePattern" |sed -e 's/[ \t]/£/g;' ); do
+      rawFile=$( echo "$rawFileRaw" |sed 's/£/ /g;' )
+      echo "$rawFile" >> "$sourceSoundFileList"
+    done;;
+  [?])  usage;;
+esac
+
+# Prepares the destination sound file list.
+preparedSoundFileList="$workDir/$fileDate-preparedSoundFileList.txt"
+prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit 3
+
+# Launches the speech recognition on the list.
+manageSpeechRecognition "$preparedSoundFileList"
+
+# Waits for result log analyzer stop.
+analyzeLogStopWait

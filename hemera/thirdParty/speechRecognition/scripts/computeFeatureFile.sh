@@ -13,8 +13,12 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
-# Binary configuration.
-soundConverter="$currentDir/../bin/wave2feat"
+category="featureFileManagement"
+CONFIG_KEY="hemera.core.speechRecognition"
+
+# Tool configuration.
+soundFeatureCreatorBin=$( getConfigPath "$CONFIG_KEY.soundFeatureCreator.path" ) || exit 100
+soundFeatureCreatorOptions=$( getConfigValue "$CONFIG_KEY.soundFeatureCreator.options" ) || exit 100
 
 #########################
 ## Functions
@@ -46,4 +50,9 @@ done
 
 #########################
 ## INSTRUCTIONS
-"$soundConverter" -i "$soundFile" -o "$soundFile".mfc -raw yes # -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx
+# Defines input and output.
+input="$soundFile"
+output="$soundFile".mfc
+
+# Launches the tool, evaluating the options (variables will be replaced).
+"$soundFeatureCreatorBin" $( eval echo $soundFeatureCreatorOptions )
