@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
-# Version: 1.0
-# Description: uses sphinx3 and LIMU data files for speech recognition.
+# Version: 1.1
+# Description: manages command line and uses configured tool to perform speech recognition.
 #
 # Usage: see usage function.
 
@@ -39,11 +39,12 @@ soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) |
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-vh]"
+  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-vh]"
   echo -e "<sound file>\tthe sound file to decode"
   echo -e "<list file>\tthe file containing the list of sound files to decode"
   echo -e "<s. files dir>\tthe directory containing sound files to decode"
   echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
+  echo -e "<result file>\tpath to result file"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
   echo -e "\nYou must use one of the following option: -f, -l or -d."
@@ -61,9 +62,10 @@ function startLogAnalyzer() {
   logFile="$logFile" "$myPath" -Z "$logFile" & 
 }
 
-# usage: manageSpeechRecognition <prepared sound file list>
+# usage: manageSpeechRecognition <prepared sound file list> [<result file>]
 function manageSpeechRecognition() {
   local _preparedSoundFileList="$1"
+  local _resultFile="$2"
 
   # Ensures the prepared sound file list is not empty.
   [ ! -s "$_preparedSoundFileList" ] && return 1
@@ -73,7 +75,7 @@ function manageSpeechRecognition() {
 
   #  4- launches the speech recognition on the prepared sound file list.
   writeMessage "Launching speech recognition on prepared sound list file $_preparedSoundFileList ..."
-  ! speechRecognitionFromList "$_preparedSoundFileList" && markLogFileEnd && exit 1
+  ! speechRecognitionFromList "$_preparedSoundFileList" "$_resultFile" && markLogFileEnd && exit 1
   markLogFileEnd
 }
 
@@ -85,13 +87,14 @@ SOURCE_MODE_DIR=3
 verbose=0
 # N.B.: -Z is an hidden option allowing to analyze specified log file;
 #  it must be used for internal purposes only.
-while getopts "f:l:d:Z:P:vh" opt
+while getopts "f:l:d:Z:P:R:vh" opt
 do
  case "$opt" in
         f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
         l)      mode=$SOURCE_MODE_LIST_FILE; path="$OPTARG";;
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
         P)      speechFilePattern="$OPTARG";;
+        R)      resultFile="$OPTARG";;
         v)      verbose=1;;
         Z)      logToAnalyze="$OPTARG";;
         h|[?])  usage;;
@@ -118,6 +121,7 @@ cd /
 
 # According to the mode, create a sound file list.
 sourceSoundFileList="$workDir/$fileDate-sourceSoundFileList.txt"
+rm -f "$sourceSoundFileList"
 case "$mode" in
   $SOURCE_MODE_SOUND_FILE)
     echo "$path" > "$sourceSoundFileList";;
@@ -137,7 +141,7 @@ preparedSoundFileList="$workDir/$fileDate-preparedSoundFileList.txt"
 prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit 3
 
 # Launches the speech recognition on the list.
-manageSpeechRecognition "$preparedSoundFileList"
+manageSpeechRecognition "$preparedSoundFileList" "$resultFile"
 
 # Waits for result log analyzer stop.
 analyzeLogStopWait

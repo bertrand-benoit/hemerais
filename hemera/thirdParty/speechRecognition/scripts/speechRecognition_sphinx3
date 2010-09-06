@@ -92,9 +92,13 @@ function prepareSoundFileList() {
   done
 }
 
-# usage: speechRecognitionFromList <control file>
+# usage: speechRecognitionFromList <control file> [<result file>]
 function speechRecognitionFromList() {
-  local _controlFile="$1"  
+  local _controlFile="$1"
+  local _resultFile="$2"
+  
+  additionalOptions=""
+  [ ! -z "$_resultFile" ] && additionalOptions="-hyp $_resultFile"
   
   # Moves to root because all files are regarded as relative to it.
   cd /
@@ -105,7 +109,7 @@ function speechRecognitionFromList() {
     -mdef "$acousticModelDefinition" -mean "$acousticModelMeans" -var "$acousticModelVariances" \
     -mixw "$acousticModelMixtureWeights" -tmat "$acousticModelTransitionMatrices" \
     -lm "$languageModel" -dict "$lexicalModelWords" -fdict "$lexicalModelFillers" \
-    $sphinx3DecoderOptions -ctl "$_controlFile" >> "$logFile" 2>&1
+    $sphinx3DecoderOptions -ctl "$_controlFile" $additionalOptions >> "$logFile" 2>&1
     
     # Parameters information: 
     # First test, changed parameters:
