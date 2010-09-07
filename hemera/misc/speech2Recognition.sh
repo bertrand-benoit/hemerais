@@ -72,7 +72,7 @@ while [ $iteration -le $iterationCount ]; do
   "$speechDir/scripts/speech.sh" $additionalOptions -t "$text" -o "$speechSoundFile" || exit 11
 
   # Launches speech recognition from wav file.
-  "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile"
+  "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit 11
   
   # Prepares for potential next iteration.
   iteration=$( expr $iteration + 1 )
