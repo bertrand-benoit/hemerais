@@ -15,6 +15,17 @@
 # $input: input of the tool
 # $output: output of the tool
 
+### General.
+############
+# Binaries path to add to PATH environment variable.
+# You may prefer defining some general path root there, and define only "simple" path
+#  for other tools.
+hemera.path.bin=""
+
+# Libraries path to add to LD_LIBRARY_PATH environment variable.
+# It is needed if you compile some third-party tools without installing them to OS.
+hemera.path.lib=""
+
 ### Speech core module.
 #######################
 ## Speech core module - general.
