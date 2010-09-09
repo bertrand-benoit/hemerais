@@ -102,7 +102,6 @@ MODE_INTERACTIVE=10
 
 verbose=0
 language="$DEFAULT_LANGUAGE"
-speechOutput="-"
 while getopts "t:u:f:d:io:l:vh" opt
 do
  case "$opt" in
@@ -118,11 +117,15 @@ do
  esac
 done
 
-# Checks binaries availability.
-checkBin "$soundPlayerBin" || exit 126
+# Checks binaries availability (checks sound player only if speech output is NOT defined).
+[ -z "$speechOutput" ] && ! checkBin "$soundPlayerBin" && exit 126
 checkConfiguration || exit 126
 
+# Ensures mode is defined.
 [ -z "$mode" ] && usage
+
+# Defines default speechOutput if needed.
+[ -z "$speechOutput" ] && speechOutput="-"
 
 #########################
 ## INSTRUCTIONS
