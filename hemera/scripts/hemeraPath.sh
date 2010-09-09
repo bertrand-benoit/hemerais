@@ -2,16 +2,18 @@
 #
 # Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
 # Version: 1.0
-# Description: sets the profile of Hemera; updating the environment.
+# Description: updates PATH environment variable for better Hemera accessibility.
+# This script must NOT be directly called.
+# installDir variable must be defined.
 
-installDir="/opt/hemera/"
+# Ensures installDir variable is defined.
+[ -z "$installDir" ] && exit 0
 
 # Adds each script sub-directory to PATH.
-additionalPath=""
+additionalPath="$installDir/misc"
 for scriptsDirRaw in $( find "$installDir" -type d -name "scripts" |sed -e 's/[ \t]/£/g;' ); do
   scriptsDir=$( echo "$scriptsDirRaw" |sed -e 's/£/ /g;' )
-  [ ! -z "$additionalPath" ] && additionalPath="$additionalPath:"
-  additionalPath="$additionalPath$scriptsDir"
+  additionalPath="$additionalPath:$scriptsDir"
 done
 
 export PATH=$additionalPath:$PATH
