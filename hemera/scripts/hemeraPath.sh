@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
+# Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.0
 # Description: updates PATH environment variable for better Hemera accessibility.
 # This script must NOT be directly called.

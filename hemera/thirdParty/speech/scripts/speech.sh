@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author: Bertrand BENOIT <bertrand.benoit@bsquare.no-ip.org>
+# Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.1
 # Description: manages command line and uses configured tool to perform text to speech.
 #
