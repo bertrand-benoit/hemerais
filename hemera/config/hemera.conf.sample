@@ -26,6 +26,18 @@ hemera.path.bin=""
 # It is needed if you compile some third-party tools without installing them to OS.
 hemera.path.lib=""
 
+
+### Source code management.
+###########################
+# Home directory (i.e. root directory) of Java Development Kit installation
+# N.B.: JAVA_HOME environment variable is regarded if not set here.
+environment.java.home=""
+
+# Home directory (i.e. root directory) of Apache Ant 
+# N.B.: ANT_HOME environment variable is regarded if not set here.
+environment.ant.home=""
+
+
 ### Speech core module.
 #######################
 ## Speech core module - general.
