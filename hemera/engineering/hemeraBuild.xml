@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- Hemera - Intelligent System - ant build file
+     Copyright (C) 2010 Bertrand Benoit <projettwk@users.sourceforge.net>
+-->
+<project name="Hemera - Intelligent System" default="libraries" basedir=".">
+<!-- Constants definition -->
+  <property environment="env"/>
+  <property name="src" value="../src"/>
+  <property name="bin" value="../build"/>
+  <property name="doc" value="../doc/javadoc"/>
+  <property name="lib" value="../lib"/>
+
+        <!-- Defines the specific path containing among other things the jar library. -->
+<!--        <path id="project.class.path">
+                 Needed for some java specific library 
+                <fileset dir="${env.JDK_PATH}/jre/lib/">
+                        <include name="*.jar"/>
+                </fileset>
+        </path>-->
+
+<!-- Initialization -->
+  <target name="init">    
+    <mkdir dir="${doc}"/>
+  </target>
+
+<!-- Main targets -->
+  <target name="all" depends="libraries,doc" />
+
+<!-- Source code management targets -->
+  <target name="compilation" description="Performs the compilation">
+    <mkdir dir="${bin}"/>
+
+    <javac srcdir="${src}"
+      destdir="${bin}"
+      source="1.6"
+      target="1.6"
+      failonerror="true"
+      fork="false">
+        <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="-warn:deprecation -g -verbose -1.6"/>
+    </javac>
+  </target>
+
+  <target name="libraries" depends="compilation" description="Generates jar files">
+    <jar destfile="${lib}/hemera.jar"
+      index="false"
+      filesonly="false">
+        <!-- The .class files. -->
+        <fileset dir="${bin}" />
+
+        <!-- The resources files (if any) -->
+        <fileset dir="${src}">
+        <exclude name="**/*.class" />
+        <exclude name="**/*.java" />
+      </fileset>
+    </jar>
+
+  </target>
+
+<!-- Clean target -->
+  <target name="clean" description="Cleans build files">
+    <delete dir="${bin}"/>    
+  </target>  
+
+<!-- Documentation target -->
+  <target name="doc" depends="init">
+    <javadoc access="private"
+      maxmemory="128M"
+      failonerror="true"
+      useexternalfile="yes"
+      sourcepath="${src}"                             
+      destdir="${doc}"
+      packagenames="hemera.*"
+      source="1.6"
+      version="yes"
+      author="yes"
+      use="no">
+        <link href="http://download-llnw.oracle.com/javase/6/docs/api/"/>
+
+        <doctitle><![CDATA[Hemera - Intelligent System - Javadoc]]></doctitle>
+
+        <Header><![CDATA[<center>Hemera - Intelligent System<br/>Javadoc</center>]]></Header>
+
+        <Footer><![CDATA[<center>Hemera - Intelligent System<br/>Javadoc</center>]]></Footer>
+
+        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010&nbsp;&nbsp;<a href="mailto:projettwk@users.sourceforge.net">Bertrand Benoit</a>, <a href="https://sourceforge.net/projects/hemerais/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
+    </javadoc>
+  </target>
+
+</project>
