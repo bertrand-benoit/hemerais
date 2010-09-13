@@ -12,7 +12,7 @@ source "$installDir/scripts/utilities.sh"
 
 category="setup"
 sysconfigFile="/etc/sysconfig/hemera"
-profileFile="/etc/profile.d/hemera"
+profileFile="/etc/profile.d/hemera.sh"
 configurationFile="$installDir/config/hemera.conf"
 
 #########################
@@ -41,8 +41,6 @@ if [ -f "$profileFile" ]; then
   echo "ignored (already exist)."
 else
 cat > $profileFile << End-of-Message
-#!/bin/bash
-
 # Ensures the configuration file exists.
 if [ -f "$sysconfigFile" ]; then
   # Gets installation directory.
