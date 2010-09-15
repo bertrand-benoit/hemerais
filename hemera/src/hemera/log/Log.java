@@ -50,6 +50,12 @@ public final class Log {
 	/** Log file. */
 	private static final String LOG_FILE = System.getProperty(LOG_FILE_PROPERTY);
 
+	/** Property allowing definition of NOT logging on console. */
+	private static final String LOG_CONSOLE_PROPERTY = "hemera.log.noConsole";
+
+	/** Log on console. */
+	private static final boolean LOG_CONSOLE = !Boolean.getBoolean(LOG_CONSOLE_PROPERTY);
+
 	/** Property allowing definition of log verbose level (possible values: 0 to 3, 0=no verbose, 3=highly verbose). */
 	private static final String VERBOSE_LEVEL_PROPERTY = "hemera.log.verbose";
 
@@ -72,6 +78,7 @@ public final class Log {
 	static {
 		// Gets the root logger.
 		final Logger rootLogger = LogManager.getLogManager().getLogger("");
+		rootLogger.setLevel(VERBOSE_LEVEL);
 
 		// Removes default handlers.
 		for (final Handler handler : rootLogger.getHandlers()) {
@@ -79,9 +86,12 @@ public final class Log {
 		}
 
 		// Adds console handler, with Hemera Log formatter.
-		final ConsoleHandler consoleHandler = new LogConsoleHandler();
-		consoleHandler.setFormatter(FORMATTER);
-		rootLogger.addHandler(consoleHandler);
+		if (LOG_CONSOLE) {
+			final ConsoleHandler consoleHandler = new LogConsoleHandler();
+			consoleHandler.setFormatter(FORMATTER);
+			rootLogger.addHandler(consoleHandler);
+			consoleHandler.setLevel(VERBOSE_LEVEL);
+		}
 
 		// Checks if log file is defined.
 		if (LOG_FILE != null && LOG_FILE.length() != 0) {
@@ -98,10 +108,6 @@ public final class Log {
 				e.printStackTrace();
 			}
 		}
-
-		// Defines verbose level.
-		rootLogger.setLevel(VERBOSE_LEVEL);
-		consoleHandler.setLevel(VERBOSE_LEVEL);
 	}
 
 	/****************************************************************************************/
