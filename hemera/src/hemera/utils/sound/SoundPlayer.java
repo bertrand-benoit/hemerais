@@ -119,37 +119,39 @@ public final class SoundPlayer {
 			throw new HemeraSoundException("Unable to open sound source data line.", e);
 		}
 
-		// Activates it.
-		Log.utils.finer(filePath + ": starting line.");
-		line.start();
+		try {
+			// Activates it.
+			Log.utils.finer(filePath + ": starting line.");
+			line.start();
 
-		// Reads (buffer) data from sound file, and writes them to data line.
-		Log.utils.finer(filePath + ": starting reading.");
-		int audioDataBytesRead = 0;
-		final byte[] audioDataBuffer = new byte[EXTERNAL_BUFFER_SIZE];
-		while (audioDataBytesRead != -1) {
-			try {
-				// Reads.
-				audioDataBytesRead = audioInputStream.read(audioDataBuffer, 0, audioDataBuffer.length);
+			// Reads (buffer) data from sound file, and writes them to data line.
+			Log.utils.finer(filePath + ": starting reading.");
+			int audioDataBytesRead = 0;
+			final byte[] audioDataBuffer = new byte[EXTERNAL_BUFFER_SIZE];
+			while (audioDataBytesRead != -1) {
+				try {
+					// Reads.
+					audioDataBytesRead = audioInputStream.read(audioDataBuffer, 0, audioDataBuffer.length);
 
-				// Writes to data line (if needed).
-				if (audioDataBytesRead >= 0) {
-					Log.utils.finest(filePath + ": read " + audioDataBytesRead + " bytes.");
-					line.write(audioDataBuffer, 0, audioDataBytesRead);
+					// Writes to data line (if needed).
+					if (audioDataBytesRead >= 0) {
+						Log.utils.finest(filePath + ": read " + audioDataBytesRead + " bytes.");
+						line.write(audioDataBuffer, 0, audioDataBytesRead);
+					}
+				} catch (final IOException e) {
+					throw new HemeraSoundException("Error while reading sound file '" + filePath + "'.", e);
 				}
-			} catch (final IOException e) {
-				throw new HemeraSoundException("Error while reading sound file '" + filePath + "'.", e);
 			}
+
+			// Waits until all data are managed.
+			Log.utils.finer(filePath + ": draining line.");
+			line.drain();
+		} finally {
+			// Finally closes the line.
+			Log.utils.finer(filePath + ": closing line.");
+			line.close();
+			Log.utils.fine(filePath + ": closed.");
 		}
-
-		// Waits until all data are managed.
-		Log.utils.finer(filePath + ": draining line.");
-		line.drain();
-
-		// Finally closes the line.
-		Log.utils.finer(filePath + ": closing line.");
-		line.close();
-		Log.utils.fine(filePath + ": closed.");
 	}
 
 	/****************************************************************************************/
