@@ -17,7 +17,24 @@ Configuration
  - for each tool, you can either update the corresponding configuration element or ensure it is available from the PATH environment variable
  - check/update the hemera.path.* configuration elements (You may prefer defining some general path and define only "simple" path for other tools)
 
-REQUIREMENTS
+Environment
+-----------
+Hemera java pieces need:
+ - a version of Java Development Kit (jdk6 or newer) (See http://www.oracle.com/technetwork/java/index.html)
+ - Apache Ant (See http://ant.apache.org).
+ 
+After installation, you should either update your environment variables JAVA_HOME and ANT_HOME, or update environment.java.home and environment.ant.home in your Hemera configuration file.
+
+Java properties
+---------------
+If you want launching Hemera java piece (like the Java sound player) in an IDE (e.g. Eclipse), you should specify the following properties:
+ -Djava.system.class.loader=hemera.HemeraClassLoader -> this specific classloader loads the Hemera properties file automatically
+ -Dhemera.property.file=${workspace_loc}/hemera/config/hemera.conf -> the Hemera properties file
+ 
+You may use the following properties:
+ -Dhemera.log.file="/path/to/logFile" -> the logFile in which append the output of the Hemera java piece
+
+Requirements
 ------------
 Each core piece requires third party element.
 
