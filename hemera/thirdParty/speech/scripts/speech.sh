@@ -38,7 +38,7 @@ soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-t <text>|-u <url>|-f <file>|-d <terms> -i] [-o <output speech file>] [-l language] [-v]"
+  echo -e "Usage: $0 [-t <text>|-u <url>|-f <file>|-d <terms> -i] [-o <output speech file>] [-l language] [-hv]"
   echo -e "<text>\ttext/sentences to speech"
   echo -e "<url>\turl of page content to read"
   echo -e "<file>\tfile to read"
