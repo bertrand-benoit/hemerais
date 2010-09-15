@@ -13,6 +13,9 @@
 [ -z "$installDir" ] && echo -e "This script must NOT be directly called. installDir variable not defined" >&2 && exit 1
 source "$installDir/scripts/utilities.sh"
 
+# Updates configuration.
+libDir="$installDir/lib"
+
 # Defines configuration file.
 configurationFile="$installDir/config/hemera.conf"
 
