@@ -15,6 +15,7 @@
 # $input: input of the tool
 # $output: output of the tool
 
+
 ### General.
 ############
 # Binaries path to add to PATH environment variable.
@@ -28,6 +29,7 @@ hemera.path.lib=""
 
 # The Hemera log verbose level among 0=no verbose, 3=highly verbose.
 hemera.log.verbose=0
+
 
 ### Source code management.
 ###########################
@@ -55,7 +57,10 @@ hemera.core.speech.tool.path="espeak"
 hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
 
 # The sound player (path and options).
+# e.g.: aplay or misc/soundPlayer.sh
 hemera.core.speech.soundPlayer.path="aplay"
+# e.g.: for aplay: -q -r22050 -fS16
+#       for misc/soundPlayer.sh: -f
 hemera.core.speech.soundPlayer.options="-q -r22050 -fS16"
 
 ## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
