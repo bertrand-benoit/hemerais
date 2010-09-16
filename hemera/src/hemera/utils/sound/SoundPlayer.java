@@ -111,6 +111,7 @@ public final class SoundPlayer {
 		Log.utils.fine(filePath + ": format is " + audioFormat);
 		SourceDataLine line = null;
 		final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+		Log.utils.finest(filePath + ": line info is " + info);
 		try {
 			// Gets a line, and then opens it.
 			line = (SourceDataLine) AudioSystem.getLine(info);
