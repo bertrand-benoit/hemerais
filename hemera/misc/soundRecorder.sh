@@ -2,7 +2,7 @@
 #
 # Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.0
-# Description: sound recorder.
+# Description: sound recorder daemon.
 #
 # Usage: see usage function.
 

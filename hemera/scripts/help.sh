@@ -38,6 +38,7 @@ function showScriptDescription() {
 echo -e "Hemera - Intelligent System - Help"
 echo -e "Online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page"
 echo -e "Configuration file: config/hemera.conf"
+echo -e "Check your configuration: scripts/checkConfig.sh"
 echo -e "See README and INSTALL files."
 echo -e "\nAvailable tools"
 
