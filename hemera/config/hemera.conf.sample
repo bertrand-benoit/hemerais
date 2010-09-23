@@ -41,6 +41,11 @@ hemera.run.temp="run/tmp"
 # The event manager will look for event in this queue.
 hemera.run.queue="run/queue"
 
+# The Hemera event file system notifier (path and options).
+# it is used when temporary files have been fully created like speech sound file).
+hemera.event.fsNotifier.path="inotifywait"
+hemera.event.fsNotifier.options="-q --format '%f' -e close_write -m $input"
+
 
 ### Source code management.
 ###########################

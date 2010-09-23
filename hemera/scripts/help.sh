@@ -32,7 +32,6 @@ function showScriptDescription() {
   done
 }
 
-
 #########################
 ## INSTRUCTIONS
 echo -e "Hemera - Intelligent System - Help"
