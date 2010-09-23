@@ -67,7 +67,6 @@ checkBin "$soundRecorderBin" || exit 126
 case "$mode" in
   $MODE_DAEMON)
     # Starts the process.
-    writeMessage "Launching Sound recorder daemon."
     input="$tmpEventDir/speech%3n.wav"
     startProcess "$pidFile" "$soundRecorderBin" $( eval echo "$soundRecorderOptions" )
   ;;
