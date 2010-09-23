@@ -25,13 +25,26 @@ additionalLibPath=$( getConfigValue "hemera.path.lib" )
 [ ! -z "$additionalBinPath" ] && export PATH=$additionalBinPath:$PATH
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
-# Defines some global variables.
-workDir="/tmp/Hemera"
-logDir="$workDir/Logs"
-fileDate=$(date +"%s")
+# Defines some global variables about directories.
+logDir=$( getConfigPath "hemera.run.log" )
+queueDir=$( getConfigPath "hemera.run.queue" )
+updateStructure "$logDir"
+updateStructure "$queueDir"
 
-# Ensures various directories exists.
-mkdir -p "$workDir" "$logDir"
+# Structure:
+#  tmp/work   temporary files
+#  tmp/event  event under creation
+#  tmp/pid    PID files
+tmpDir=$( getConfigPath "hemera.run.temp" )
+workDir="$tmpDir/work"
+tmpEventDir="$tmpDir/event"
+pidDir="$tmpDir/pid"
+updateStructure "$workDir"
+updateStructure "$tmpEventDir"
+updateStructure "$pidDir"
+
+# Defines some other global variables.
+fileDate=$(date +"%s")
 
 # Ensures the system has been configured.
 [ ! -f "$configurationFile" ] && errorMessage "$configurationFile NOT found. You must configure the system (See $configurationFile.sample)."

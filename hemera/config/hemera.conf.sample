@@ -30,6 +30,17 @@ hemera.path.lib=""
 # The Hemera log verbose level among 0=no verbose, 3=highly verbose.
 hemera.log.verbose=0
 
+# The Hemera logs directory (where log files will be created).
+hemera.run.log="run/log"
+
+# The Hemera run temporary directory (where event temporary files will be created,
+#  like speech recording).
+hemera.run.temp="run/tmp"
+
+# The Hemera run queue directory (where event files will be created).
+# The event manager will look for event in this queue.
+hemera.run.queue="run/queue"
+
 
 ### Source code management.
 ###########################
@@ -87,6 +98,11 @@ hemera.core.speechRecognition.mode="sphinx3"
 # The main tool to use (path and options).
 hemera.core.speechRecognition.tool.path="sphinx3_decode"
 hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -upperf 6800 -silprob 0.01 -fillprob 0.02"
+
+# The speech sound (continuous) recorder (path and options).
+# Important: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
+hemera.core.speechRecognition.soundRecorder.path="rec"
+hemera.core.speechRecognition.soundRecorder.options="-q -r 16000 -c 1 -t wav $input silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
 
 # The sound converted (path and options).
 hemera.core.speechRecognition.soundConverter.path="sox"
