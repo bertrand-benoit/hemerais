@@ -27,20 +27,28 @@ additionalLibPath=$( getConfigValue "hemera.path.lib" )
 
 # Defines some global variables about directories.
 logDir=$( getConfigPath "hemera.run.log" )
-queueDir=$( getConfigPath "hemera.run.queue" )
 updateStructure "$logDir"
-updateStructure "$queueDir"
+
+# Structure:
+#  queue/input/new    new input
+#  queue/input/cur    input under processing
+#  queue/input/done   input managed
+queueDir=$( getConfigPath "hemera.run.queue" )
+intputDir="$queueDir/input"
+newInputDir="$intputDir/new"
+curInputDir="$intputDir/cur"
+doneInputDir="$intputDir/done"
+updateStructure "$newInputDir"
+updateStructure "$curInputDir"
+updateStructure "$doneInputDir"
 
 # Structure:
 #  tmp/work   temporary files
-#  tmp/event  event under creation
 #  tmp/pid    PID files
 tmpDir=$( getConfigPath "hemera.run.temp" )
 workDir="$tmpDir/work"
-tmpEventDir="$tmpDir/event"
 pidDir="$tmpDir/pid"
 updateStructure "$workDir"
-updateStructure "$tmpEventDir"
 updateStructure "$pidDir"
 
 # Defines some other global variables.

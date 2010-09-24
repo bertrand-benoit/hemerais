@@ -2,7 +2,7 @@
 #
 # Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.0
-# Description: temporary event monitor daemon (checks for event created in temporary directory, e.g. speech sound file).
+# Description: input monitor daemon (checks for input and updates a event list which will be process by ioprocessor).
 #
 # Usage: see usage function.
 
@@ -13,16 +13,16 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$currentDir" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
-category="eventMonitor"
-CONFIG_KEY="hemera.event.fsNotifier"
-daemonName="temporary event monitor"
+category="inputMonitor"
+CONFIG_KEY="hemera.core.iomanager.monitor"
+daemonName="input monitor"
 
 # tool configuration
-notifierBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit 100
-notifierOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
+monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit 100
+monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
 
 # Defines the PID file.
-pidFile="$pidDir/tmpEventMonitor.pid"
+pidFile="$pidDir/inputMonitor.pid"
 
 #########################
 ## Command line management
@@ -34,15 +34,15 @@ do
  case "$opt" in
         S)
           action="start"
-          outputFile="$logDir/eventsToManage"
+          outputFile="$logDir/inputList"
           newLogFile="$logFile"          
         ;;
         T)      action="status";;
         K)      action="stop";;
         D)      
           action="daemon"
-          input="$tmpEventDir/"
-          options=$( eval echo "$notifierOptions" )
+          input="$newInputDir/"
+          options=$( eval echo "$monitorOptions" )
         ;;
         v)      verbose=1;;
         h|[?])  daemonUsage "$daemonName" ;;
@@ -53,10 +53,10 @@ done
 [ -z "$action" ] && daemonUsage "$daemonName"
 
 # Checks tools.
-checkBin "$notifierBin" || exit 126
+checkBin "$monitorBin" || exit 126
 
 #########################
 ## INSTRUCTIONS
 
 # Manages daemon.
-manageDaemon "$action" "$daemonName" "$pidFile" "$notifierBin" "$newLogFile" "$outputFile" "$options"
+manageDaemon "$action" "$daemonName" "$pidFile" "$monitorBin" "$newLogFile" "$outputFile" "$options"

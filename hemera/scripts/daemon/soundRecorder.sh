@@ -41,7 +41,7 @@ do
         K)      action="stop";;
         D)      
           action="daemon"
-          input="$tmpEventDir/speech%3n.wav"
+          input="$newInputDir/recordedSpeech%3n.wav"
           options=$( eval echo "$soundRecorderOptions" )
         ;;
         v)      verbose=1;;
