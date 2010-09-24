@@ -59,6 +59,6 @@ fileDate=$(date +"%s")
 
 # Defines the log file if not already done.
 if [ -z "$logFile" ]; then
-  export logFile="$logDir/"$(date +"%y-%m-%d-%H-%M-%S")"-Hemera.log"
+  export logFile="$logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
   writeMessage "LogFile: $logFile"
 fi

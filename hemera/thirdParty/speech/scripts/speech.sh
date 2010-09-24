@@ -11,9 +11,9 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
+category="speech"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="speech"
 CONFIG_KEY="hemera.core.speech"
 SUPPORTED_MODE="espeak espeak+mbrola X"
 

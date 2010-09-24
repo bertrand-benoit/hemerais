@@ -8,9 +8,9 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
+category="check"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="check"
 showError=0
 
 #########################

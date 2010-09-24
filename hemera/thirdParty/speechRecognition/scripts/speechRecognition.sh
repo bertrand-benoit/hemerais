@@ -12,9 +12,9 @@
 myPath="$( which "$0" )"
 currentDir=$( dirname "$myPath" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
+category="speechRecognition"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="speechRecognition"
 CONFIG_KEY="hemera.core.speechRecognition"
 SUPPORTED_MODE="sphinx3"
 DEFAULT_SPEECH_FILE_PATTEN="*.wav"

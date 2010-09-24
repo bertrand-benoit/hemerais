@@ -11,9 +11,9 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
+category="featureFileManagement"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="featureFileManagement"
 CONFIG_KEY="hemera.core.speechRecognition"
 
 # Tool configuration.

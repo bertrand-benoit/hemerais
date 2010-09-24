@@ -8,9 +8,9 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
+category="make"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="make"
 CONFIG_KEY="environment"
 buildAntFile="$installDir/engineering/hemeraBuild.xml"
 

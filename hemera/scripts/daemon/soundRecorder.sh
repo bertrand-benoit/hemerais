@@ -11,9 +11,9 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$currentDir" )" )
+category="soundRecorder"
 source "$installDir/scripts/setEnvironment.sh"
 
-category="soundRecording"
 CONFIG_KEY="hemera.core.speechRecognition"
 daemonName="sound recorder"
 

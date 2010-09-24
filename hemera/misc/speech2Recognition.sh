@@ -11,6 +11,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
+category="speech2Recognition"
 source "$installDir/scripts/setEnvironment.sh"
 
 #########################
