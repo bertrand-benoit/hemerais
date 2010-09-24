@@ -10,7 +10,7 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$currentDir" )
+installDir=$( dirname "$( dirname "$currentDir" )" )
 source "$installDir/scripts/setEnvironment.sh"
 
 category="soundRecording"

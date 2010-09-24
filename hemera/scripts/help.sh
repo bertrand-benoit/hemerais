@@ -19,7 +19,7 @@ function showScriptDescription() {
   local _scriptDir=$( echo "$1" |sed -e 's/^[.]\///g;' )
 
   echo -e " in $_scriptDir"
-  for scriptRaw in $( find "$_scriptDir" -type f -perm /u+x ! -name "*~" |sed -e 's/[ \t]/£/g;' ); do
+  for scriptRaw in $( find "$_scriptDir" -maxdepth 1 -type f -perm /u+x ! -name "*~" |sed -e 's/[ \t]/£/g;' ); do
     script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )   
     
     # Ensures it is not an internal script.
@@ -43,7 +43,7 @@ echo -e "\nAvailable tools"
 
 # Looks for scripts directory everywhere.
 cd "$installDir"
-for scriptsDirRaw in $( find -type d -name "scripts" |sed -e 's/[ \t]/£/g;' ); do
+for scriptsDirRaw in $( find -regextype posix-extended -type d -regex ".*(scripts|daemon)" |sed -e 's/[ \t]/£/g;' ); do
   scriptsDir=$( echo "$scriptsDirRaw" |sed -e 's/£/ /g;' )
   showScriptDescription "$scriptsDir"
 done
