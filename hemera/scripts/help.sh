@@ -20,14 +20,14 @@ function showScriptDescription() {
 
   echo -e " in $_scriptDir"
   for scriptRaw in $( find "$_scriptDir" -maxdepth 1 -type f -perm /u+x ! -name "*~" |sed -e 's/[ \t]/£/g;' ); do
-    script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )   
-    
+    script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
+
     # Ensures it is not an internal script.
     [ $( head "$script" |grep "must NOT be directly called" |wc -l ) -gt 0 ] && continue
-    
+
     # Extracts the description.
     description=$( head "$script" |grep -re "# Description:" |sed -e 's/# Description: //' )
-    
+
     printf "   \E[1m%-${SPACE_COUNT}s\E[0m\t%s\n" $( basename "$script" ) "$description"
   done
 }

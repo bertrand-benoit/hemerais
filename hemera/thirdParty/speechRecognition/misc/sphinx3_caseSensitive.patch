@@ -1,9 +1,9 @@
 --- src/libs3decoder/libdict/dict.c.orig	2010-09-03 11:53:24.000000000 +0200
 +++ src/libs3decoder/libdict/dict.c	2010-09-03 11:53:30.000000000 +0200
 @@ -375,5 +375,5 @@
- 
+
      /* Create new hash table for word strings; case-insensitive word strings */
 -    d->ht = hash_table_new(d->max_words, 1 /* no-case */ );
 +    d->ht = hash_table_new(d->max_words, HASH_CASE_YES /* Hemera needs case-sensitive */ );
- 
+
      d->lts_rules = NULL;

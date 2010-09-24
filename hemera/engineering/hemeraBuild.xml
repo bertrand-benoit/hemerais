@@ -13,14 +13,14 @@
 
         <!-- Defines the specific path containing among other things the jar library. -->
 <!--        <path id="project.class.path">
-                 Needed for some java specific library 
+                 Needed for some java specific library
                 <fileset dir="${env.JDK_PATH}/jre/lib/">
                         <include name="*.jar"/>
                 </fileset>
         </path>-->
 
 <!-- Initialization -->
-  <target name="init">    
+  <target name="init">
     <mkdir dir="${doc}"/>
   </target>
 
@@ -63,7 +63,7 @@
     <delete dir="${doc}"/>
     <delete file="${lib}/hemera.jar"/>
     <delete dir="${defaultRun}"/> <!-- delete default run directory -->
-  </target>  
+  </target>
 
 <!-- Documentation target -->
   <target name="doc" depends="init">
@@ -71,7 +71,7 @@
       maxmemory="128M"
       failonerror="true"
       useexternalfile="yes"
-      sourcepath="${src}"                             
+      sourcepath="${src}"
       destdir="${doc}"
       packagenames="hemera.*"
       source="1.6"

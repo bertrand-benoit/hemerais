@@ -23,7 +23,7 @@ function usage() {
   echo -e "<count>\ttext->speech->text iteration count (default: 1)"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
-  
+
   exit 1
 }
 
@@ -74,7 +74,7 @@ while [ $iteration -le $iterationCount ]; do
 
   # Launches speech recognition from wav file.
   "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit 11
-  
+
   # Prepares for potential next iteration.
   iteration=$( expr $iteration + 1 )
   textToSpeech=$( cat "$speechRecognitionResultFile" |sed -e 's/[ \t]*([^(]*)$//;' )

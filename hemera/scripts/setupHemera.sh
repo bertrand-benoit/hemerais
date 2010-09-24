@@ -45,13 +45,13 @@ cat > $profileFile << End-of-Message
 if [ -f "$sysconfigFile" ]; then
   # Gets installation directory.
   source "$sysconfigFile"
-  
+
   # Updates the path.
   source "$installDir/scripts/hemeraPath.sh"
 fi
 End-of-Message
   chmod +x "$profileFile"
-  
+
   echo "created."
 
   writeMessage "Hemera main binary/script will be available after next reboot (source $profileFile for immediate effect in your shell)."

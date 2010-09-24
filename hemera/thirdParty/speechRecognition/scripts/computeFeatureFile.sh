@@ -28,7 +28,7 @@ function usage() {
   echo -e "<file>\tthe sound file to manage"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
-  
+
   exit 1
 }
 

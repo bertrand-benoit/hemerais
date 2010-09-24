@@ -23,9 +23,9 @@ function checkConfiguration() {
   checkBin "$espeakBin" || return 1
   checkBin "$mbrolaBin" || return 1
   checkDataFile "$mbrolaLanguageFile" || return 1
-  
+
   [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
-  
+
   return 0
 }
 

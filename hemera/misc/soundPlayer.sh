@@ -21,7 +21,7 @@ function usage() {
   echo -e "<sound file>\tpath to sound file"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
-  
+
   exit 1
 }
 

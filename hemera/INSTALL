@@ -22,7 +22,7 @@ Environment
 Hemera java pieces need:
  - a version of Java Development Kit (jdk6 or newer) (See http://www.oracle.com/technetwork/java/index.html)
  - Apache Ant (See http://ant.apache.org).
- 
+
 After installation, you should either update your environment variables JAVA_HOME and ANT_HOME, or update environment.java.home and environment.ant.home in your Hemera configuration file.
 
 Java properties
@@ -30,7 +30,7 @@ Java properties
 If you want launching Hemera java piece (like the Java sound player) in an IDE (e.g. Eclipse), you should specify the following properties:
  -Djava.system.class.loader=hemera.HemeraClassLoader -> this specific classloader loads the Hemera properties file automatically
  -Dhemera.property.file=${workspace_loc}/hemera/config/hemera.conf -> the Hemera properties file
- 
+
 You may use the following properties:
  -Dhemera.log.file="/path/to/logFile" -> the logFile in which append the output of the Hemera java piece
 
@@ -53,12 +53,12 @@ Each core piece requires third party element.
  - espeak (See http://espeak.sourceforge.net/)
    - yum install espeak
    - check/update the hemera.core.speech.tool.* configuration elements
-   
+
  - mbrola (See http://www.tcts.fpms.ac.be/synthesis/mbrola)
    - download the binary http://www.tcts.fpms.ac.be/synthesis/mbrola/bin/pclinux/mbr301h.zip
    - rename the wanted version to [HEMERA_ROOT_PATH]/thirdParty/speech/bin/mbrola
    - check/update the hemera.core.speech.mbrola.path configuration element
-   
+
  - language file
    - download language fr4 -> http://www.tcts.fpms.ac.be/synthesis/mbrola/dba/fr4/fr4-990521.zip
    - rename the fr4 file to [HEMERA_ROOT_PATH]/thirdParty/speech/data/language/fr4
@@ -71,11 +71,11 @@ Each core piece requires third party element.
     - yum install sox
     - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
 
- - sphinx3   
+ - sphinx3
   - install cmusphinx3 from packages
     - yum install cmusphinx3
     - check/update the hemera.core.speechRecognition.tool.* configuration elements
-   
+
   - install cmusphinx3 from source
     - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
     - important: you should checkout sphinxbase and sphinx3 into the same root directory, such a way, the sphinx3 configuration system will automagically find sphinxbase headers and libraries
@@ -93,7 +93,7 @@ make
     - libraries are available in src/libsphinxbase/.libs
 
     - performed following instructions
-cd ../sphinx3  
+cd ../sphinx3
     - WARNING: to have case sensitive dictionary (which is requested with LIUM models), you must patch the source code
 patch -N -p1 -s src/libs3decoder/libdict/dict.c < [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/misc/sphinx3_caseSensitive.patch
 ./autogen.sh
@@ -103,7 +103,7 @@ make
     - check/update the hemera.core.speechRecognition.tool.* configuration elements
 
     - wave2feat: Feature file creator (included into SphinxTrain project)
-      - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries 
+      - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries
       - performed following instructions (in the root directory you have checked out sphinxbase and sphinx3)
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
 cd SphinxTrain
@@ -122,7 +122,7 @@ mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
         Use sphinxbase/src/sphinx_lmtools/.libs/lt-sphinx_lm_convert if you have compiled it, use sphinx_lm_convert otherwise.
         sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
      - move trigram_LM.DMP.utf8 in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/language/lium/3g/ (creates needed sub-folders)
-     
+
    - Lexical model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz

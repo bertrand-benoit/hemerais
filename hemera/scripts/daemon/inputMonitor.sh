@@ -35,11 +35,11 @@ do
         S)
           action="start"
           outputFile="$logDir/inputList"
-          newLogFile="$logFile"          
+          newLogFile="$logFile"
         ;;
         T)      action="status";;
         K)      action="stop";;
-        D)      
+        D)
           action="daemon"
           input="$newInputDir/"
           options=$( eval echo "$monitorOptions" )

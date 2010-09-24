@@ -20,7 +20,7 @@ for pathKey in $( grep -re "^[^#][a-zA-Z.]*[.]path=" "$configurationFile" |sed -
   writeMessage "Checking '$pathKey' ... " 0
   pathValue=$( getConfigPath "$pathKey" )
   [ $? -ne 0 ] && echo "failed" && continue
-  
+
   echo -ne "existence ... "
   ! checkBin "$pathValue" && echo "$pathValue NOT found" && continue
   echo "OK"

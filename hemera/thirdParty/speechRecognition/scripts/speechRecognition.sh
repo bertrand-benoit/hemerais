@@ -60,7 +60,7 @@ function markLogFileEnd() {
 # usage: startLogAnalyzer
 function startLogAnalyzer() {
   writeMessage "Launching result log analyzer ..."
-  logFile="$logFile" "$myPath" -Z "$logFile" & 
+  logFile="$logFile" "$myPath" -Z "$logFile" &
 }
 
 # usage: manageSpeechRecognition <prepared sound file list> [<result file>]
@@ -70,7 +70,7 @@ function manageSpeechRecognition() {
 
   # Ensures the prepared sound file list is not empty.
   [ ! -s "$_preparedSoundFileList" ] && return 1
-  
+
   #  3- launches log analyzer.
   startLogAnalyzer
 

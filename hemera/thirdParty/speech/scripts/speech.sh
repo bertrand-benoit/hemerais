@@ -47,9 +47,9 @@ function usage() {
   echo -e "-l\tuse another language (Default: $DEFAULT_LANGUAGE)"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
-  
+
   echo -e "\nYou must either use option -t, -u, -f, -d or -i."
-  
+
   exit 1
 }
 
@@ -83,7 +83,7 @@ function readDefinition() {
   termAsQueryString=$( echo "$termsToDefine" |sed -e 's/[ \t]/+/g;' )
   getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit 11
   sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"
-  
+
   speechFileContents "$urlContentsFile"
 }
 
