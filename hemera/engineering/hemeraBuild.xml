@@ -9,6 +9,7 @@
   <property name="bin" value="../build"/>
   <property name="doc" value="../doc/javadoc"/>
   <property name="lib" value="../lib"/>
+  <property name="defaultRun" value="../run"/>
 
         <!-- Defines the specific path containing among other things the jar library. -->
 <!--        <path id="project.class.path">
@@ -58,7 +59,10 @@
 
 <!-- Clean target -->
   <target name="clean" description="Cleans build files">
-    <delete dir="${bin}"/>    
+    <delete dir="${bin}"/>
+    <delete dir="${doc}"/>
+    <delete file="${lib}/hemera.jar"/>
+    <delete dir="${defaultRun}"/> <!-- delete default run directory -->
   </target>  
 
 <!-- Documentation target -->

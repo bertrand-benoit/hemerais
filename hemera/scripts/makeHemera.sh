@@ -22,12 +22,9 @@ ANT="$ANT_HOME/bin/ant"
 
 #########################
 ## FUNCTIONS
-# usage: makeLibraries
-function makeLibraries() {
-  "$ANT" -v -f "$buildAntFile" libraries >> "$logFile" 2>&1
-}
 
 #########################
 ## INSTRUCTIONS
-writeMessage "Creating Hemera librairies ... " 0
-makeLibraries && echo "done" || echo "error (See $logFile)"
+target="${1:-libraries}"
+writeMessage "Making Hemera target: $target ... " 0
+"$ANT" -v -f "$buildAntFile" "$target" >> "$logFile" 2>&1 && echo "done" || echo "error (See $logFile)"
