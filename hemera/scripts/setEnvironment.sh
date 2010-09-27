@@ -52,6 +52,7 @@ updateStructure "$workDir"
 updateStructure "$pidDir"
 
 # Defines some other global variables.
+inputList="$logDir/inputList"
 fileDate=$(date +"%s")
 
 # Ensures the system has been configured.

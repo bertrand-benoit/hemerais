@@ -34,7 +34,7 @@ do
  case "$opt" in
         S)
           action="start"
-          outputFile="$logDir/inputList"
+          outputFile="$inputList"
           newLogFile="$logFile"
         ;;
         T)      action="status";;
