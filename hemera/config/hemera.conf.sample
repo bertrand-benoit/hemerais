@@ -41,6 +41,7 @@ hemera.run.temp="run/tmp"
 # The event manager will look for event in this queue.
 hemera.run.queue="run/queue"
 
+
 ### Source code management.
 ###########################
 # Home directory (i.e. root directory) of Java Development Kit installation
@@ -55,8 +56,14 @@ environment.ant.home=""
 ### Input/Output manager core module.
 #####################################
 # The Hemera input monitor (path and options).
-hemera.core.iomanager.monitor.path="inotifywait"
-hemera.core.iomanager.monitor.options="-q --format '%f' -e close_write -m $input"
+# It looks at $input directory and write path of new input (by default: regarde close&write as completed input creation).
+hemera.core.iomanager.inputMonitor.path="inotifywait"
+hemera.core.iomanager.inputMonitor.options="-q --format '%f' -e close_write -m $input"
+
+# The Hemera input/output processor (path and options).
+# It looks at $input file for one more available input to manage.
+hemera.core.iomanager.ioProcessorMonitor.path="inotifywait"
+hemera.core.iomanager.ioProcessorMonitor.options="-qq -e modify $input"
 
 
 ### Speech core module.

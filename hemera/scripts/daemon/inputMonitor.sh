@@ -14,7 +14,7 @@ installDir=$( dirname "$( dirname "$currentDir" )" )
 category="inputMonitor"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.iomanager.monitor"
+CONFIG_KEY="hemera.core.iomanager.inputMonitor"
 daemonName="input monitor"
 
 # tool configuration
