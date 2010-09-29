@@ -16,8 +16,9 @@ source "$installDir/scripts/utilities.sh"
 # Updates configuration.
 libDir="$installDir/lib"
 
-# Defines configuration file.
+# Defines configuration file, and ensures the system has been configured.
 configurationFile="$installDir/config/hemera.conf"
+[ ! -f "$configurationFile" ] && errorMessage "$configurationFile NOT found. You must configure the system (See $configurationFile.sample)."
 
 # Updates environment path if needed.
 additionalBinPath=$( getConfigValue "hemera.path.bin" )
@@ -54,9 +55,6 @@ updateStructure "$pidDir"
 # Defines some other global variables.
 inputList="$logDir/inputList"
 fileDate=$(date +"%s")
-
-# Ensures the system has been configured.
-[ ! -f "$configurationFile" ] && errorMessage "$configurationFile NOT found. You must configure the system (See $configurationFile.sample)."
 
 # Defines the log file if not already done.
 if [ -z "$logFile" ]; then
