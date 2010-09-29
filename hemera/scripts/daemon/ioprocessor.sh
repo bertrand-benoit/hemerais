@@ -97,23 +97,35 @@ while [ 1 ]; do
     inputName=$( basename "$input" )
     inputType=${inputName/_*/}
 
-    writeMessage "Managing new input $inputName"
-    case "$inputType" in
-      recordedSpeech)
-        writeMessage "Launching speech recognition on $inputName"
-        mv "$newInputDir/$input" "$curInputDir/$input"
-        "$speechRecognitionScript" -f "$curInputDir/$input" -R "$newInputDir/recognitionResult_$inputName.txt"
-      ;;
+    # Checks it is a known/supported type.
+    if ! checkAvailableValue "$SUPPORTED_TYPE" "$inputType"; then
+      writeMessage "Unsupported event: $inputName"
 
-      recognitionResult)
-        writeMessage "Launching speech on $inputName"
-        mv "$newInputDir/$input" "$curInputDir/$input"
-        "$speechScript" -f "$curInputDir/$input"
-      ;;
+      # Moves the input into error input directory.
+      mv "$newInputDir/$input" "$errInputDir"
+    else
+      writeMessage "Managing new (supported) input $inputName"
+      # Moves the input to processing directory.
+      inputPath="$curInputDir/$input"
+      mv "$newInputDir/$input" "$inputPath"
 
-      [?]) writeMessage "Unknow event type, $inputName will be ignored";;
-    esac
+      # According to the type
+      case "$inputType" in
+	recordedSpeech)
+	  writeMessage "Launching speech recognition on $inputName"
+	  "$speechRecognitionScript" -f "$inputPath" -R "$newInputDir/recognitionResult_$inputName.txt"
+	;;
 
+	recognitionResult)
+	  writeMessage "Launching speech on $inputName"
+	  "$speechScript" -f "$inputPath"
+	;;
+
+	[?]) writeMessage "Unknow event type, $inputName will be ignored";;
+      esac
+    fi
+
+    # Memorizes a new input has been managed or ignored.
     let managedInput++
   done
 done

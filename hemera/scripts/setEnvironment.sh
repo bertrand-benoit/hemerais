@@ -34,14 +34,17 @@ updateStructure "$logDir"
 # Structure:
 #  queue/input/new    new input
 #  queue/input/cur    input under processing
+#  queue/input/err    input with unknown type or error occurs while processing
 #  queue/input/done   input managed
 queueDir=$( getConfigPath "hemera.run.queue" )
 intputDir="$queueDir/input"
 newInputDir="$intputDir/new"
 curInputDir="$intputDir/cur"
+errInputDir="$intputDir/cur"
 doneInputDir="$intputDir/done"
 updateStructure "$newInputDir"
 updateStructure "$curInputDir"
+updateStructure "$errInputDir"
 updateStructure "$doneInputDir"
 
 # Structure:
