@@ -22,6 +22,6 @@ for pathKey in $( grep -re "^[^#][a-zA-Z.]*[.]path=" "$configurationFile" |sed -
   [ $? -ne 0 ] && echo "failed" && continue
 
   echo -ne "existence ... "
-  ! checkBin "$pathValue" && echo "$pathValue NOT found" && continue
+  ! checkBin "$pathValue" && echo -e "$pathValue \E[31mNOT found\E[0m" && continue
   echo "OK"
 done
