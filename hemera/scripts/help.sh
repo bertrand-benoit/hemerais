@@ -43,7 +43,7 @@ echo -e "\nAvailable tools"
 
 # Looks for scripts directory everywhere.
 cd "$installDir"
-for scriptsDirRaw in $( find -regextype posix-extended -type d -regex ".*(scripts|daemon)" |sed -e 's/[ \t]/£/g;' ); do
+for scriptsDirRaw in $( find -regextype posix-extended -type d -regex ".*(scripts|daemon)" |sort |sed -e 's/[ \t]/£/g;' ); do
   scriptsDir=$( echo "$scriptsDirRaw" |sed -e 's/£/ /g;' )
   showScriptDescription "$scriptsDir"
 done
