@@ -40,6 +40,11 @@ Each core piece requires third party element.
 
  General
  -------
+ - inotify-tools: filesystem events monitor (See http://inotify-tools.sourceforge.net/)
+    - yum install inotify-tools
+    - check/update the hemera.core.iomanager.inputMonitor.* configuration elements
+    - check/update the hemera.core.iomanager.ioProcessorMonitor.* configuration elements
+
  - sox: Audio file converter (See http://sox.sourceforge.net/)
     - yum install sox
     - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
