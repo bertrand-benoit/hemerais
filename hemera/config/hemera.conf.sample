@@ -42,6 +42,23 @@ hemera.run.temp="run/tmp"
 hemera.run.queue="run/queue"
 
 
+### Modules activation (client/server)
+######################################
+# Hemera mode:
+#  local=everything is done locally (default)
+#  client=this installation is client to another one (in server mode)
+#  server=this installation is server to N clients
+hemera.run.mode=local
+
+# Defines activation of various system:
+#  disabled=system is disabled
+#  localhost=system is enabled locally
+#  host:port=system will contact server at specified host/port
+hemera.run.activation.inputMonitor=localhost
+hemera.run.activation.ioProcessor=localhost
+hemera.run.activation.soundRecorder=localhost
+
+
 ### Source code management.
 ###########################
 # Home directory (i.e. root directory) of Java Development Kit installation

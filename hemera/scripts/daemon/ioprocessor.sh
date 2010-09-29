@@ -81,6 +81,8 @@ options=$( eval echo "$monitorOptions" )
 #  recordedSpeech_: recorded speech (-> usually needs speech recognition)
 #  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
 #  speech_: test to speech result (-> according to mode, speech recognition can be needed)
+SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
+
 speechRecognitionScript="$installDir/thirdParty/speechRecognition/scripts/speechRecognition.sh"
 speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
 

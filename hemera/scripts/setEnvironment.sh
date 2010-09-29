@@ -27,6 +27,7 @@ additionalLibPath=$( getConfigValue "hemera.path.lib" )
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
 # Defines some global variables about directories.
+daemonDir="$installDir/scripts/daemon"
 logDir=$( getConfigPath "hemera.run.log" )
 updateStructure "$logDir"
 
