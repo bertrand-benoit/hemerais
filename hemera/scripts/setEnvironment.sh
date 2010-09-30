@@ -21,14 +21,14 @@ configurationFile="$installDir/config/hemera.conf"
 [ ! -f "$configurationFile" ] && errorMessage "$configurationFile NOT found. You must configure the system (See $configurationFile.sample)."
 
 # Updates environment path if needed.
-additionalBinPath=$( getConfigValue "hemera.path.bin" )
-additionalLibPath=$( getConfigValue "hemera.path.lib" )
+additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit 100
+additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit 100
 [ ! -z "$additionalBinPath" ] && export PATH=$additionalBinPath:$PATH
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
 # Defines some global variables about directories.
 daemonDir="$installDir/scripts/daemon"
-logDir=$( getConfigPath "hemera.run.log" )
+logDir=$( getConfigPath "hemera.run.log" ) || exit 100
 updateStructure "$logDir"
 
 # Structure:
@@ -36,7 +36,7 @@ updateStructure "$logDir"
 #  queue/input/cur    input under processing
 #  queue/input/err    input with unknown type or error occurs while processing
 #  queue/input/done   input managed
-queueDir=$( getConfigPath "hemera.run.queue" )
+queueDir=$( getConfigPath "hemera.run.queue" ) || exit 100
 intputDir="$queueDir/input"
 newInputDir="$intputDir/new"
 curInputDir="$intputDir/cur"
@@ -50,7 +50,7 @@ updateStructure "$doneInputDir"
 # Structure:
 #  tmp/work   temporary files
 #  tmp/pid    PID files
-tmpDir=$( getConfigPath "hemera.run.temp" )
+tmpDir=$( getConfigPath "hemera.run.temp" ) || exit 100
 workDir="$tmpDir/work"
 pidDir="$tmpDir/pid"
 updateStructure "$workDir"
