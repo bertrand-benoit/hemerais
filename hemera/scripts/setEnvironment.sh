@@ -40,7 +40,7 @@ queueDir=$( getConfigPath "hemera.run.queue" ) || exit 100
 intputDir="$queueDir/input"
 newInputDir="$intputDir/new"
 curInputDir="$intputDir/cur"
-errInputDir="$intputDir/cur"
+errInputDir="$intputDir/err"
 doneInputDir="$intputDir/done"
 updateStructure "$newInputDir"
 updateStructure "$curInputDir"
