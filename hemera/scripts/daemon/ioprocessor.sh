@@ -87,45 +87,52 @@ speechRecognitionScript="$installDir/thirdParty/speechRecognition/scripts/speech
 speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
 
 # This script IS the daemon which must perform action.
-managedInput=0
+inputIndex=1
 while [ 1 ]; do
   # Waits for another input (checking write on the input list).
-  "$monitorBin" $options
+  # N.B.: new input may have been created while the system was managing last ones, so checks 
+  #  if the count of input in the list is lower than the count of managed input, otherwise does NOT wait.
+  [ $( cat $inputList |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
   # For each new input (from the last managed one) in list file.
-  for input in $( getLastLinesFromN "$inputList" "$managedInput" ); do
+  for input in $( getLastLinesFromN "$inputList" "$inputIndex" ); do
     inputName=$( basename "$input" )
     inputType=${inputName/_*/}
+    inputPath="$newInputDir/$input"
+    inputString="input-"$( printf "%04d" "$inputIndex" )
 
     # Checks it is a known/supported type.
     if ! checkAvailableValue "$SUPPORTED_TYPE" "$inputType"; then
-      writeMessage "Unsupported event: $inputName"
+      writeMessage "$inputString: unsupported type: $inputType"
 
       # Moves the input into error input directory.
-      mv "$newInputDir/$input" "$errInputDir"
+      mv -f "$inputPath" "$errInputDir"
+    elif [ ! -f "$inputPath" ]; then
+      writeMessage "$inputString: $inputName not found"
     else
-      writeMessage "Managing new (supported) input $inputName"
+      curLogFile="$logFile.$inputString"
+      writeMessage "$inputString: managing supported input $inputName (specific log file: $curLogFile)"
       # Moves the input to processing directory.
-      inputPath="$curInputDir/$input"
-      mv "$newInputDir/$input" "$inputPath"
+      curInputPath="$curInputDir/$input"
+      mv -f "$newInputDir/$input" "$curInputPath"
 
       # According to the type
       case "$inputType" in
 	recordedSpeech)
-	  writeMessage "Launching speech recognition on $inputName"
-	  "$speechRecognitionScript" -f "$inputPath" -R "$newInputDir/recognitionResult_$inputName.txt"
+	  writeMessage "$inputString: launching speech recognition on $inputName"
+	  logFile="$curLogFile" noconsole=1 "$speechRecognitionScript" -f "$curInputPath" -R "$newInputDir/recognitionResult_$inputName.txt"
 	;;
 
 	recognitionResult)
-	  writeMessage "Launching speech on $inputName"
-	  "$speechScript" -f "$inputPath"
+	  writeMessage "$inputString: launching speech on $inputName"
+	  logFile="$curLogFile" noconsole=1 "$speechScript" -f "$curInputPath"
 	;;
 
-	[?]) writeMessage "Unknow event type, $inputName will be ignored";;
+	[?]) writeMessage "$inputString: unknow type, $inputName will be ignored";;
       esac
     fi
 
     # Memorizes a new input has been managed or ignored.
-    let managedInput++
+    let inputIndex++
   done
 done
