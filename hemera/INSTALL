@@ -82,7 +82,7 @@ Each core piece requires third party element.
     - check/update the hemera.core.speechRecognition.tool.* configuration elements
 
   - install cmusphinx3 from source
-    - requirements: yum install libtool automake libsndfile libsndfile-devel bison gcc
+    - requirements: yum install patch libtool automake libsndfile libsndfile-devel bison gcc
     - important: you should checkout sphinxbase and sphinx3 into the same root directory, such a way, the sphinx3 configuration system will automagically find sphinxbase headers and libraries
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinxbase
 svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/sphinx3
@@ -108,9 +108,10 @@ make
     - check/update the hemera.core.speechRecognition.tool.* configuration elements
 
     - wave2feat: Feature file creator (included into SphinxTrain project)
+      - N.B.: the autogen file vanished in some source code version, it's recommended to get the revision 10309 which is known to work well
       - important: you should checkout sphinxbase and SphinxTrain into the same root directory, such a way, the SphinxTrain configuration system will automagically find sphinxbase headers and libraries
       - performed following instructions (in the root directory you have checked out sphinxbase and sphinx3)
-svn co https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
+svn co -r10309 https://cmusphinx.svn.sourceforge.net/svnroot/cmusphinx/trunk/SphinxTrain
 cd SphinxTrain
 ./autogen.sh
 ./configure CFLAGS="-m32" LDFLAGS="-m32 -L/usr/lib"
