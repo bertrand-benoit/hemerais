@@ -60,6 +60,16 @@ updateStructure "$pidDir"
 inputList="$logDir/inputList"
 fileDate=$(date +"%s")
 
+## Terminology.
+# Each input file name begins with a sub string giving the type of input:
+#  recordedSpeech_: recorded speech (-> usually needs speech recognition)
+#  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
+#  speech_: test to speech result (-> according to mode, speech recognition can be needed)
+SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
+
+# Defines some constants.
+UNKNOWN_COMMAND="Commande incomprise !"
+
 # Defines the log file if not already done.
 if [ -z "$logFile" ]; then
   export logFile="$logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"

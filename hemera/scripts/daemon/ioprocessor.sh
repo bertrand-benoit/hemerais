@@ -75,17 +75,6 @@ manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" 
 input="$inputList"
 options=$( eval echo "$monitorOptions" )
 
-
-## Terminology.
-# Each input file name begins with a sub string giving the type of input:
-#  recordedSpeech_: recorded speech (-> usually needs speech recognition)
-#  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
-#  speech_: test to speech result (-> according to mode, speech recognition can be needed)
-SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
-
-speechRecognitionScript="$installDir/thirdParty/speechRecognition/scripts/speechRecognition.sh"
-speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
-
 # This script IS the daemon which must perform action.
 inputIndex=1
 while [ 1 ]; do
@@ -110,26 +99,9 @@ while [ 1 ]; do
     elif [ ! -f "$inputPath" ]; then
       writeMessage "$inputString: $inputName not found"
     else
+      # Launches background process on this input.
       curLogFile="$logFile.$inputString"
-      writeMessage "$inputString: managing supported input $inputName (specific log file: $curLogFile)"
-      # Moves the input to processing directory.
-      curInputPath="$curInputDir/$input"
-      mv -f "$newInputDir/$input" "$curInputPath"
-
-      # According to the type
-      case "$inputType" in
-	recordedSpeech)
-	  writeMessage "$inputString: launching speech recognition on $inputName"
-	  logFile="$curLogFile" noconsole=1 "$speechRecognitionScript" -f "$curInputPath" -R "$newInputDir/recognitionResult_$inputName.txt"
-	;;
-
-	recognitionResult)
-	  writeMessage "$inputString: launching speech on $inputName"
-	  logFile="$curLogFile" noconsole=1 "$speechScript" -f "$curInputPath"
-	;;
-
-	[?]) writeMessage "$inputString: unknow type, $inputName will be ignored";;
-      esac
+      logFile="$curLogFile" "$installDir/scripts/processInput.sh" -i "$inputName" -S "$inputString" &
     fi
 
     # Memorizes a new input has been managed or ignored.
