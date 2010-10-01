@@ -34,6 +34,9 @@ do
  case "$opt" in
         S)
           action="start"
+
+          # Resets the input list.
+          rm -f "$inputList" && touch "$inputList"
           outputFile="$inputList"
           newLogFile="$logFile"
         ;;
