@@ -47,7 +47,7 @@ if [ -f "$sysconfigFile" ]; then
   source "$sysconfigFile"
 
   # Updates the path.
-  source "$installDir/scripts/hemeraPath.sh"
+  source "$installDir/scripts/updatePath.sh"
 fi
 End-of-Message
   chmod +x "$profileFile"
