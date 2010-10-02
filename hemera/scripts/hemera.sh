@@ -2,7 +2,7 @@
 #
 # Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.0
-# Description: starts Hemera components according to configuration.
+# Description: starts/status/stops Hemera components according to configuration.
 
 #########################
 ## CONFIGURATION
