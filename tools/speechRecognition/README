@@ -1,6 +1,6 @@
 About
 -----
-Simple Héméra speech recognition tools allowing to create models.
+Simple Hemera speech recognition tools allowing to create models.
 
 Full documentation
 ------------------
@@ -40,7 +40,7 @@ make SRILM=$PWD World
 make SRILM=$PWD MACHINE_TYPE=i686-m64 World
 
   - sphinx3 installation
-    - follow INSTALL file of the Héméra general project
+    - follow INSTALL file of the Hemera general project
     - create a symbolic link to sphinxbase, in the bin/ sub-directory
     - create a symbolic link to sphinx3, in the bin/ sub-directory
 
