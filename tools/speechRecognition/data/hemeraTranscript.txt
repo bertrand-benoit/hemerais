@@ -1,0 +1,35 @@
+# Héméra transcript file.
+# While creating models, lines beginning with #, empty lines
+#  and lines containing only space and/or tabulations will be ignored.
+
+# some basic sentences
+bonjour Héméra
+comment vas tu ?
+quel temps fait il ?
+Ceci est un test
+
+# mode definition
+mode normal
+mode perroquet       
+mode securité
+
+# basic commands
+liste des tâches
+lecture musique
+lecture livre
+pause
+reprendre
+poursuivre
+stop
+arrêt
+
+# search commands
+recherche intelligence artificielle
+
+# domotics
+ouvrir porte
+ouvrir fenêtre
+fermer porte
+fermer fenêtre
+allumer lumière
+éteindre lumière

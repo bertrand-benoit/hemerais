@@ -1,0 +1,52 @@
+About
+-----
+Simple Héméra speech recognition tools allowing to create models.
+
+Full documentation
+------------------
+You should prefer online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page
+
+Quick Start
+-----------
+You need following tools:
+ - lia_phon: phonetization tool from LIA labs (See http://lia.univ-avignon.fr/fileadmin/documents/Users/Intranet/chercheurs/bechet/download_fred.html)
+ - srilm: language modeling toolkit (See http://www.speech.sri.com/projects/srilm)
+ - sphinx3: speech recognition toolkit (See http://cmusphinx.sourceforge.net)
+
+You must install them under the bin/ sub-directory of this project, or create symbolic link to root directory of each installation.
+The createModels.sh script will check for these tools availability.
+
+Installation
+------------
+  - requirements
+yum install gcc make csh gawk gzip glibc-devel tcl-devel
+
+  - lia_phon installation
+    - download http://lia.univ-avignon.fr/fileadmin/documents/Users/Intranet/chercheurs/bechet/download/lia_phon.v1.2.jul06.tar.gz
+    - uncompress it under the bin/ sub-directory of this project, or wherever you want, and create a symbolic link (under bin/) to it.
+    - follow README.txt file (particularly about the warning about the encoding of the files)
+    - performed following instructions (it will create the tools, the 80k lexical, and the resources)
+cd lia_phon
+make LIA_PHON_REP=$PWD LIA_PHON_LEX=lex80k all lex80k ressource
+
+  - srilm installation
+    - download the 1.5.11 version from http://www.speech.sri.com/projects/srilm/download.html
+    - uncompress it under qthe bin/ sub-directory of this project, or wherever you want, and create a symbolic link (under bin/) to it.
+    - follow INSTALL file (particularly about the MACHINE_TYPE)
+    - for 32 bits version, performed following instructions
+make SRILM=$PWD World
+
+    - for 64 bits version, performed following instructions
+make SRILM=$PWD MACHINE_TYPE=i686-m64 World
+
+  - sphinx3 installation
+    - follow INSTALL file of the Héméra general project
+    - create a symbolic link to sphinxbase, in the bin/ sub-directory
+    - create a symbolic link to sphinx3, in the bin/ sub-directory
+
+Instructions
+------------
+ - update the data/hemeraTranscript.txt file to fit your needs
+ - launch the ./createModels.sh script
+  - if a tool is not available or if there is an error, it will be printed on standard output.
+  - otherwise, linguistic and language model will be created under the data/ sub-directory.
