@@ -40,12 +40,12 @@ Each core piece requires third party element.
 
  General
  -------
- - inotify-tools: filesystem events monitor (See http://inotify-tools.sourceforge.net/)
+ - inotify-tools: filesystem events monitor (See http://inotify-tools.sourceforge.net)
     - yum install inotify-tools
     - check/update the hemera.core.iomanager.inputMonitor.* configuration elements
     - check/update the hemera.core.iomanager.ioProcessorMonitor.* configuration elements
 
- - sox: Audio file converter (See http://sox.sourceforge.net/)
+ - sox: Audio file converter (See http://sox.sourceforge.net)
     - yum install sox
     - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
 
@@ -55,7 +55,7 @@ Each core piece requires third party element.
 
  Speech
  -------
- - espeak (See http://espeak.sourceforge.net/)
+ - espeak (See http://espeak.sourceforge.net)
    - yum install espeak
    - check/update the hemera.core.speech.tool.* configuration elements
 
@@ -72,11 +72,11 @@ Each core piece requires third party element.
 
  Speech Recognition
  -------------------
- - sox: Audio file converter (See http://sox.sourceforge.net/)
+ - sox: Audio file converter (See http://sox.sourceforge.net)
     - yum install sox
     - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
 
- - sphinx3
+ - sphinx3 (See http://cmusphinx.sourceforge.net)
   - install cmusphinx3 from packages
     - yum install cmusphinx3
     - check/update the hemera.core.speechRecognition.tool.* configuration elements
@@ -120,7 +120,15 @@ mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
     - check/update the hemera.core.speechRecognition.soundFeatureCreator.* configuration elements
 
   - models files
-   - Language model (LM)
+   - create personal models
+     - you should create your own models for better efficiencies
+       - tools/speechRecognition Héméra project is a little tool allowing to create easily linguistic and language models
+       - SphinxTrain cmusphinx project is a model training toolkit (See http://cmusphinx.sourceforge.net)
+
+   - English models
+     - Look at VoxForge (See http://www.voxforge.org)
+
+   - French LIUM Language model (LM)
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/LM/trigram_LM.tar
      - untar trigram_LM.tar, and gunzip trigram_LM.DMP.gz
      - WARNING: language file must be converted in UTF-8
@@ -129,7 +137,7 @@ mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
         sphinx_lm_convert -i trigram_LM.DMP -ifmt DMP -ienc iso8859-1 -o trigram_LM.DMP.utf8 -oenc utf8 -ofmt DMP
      - move trigram_LM.DMP.utf8 in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/language/lium/3g/ (creates needed sub-folders)
 
-   - Lexical model
+   - French LIUM Lexical model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/words_dict.gz
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/linguistic_resources/dictionary/fillers_dict.gz
         WARNING: lexical files must be converted in UTF-8:
@@ -137,7 +145,7 @@ mv bin*/wave2feat [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/bin
         iconv -f iso88591 -t utf8 words_dict > words_dict.uft8
      - move fillers_dict.uft8 and words_dict.uft8 in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/lexical/lium/ (creates needed sub-folders)
 
-   - Acoustic model
+   - French LIUM Acoustic model
      - download http://liumtools.univ-lemans.fr/speechLIUMtools/Downloads/acoustic_resources/lium_acoustic_models.tgz
      - uncompress in [HEMERA_ROOT_PATH]/thirdParty/speechRecognition/data/models/acoustic
      - rename lium_acoustic_models as lium
