@@ -140,7 +140,7 @@ checkConfiguration || exit 126
 cd /
 
 # According to the mode, create a sound file list.
-sourceSoundFileList="$workDir/$fileDate-sourceSoundFileList.txt"
+sourceSoundFileList="$h_workDir/$h_fileDate-sourceSoundFileList.txt"
 rm -f "$sourceSoundFileList"
 case "$mode" in
   $SOURCE_MODE_SOUND_FILE)
@@ -157,7 +157,7 @@ case "$mode" in
 esac
 
 # Prepares the destination sound file list.
-preparedSoundFileList="$workDir/$fileDate-preparedSoundFileList.txt"
+preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
 prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit 3
 
 # Launches the speech recognition on the list.

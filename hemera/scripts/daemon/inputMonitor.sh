@@ -39,7 +39,7 @@ monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit 100
 monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
 
 # Defines the PID file.
-pidFile="$pidDir/inputMonitor.pid"
+pidFile="$h_pidDir/inputMonitor.pid"
 
 #########################
 ## Command line management
@@ -53,8 +53,8 @@ do
           action="start"
 
           # Resets the input list.
-          rm -f "$inputList" && touch "$inputList"
-          outputFile="$inputList"
+          rm -f "$h_inputList" && touch "$h_inputList"
+          outputFile="$h_inputList"
           newLogFile="$logFile"
         ;;
         T)      action="status";;

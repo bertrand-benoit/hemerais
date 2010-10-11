@@ -42,7 +42,7 @@ monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
 ioprocessorBin="$0"
 
 # Defines the PID file.
-pidFile="$pidDir/ioProcessor.pid"
+pidFile="$h_pidDir/ioProcessor.pid"
 
 #########################
 ## Command line management
@@ -89,7 +89,7 @@ manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" 
 [[ "$action" != "run" ]] && exit 0
 
 # Defines varibales.
-input="$inputList"
+input="$h_inputList"
 options=$( eval echo "$monitorOptions" )
 
 # This script IS the daemon which must perform action.
@@ -98,10 +98,10 @@ while [ 1 ]; do
   # Waits for another input (checking write on the input list).
   # N.B.: new input may have been created while the system was managing last ones, so checks 
   #  if the count of input in the list is lower than the count of managed input, otherwise does NOT wait.
-  [ $( cat $inputList |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
+  [ $( cat $h_inputList |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
   # For each new input (from the last managed one) in list file.
-  for input in $( getLastLinesFromN "$inputList" "$inputIndex" ); do
+  for input in $( getLastLinesFromN "$h_inputList" "$inputIndex" ); do
     inputName=$( basename "$input" )
     inputType=${inputName/_*/}
     inputPath="$h_newInputDir/$input"

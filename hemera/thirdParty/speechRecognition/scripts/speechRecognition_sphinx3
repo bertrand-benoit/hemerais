@@ -151,7 +151,7 @@ function speechRecognitionFromList() {
 
 # usage: analyzeLog
 function analyzeLog() {
-  local _tmpAnalyzeLog="$workDir/$fileDate-analyzeLog.tmp"
+  local _tmpAnalyzeLog="$h_workDir/$h_fileDate-analyzeLog.tmp"
   local _firstStep=1
 
   # Performs at least one step, and as much needed until the "log file end" is reached.

@@ -68,14 +68,14 @@ updateStructure "$h_doneInputDir"
 #  tmp/work   temporary files
 #  tmp/pid    PID files
 tmpDir=$( getConfigPath "hemera.run.temp" ) || exit 100
-workDir="$tmpDir/work"
-pidDir="$tmpDir/pid"
-updateStructure "$workDir"
-updateStructure "$pidDir"
+h_workDir="$tmpDir/work"
+h_pidDir="$tmpDir/pid"
+updateStructure "$h_workDir"
+updateStructure "$h_pidDir"
 
 # Defines some other global variables.
-inputList="$h_logDir/inputList"
-fileDate=$(date +"%s")
+h_inputList="$h_logDir/inputList"
+h_fileDate=$(date +"%s")
 
 ## Terminology.
 # Each input file name begins with a sub string giving the type of input:

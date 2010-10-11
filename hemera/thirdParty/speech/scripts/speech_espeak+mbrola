@@ -54,7 +54,7 @@ function speechSentence() {
   #  - uses mbrola to generate speech sound
   #  - uses finally the speech sound player
   info "System will play speech '$1', using espeak, and mbrola speechOutput=$speechOutput"
-  [ "$speechOutput" = "-" ] && speechTmpFile="$workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
+  [ "$speechOutput" = "-" ] && speechTmpFile="$h_workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
   "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $2 "$1" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" -e "$mbrolaLanguageFile" - "$speechTmpFile"
   if [ "$speechOutput" = "-" ]; then
     info "Generated temporary speech file: $speechTmpFile"

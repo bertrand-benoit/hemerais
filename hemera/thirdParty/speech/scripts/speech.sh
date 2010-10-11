@@ -88,7 +88,7 @@ function getURLContents() {
 
 # usage: readURLContents
 function readURLContents() {
-  urlContentsFile="$workDir/"$(date +"%s")"-urlContents.tmp"
+  urlContentsFile="$h_workDir/$h_fileDate-urlContents.tmp"
   getURLContents "$url" "$urlContentsFile" || exit 11
 
   speechFileContents "$urlContentsFile"
@@ -96,7 +96,7 @@ function readURLContents() {
 
 # usage: readDefinition
 function readDefinition() {
-  urlContentsFile="$workDir/"$(date +"%s")"-DefinitionContents.tmp"
+  urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
   termAsQueryString=$( echo "$termsToDefine" |sed -e 's/[ \t]/+/g;' )
   getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit 11
   sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"

@@ -39,7 +39,7 @@ soundRecorderBin=$( getConfigPath "$CONFIG_KEY.soundRecorder.path" ) || exit 100
 soundRecorderOptions=$( getConfigValue "$CONFIG_KEY.soundRecorder.options" ) || exit 100
 
 # Defines the PID file.
-pidFile="$pidDir/soundRecording.pid"
+pidFile="$h_pidDir/soundRecording.pid"
 
 #########################
 ## Command line management

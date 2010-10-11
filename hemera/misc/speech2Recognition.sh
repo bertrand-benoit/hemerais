@@ -79,8 +79,8 @@ textToSpeech="$text"
 iteration=1
 
 while [ $iteration -le $iterationCount ]; do
-  speechSoundFile="$workDir/$fileDate-speech2Recognition-$iteration.wav"
-  speechRecognitionResultFile="$workDir/$fileDate-speech2Recognition-$iteration-result.txt"
+  speechSoundFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration.wav"
+  speechRecognitionResultFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration-result.txt"
   logFile="$mainLogFile-$iteration"
 
   category="speech2Recognition"
