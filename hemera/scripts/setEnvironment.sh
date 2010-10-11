@@ -31,11 +31,11 @@
 source "$installDir/scripts/utilities.sh"
 
 # Updates configuration.
-libDir="$installDir/lib"
+h_libDir="$installDir/lib"
 
 # Defines configuration file, and ensures the system has been configured.
-configurationFile="$installDir/config/hemera.conf"
-[ ! -f "$configurationFile" ] && errorMessage "$configurationFile NOT found. You must configure the system (See $configurationFile.sample)."
+h_configurationFile="$installDir/config/hemera.conf"
+[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)."
 
 # Updates environment path if needed.
 additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit 100

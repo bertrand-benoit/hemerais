@@ -33,7 +33,7 @@ showError=0
 #########################
 ## INSTRUCTIONS
 # Checks all path defined in configuration file.
-for pathKey in $( grep -re "^[^#][a-zA-Z.]*[.]path=" "$configurationFile" |sed -e 's/^\([^=]*\)=.*/\1/' ); do
+for pathKey in $( grep -re "^[^#][a-zA-Z.]*[.]path=" "$h_configurationFile" |sed -e 's/^\([^=]*\)=.*/\1/' ); do
   writeMessage "Checking '$pathKey' ... " 0
   pathValue=$( getConfigPath "$pathKey" )
   [ $? -ne 0 ] && echo "failed" && continue

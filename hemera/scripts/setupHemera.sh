@@ -30,7 +30,7 @@ source "$installDir/scripts/utilities.sh"
 category="setup"
 sysconfigFile="/etc/sysconfig/hemera"
 profileFile="/etc/profile.d/hemera.sh"
-configurationFile="$installDir/config/hemera.conf"
+h_configurationFile="$installDir/config/hemera.conf"
 
 #########################
 ## INSTRUCTIONS
@@ -75,4 +75,4 @@ End-of-Message
 fi
 
 # Checks if Hemera has been configured.
-[ ! -f "$configurationFile" ] && writeMessage "You might begin configuring Hemera creating $configurationFile file from sample."
+[ ! -f "$h_configurationFile" ] && writeMessage "You might begin configuring Hemera creating $h_configurationFile file from sample."
