@@ -44,9 +44,9 @@ additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit 100
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
 # Defines some global variables about directories.
-daemonDir="$installDir/scripts/daemon"
-logDir=$( getConfigPath "hemera.run.log" ) || exit 100
-updateStructure "$logDir"
+h_daemonDir="$installDir/scripts/daemon"
+h_logDir=$( getConfigPath "hemera.run.log" ) || exit 100
+updateStructure "$h_logDir"
 
 # Structure:
 #  queue/input/new    new input
@@ -54,15 +54,15 @@ updateStructure "$logDir"
 #  queue/input/err    input with unknown type or error occurs while processing
 #  queue/input/done   input managed
 queueDir=$( getConfigPath "hemera.run.queue" ) || exit 100
-intputDir="$queueDir/input"
-newInputDir="$intputDir/new"
-curInputDir="$intputDir/cur"
-errInputDir="$intputDir/err"
-doneInputDir="$intputDir/done"
-updateStructure "$newInputDir"
-updateStructure "$curInputDir"
-updateStructure "$errInputDir"
-updateStructure "$doneInputDir"
+inputDir="$queueDir/input"
+h_newInputDir="$inputDir/new"
+h_curInputDir="$inputDir/cur"
+h_errInputDir="$inputDir/err"
+h_doneInputDir="$inputDir/done"
+updateStructure "$h_newInputDir"
+updateStructure "$h_curInputDir"
+updateStructure "$h_errInputDir"
+updateStructure "$h_doneInputDir"
 
 # Structure:
 #  tmp/work   temporary files
@@ -74,7 +74,7 @@ updateStructure "$workDir"
 updateStructure "$pidDir"
 
 # Defines some other global variables.
-inputList="$logDir/inputList"
+inputList="$h_logDir/inputList"
 fileDate=$(date +"%s")
 
 ## Terminology.
@@ -89,6 +89,6 @@ UNKNOWN_COMMAND="Commande incomprise !"
 
 # Defines the log file if not already done.
 if [ -z "$logFile" ]; then
-  export logFile="$logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
+  export logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
   writeMessage "LogFile: $logFile"
 fi

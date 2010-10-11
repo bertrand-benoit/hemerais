@@ -92,7 +92,7 @@ if [ "$hemeraMode" = "local" ]; then
   [ $verbose -eq 1 ] && option="-v $option"
 
   # According to components activation.
-  [ "$inputMonitorActivation" = "localhost" ] && "$daemonDir/inputMonitor.sh" $option
-  [ "$ioProcessorActivation" = "localhost" ] && "$daemonDir/ioprocessor.sh" $option
-  [ "$soundRecorderActivation" = "localhost" ] && "$daemonDir/soundRecorder.sh" $option
+  [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
+  [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
+  [ "$soundRecorderActivation" = "localhost" ] && "$h_daemonDir/soundRecorder.sh" $option
 fi

@@ -50,21 +50,21 @@ function usage() {
 # usage: notifyProcessInput <input name>
 function notifyProcessInput() {
   info "$inputString: moving from new to processing input directory"
-  mv -f "$newInputDir/$inputName" "$curInputDir"
+  mv -f "$h_newInputDir/$inputName" "$h_curInputDir"
 }
 
 
 # usage: notifyProcessInput <input name>
 function notifyDoneInput() {
   info "$inputString: moving from processing input directory to done one"
-  mv -f "$curInputDir/$inputName" "$doneInputDir"
+  mv -f "$h_curInputDir/$inputName" "$h_doneInputDir"
   exit 0
 }
 
 # usage: notifyErrInput <input name>
 function notifyErrInput() {
   info "$inputString: moving from processing input directory to error one"
-  mv -f "$curInputDir/$inputName" "$errInputDir"
+  mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
   exit 1
 }
 
@@ -101,21 +101,21 @@ done
 [ -z "$inputString" ] && inputString="undefinedInput"
 
 # Ensures the input (still) exists.
-[ ! -f "$newInputDir/$inputName" ] && errorMessage "$inputString: $inputName not found"
+[ ! -f "$h_newInputDir/$inputName" ] && errorMessage "$inputString: $inputName not found"
 
 #########################
 ## INSTRUCTIONS
 
 writeMessage "$inputString: managing supported input $inputName (specific log file: $logFile)"
 notifyProcessInput
-curInputPath="$curInputDir/$inputName"
+curInputPath="$h_curInputDir/$inputName"
 
 # According to the type
 inputType=${inputName/_*/}
 case "$inputType" in
   recordedSpeech)
     writeMessage "$inputString: launching speech recognition on $inputName"
-    logFile="$logFile" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    logFile="$logFile" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)

@@ -104,7 +104,7 @@ while [ 1 ]; do
   for input in $( getLastLinesFromN "$inputList" "$inputIndex" ); do
     inputName=$( basename "$input" )
     inputType=${inputName/_*/}
-    inputPath="$newInputDir/$input"
+    inputPath="$h_newInputDir/$input"
     inputString="input-"$( printf "%04d" "$inputIndex" )
 
     # Checks it is a known/supported type.
@@ -112,7 +112,7 @@ while [ 1 ]; do
       writeMessage "$inputString: unsupported type: $inputType"
 
       # Moves the input into error input directory.
-      mv -f "$inputPath" "$errInputDir"
+      mv -f "$inputPath" "$h_errInputDir"
     elif [ ! -f "$inputPath" ]; then
       writeMessage "$inputString: $inputName not found"
     else

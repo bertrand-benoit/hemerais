@@ -61,7 +61,7 @@ do
         K)      action="stop";;
         D)
           action="daemon"
-          input="$newInputDir/"
+          input="$h_newInputDir/"
           options=$( eval echo "$monitorOptions" )
         ;;
         v)      verbose=1;;
