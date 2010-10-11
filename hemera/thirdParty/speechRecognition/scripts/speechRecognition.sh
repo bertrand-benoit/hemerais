@@ -71,13 +71,13 @@ function usage() {
 
 # usage: markLogFileEnd
 function markLogFileEnd() {
-  echo "$LOG_FILE_END" >> "$logFile"
+  echo "$LOG_FILE_END" >> "$h_logFile"
 }
 
 # usage: startLogAnalyzer
 function startLogAnalyzer() {
   writeMessage "Launching result log analyzer ..."
-  logFile="$logFile" "$myPath" -Z "$logFile" &
+  h_logFile="$h_logFile" "$myPath" -Z "$h_logFile" &
 }
 
 # usage: manageSpeechRecognition <prepared sound file list> [<result file>]

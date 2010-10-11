@@ -55,7 +55,7 @@ do
  case "$opt" in
         S)
           action="start"
-          newLogFile="$logFile"
+          newLogFile="$h_logFile"
           outputFile="$newLogFile"
         ;;
         T)      action="status";;
@@ -117,8 +117,8 @@ while [ 1 ]; do
       writeMessage "$inputString: $inputName not found"
     else
       # Launches background process on this input.
-      curLogFile="$logFile.$inputString"
-      logFile="$curLogFile" "$installDir/scripts/processInput.sh" -i "$inputName" -S "$inputString" &
+      curLogFile="$h_logFile.$inputString"
+      h_logFile="$curLogFile" "$installDir/scripts/processInput.sh" -i "$inputName" -S "$inputString" &
     fi
 
     # Memorizes a new input has been managed or ignored.

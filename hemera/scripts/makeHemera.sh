@@ -44,4 +44,4 @@ ANT="$ANT_HOME/bin/ant"
 ## INSTRUCTIONS
 target="${1:-libraries}"
 writeMessage "Making Hemera target: $target ... " 0
-"$ANT" -v -f "$buildAntFile" "$target" >> "$logFile" 2>&1 && echo "done" || echo "error (See $logFile)"
+"$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo "done" || echo "error (See $h_logFile)"

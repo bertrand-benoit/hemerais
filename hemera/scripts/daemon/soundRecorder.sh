@@ -51,7 +51,7 @@ do
  case "$opt" in
         S)
           action="start"
-          outputFile="$logFile.soundRecorder"
+          outputFile="$h_logFile.soundRecorder"
           newLogFile="$outputFile"
         ;;
         T)      action="status";;

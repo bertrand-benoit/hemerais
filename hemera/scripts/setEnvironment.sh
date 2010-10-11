@@ -88,7 +88,7 @@ SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
 UNKNOWN_COMMAND="Commande incomprise !"
 
 # Defines the log file if not already done.
-if [ -z "$logFile" ]; then
-  export logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
-  writeMessage "LogFile: $logFile"
+if [ -z "$h_logFile" ]; then
+  export h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
+  writeMessage "LogFile: $h_logFile"
 fi

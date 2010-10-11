@@ -61,4 +61,4 @@ done
 ## INSTRUCTIONS
 [ $verbose -eq 1 ] && additionalProperties="-Dhemera.log.verbose=3" || additionalProperties=""
 writeMessage "Launching sound player with $filePath ... " 0
-launchJavaTool "hemera.tools.LightSoundPlayer" "$additionalProperties" "$filePath" && echo "done" || echo "error (See $logFile)"
+launchJavaTool "hemera.tools.LightSoundPlayer" "$additionalProperties" "$filePath" && echo "done" || echo "error (See $h_logFile)"

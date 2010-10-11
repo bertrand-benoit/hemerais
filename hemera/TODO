@@ -2,7 +2,6 @@
 short term:
  - formalize error code
  - factorize constants in a dedicated file (including error code)
- - formalize name of Hemera variables (h_xxx ?)
 
  - implement commands interpretor (mode/rechercher ...)
 

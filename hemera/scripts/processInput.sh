@@ -80,7 +80,7 @@ function manageRecognitionResult() {
   # TODO: interpret potential command.
 
   # Speech.
-  logFile="$logFile" noconsole=1 "$speechScript" -f "$_inputPath" && notifyDoneInput || notifyErrInput
+  h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" && notifyDoneInput || notifyErrInput
 }
 
 #########################
@@ -106,7 +106,7 @@ done
 #########################
 ## INSTRUCTIONS
 
-writeMessage "$inputString: managing supported input $inputName (specific log file: $logFile)"
+writeMessage "$inputString: managing supported input $inputName (specific log file: $h_logFile)"
 notifyProcessInput
 curInputPath="$h_curInputDir/$inputName"
 
@@ -115,7 +115,7 @@ inputType=${inputName/_*/}
 case "$inputType" in
   recordedSpeech)
     writeMessage "$inputString: launching speech recognition on $inputName"
-    logFile="$logFile" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    h_logFile="$h_logFile" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)

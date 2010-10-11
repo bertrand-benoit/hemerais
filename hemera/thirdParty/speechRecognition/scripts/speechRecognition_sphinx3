@@ -76,12 +76,12 @@ function prepareAudioSource() {
     input="$wavFile"
     output="$rawFile"
 
-    ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$logFile" 2>&1 && echo -e "error" >&2 && return 1
+    ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
     echo "done"
 
     #  2- computes the corresponding feature file
     writeMessage "Creating feature sound file for $rawFile ... " 0
-    ! "$currentDir/computeFeatureFile.sh" -f "$rawFile" >> "$logFile" 2>&1 && echo -e "error" >&2 && return 1
+    ! "$currentDir/computeFeatureFile.sh" -f "$rawFile" >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
     echo "done"
   fi
   return 0
@@ -126,7 +126,7 @@ function speechRecognitionFromList() {
     -mdef "$acousticModelDefinition" -mean "$acousticModelMeans" -var "$acousticModelVariances" \
     -mixw "$acousticModelMixtureWeights" -tmat "$acousticModelTransitionMatrices" \
     -lm "$languageModel" -dict "$lexicalModelWords" -fdict "$lexicalModelFillers" \
-    $sphinx3DecoderOptions -ctl "$_controlFile" $additionalOptions >> "$logFile" 2>&1
+    $sphinx3DecoderOptions -ctl "$_controlFile" $additionalOptions >> "$h_logFile" 2>&1
 
     # Parameters information:
     # First test, changed parameters:
