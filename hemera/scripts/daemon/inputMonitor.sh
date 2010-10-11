@@ -35,8 +35,8 @@ CONFIG_KEY="hemera.core.iomanager.inputMonitor"
 daemonName="input monitor"
 
 # tool configuration
-monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit 100
-monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
+monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit $ERROR_CONFIG_PATH
+monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # Defines the PID file.
 pidFile="$h_pidDir/inputMonitor.pid"
@@ -73,7 +73,7 @@ done
 [ -z "$action" ] && daemonUsage "$daemonName"
 
 # Checks tools.
-checkBin "$monitorBin" || exit 126
+checkBin "$monitorBin" || exit $ERROR_CHECK_BIN
 
 #########################
 ## INSTRUCTIONS

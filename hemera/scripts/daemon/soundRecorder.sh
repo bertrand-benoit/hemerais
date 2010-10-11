@@ -35,8 +35,8 @@ CONFIG_KEY="hemera.core.speechRecognition"
 daemonName="sound recorder"
 
 # sound recorder configuration
-soundRecorderBin=$( getConfigPath "$CONFIG_KEY.soundRecorder.path" ) || exit 100
-soundRecorderOptions=$( getConfigValue "$CONFIG_KEY.soundRecorder.options" ) || exit 100
+soundRecorderBin=$( getConfigPath "$CONFIG_KEY.soundRecorder.path" ) || exit $ERROR_CONFIG_PATH
+soundRecorderOptions=$( getConfigValue "$CONFIG_KEY.soundRecorder.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # Defines the PID file.
 pidFile="$h_pidDir/soundRecording.pid"
@@ -70,7 +70,7 @@ done
 [ -z "$action" ] && daemonUsage "$daemonName"
 
 # Checks tools.
-checkBin "$soundRecorderBin" || exit 126
+checkBin "$soundRecorderBin" || exit $ERROR_CHECK_BIN
 
 #########################
 ## INSTRUCTIONS

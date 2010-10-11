@@ -35,21 +35,21 @@ CONFIG_KEY="hemera.core.speech"
 SUPPORTED_MODE="espeak espeak+mbrola X"
 
 # Gets the mode, and ensures it is a supported one.
-moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit 100
+moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
 checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
 
 # "Not yet implemented" message to help adaptation with potential futur other speech tools.
 [[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]] && errorMessage "Not yet implemented mode: $moduleMode"
 
 # Default.
-DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit 100
+DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit $ERROR_CONFIG_VARIOUS
 
 # Gets functions specific to mode.
 source "$currentDir/speech_$moduleMode"
 
 # sound player configuration
-soundPlayerBin=$( getConfigPath "$CONFIG_KEY.soundPlayer.path" ) || exit 100
-soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit 100
+soundPlayerBin=$( getConfigPath "$CONFIG_KEY.soundPlayer.path" ) || exit $ERROR_CONFIG_PATH
+soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 #########################
 ## Functions
@@ -67,7 +67,7 @@ function usage() {
 
   echo -e "\nYou must either use option -t, -u, -f, -d or -i."
 
-  exit 1
+  exit $ERROR_USAGE
 }
 
 # usage: startInteractiveMode
@@ -89,7 +89,7 @@ function getURLContents() {
 # usage: readURLContents
 function readURLContents() {
   urlContentsFile="$h_workDir/$h_fileDate-urlContents.tmp"
-  getURLContents "$url" "$urlContentsFile" || exit 11
+  getURLContents "$url" "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
 
   speechFileContents "$urlContentsFile"
 }
@@ -98,7 +98,7 @@ function readURLContents() {
 function readDefinition() {
   urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
   termAsQueryString=$( echo "$termsToDefine" |sed -e 's/[ \t]/+/g;' )
-  getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit 11
+  getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
   sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"
 
   speechFileContents "$urlContentsFile"
@@ -135,8 +135,8 @@ do
 done
 
 # Checks binaries availability (checks sound player only if speech output is NOT defined).
-[ -z "$speechOutput" ] && ! checkBin "$soundPlayerBin" && exit 126
-checkConfiguration || exit 126
+[ -z "$speechOutput" ] && ! checkBin "$soundPlayerBin" && exit $ERROR_CHECK_BIN
+checkConfiguration || exit $ERROR_CHECK_CONFIG
 
 # Ensures mode is defined.
 [ -z "$mode" ] && usage

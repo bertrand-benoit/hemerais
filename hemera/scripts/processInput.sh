@@ -44,7 +44,7 @@ function usage() {
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
 
-  exit 1
+  exit $ERROR_USAGE
 }
 
 # usage: notifyProcessInput <input name>
@@ -65,7 +65,7 @@ function notifyDoneInput() {
 function notifyErrInput() {
   info "$inputString: moving from processing input directory to error one"
   mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
-  exit 1
+  exit $ERROR_INPUT_PROCESS
 }
 
 # usage: manageRecognitionResult <input path>

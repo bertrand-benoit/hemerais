@@ -35,8 +35,8 @@ CONFIG_KEY="hemera.core.iomanager.ioProcessorMonitor"
 daemonName="input/output processor"
 
 # tool configuration
-monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit 100
-monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit 100
+monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit $ERROR_CONFIG_PATH
+monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # tool configuration
 ioprocessorBin="$0"
@@ -76,8 +76,8 @@ done
 [ -z "$action" ] && daemonUsage "$daemonName"
 
 # Checks tools.
-checkBin "$ioprocessorBin" || exit 126
-checkBin "$monitorBin" || exit 126
+checkBin "$ioprocessorBin" || exit $ERROR_CHECK_BIN
+checkBin "$monitorBin" || exit $ERROR_CHECK_BIN
 
 #########################
 ## INSTRUCTIONS

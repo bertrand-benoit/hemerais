@@ -32,8 +32,8 @@ CONFIG_KEY="environment"
 buildAntFile="$installDir/engineering/hemeraBuild.xml"
 
 # Gets environment configuration
-manageJavaHome || exit 102
-manageAntHome || exit 102
+manageJavaHome || exit $ERROR_ENVIRONMENT
+manageAntHome || exit $ERROR_ENVIRONMENT
 
 ANT="$ANT_HOME/bin/ant"
 

@@ -37,7 +37,7 @@ SUPPORTED_MODE="sphinx3"
 DEFAULT_SPEECH_FILE_PATTEN="*.wav"
 
 # Gets the mode, and ensures it is a supported one.
-moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit 100
+moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
 checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
 
 # "Not yet implemented" message to help adaptation with potential futur other speechRecognition tools.
@@ -49,8 +49,8 @@ source "$currentDir/speechRecognition_$moduleMode"
 LOG_FILE_END="SPEECH_RECOGNITION_COMPLETED"
 
 # Tool configuration.
-soundConverterBin=$( getConfigPath "$CONFIG_KEY.soundConverter.path" ) || exit 100
-soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) || exit 100
+soundConverterBin=$( getConfigPath "$CONFIG_KEY.soundConverter.path" ) || exit $ERROR_CONFIG_PATH
+soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 #########################
 ## Functions
@@ -66,7 +66,7 @@ function usage() {
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
   echo -e "\nYou must use one of the following option: -f, -l or -d."
-  exit 1
+  exit $ERROR_USAGE
 }
 
 # usage: markLogFileEnd
@@ -93,7 +93,7 @@ function manageSpeechRecognition() {
 
   #  4- launches the speech recognition on the prepared sound file list.
   writeMessage "Launching speech recognition on prepared sound list file $_preparedSoundFileList ..."
-  ! speechRecognitionFromList "$_preparedSoundFileList" "$_resultFile" && markLogFileEnd && exit 1
+  ! speechRecognitionFromList "$_preparedSoundFileList" "$_resultFile" && markLogFileEnd && exit $ERROR_CORE_MODULE
   markLogFileEnd
 }
 
@@ -123,11 +123,11 @@ done
 
 # Checks if special mode or analyzing log file.
 if [ ! -z "$logToAnalyze" ]; then
-  analyzeLog && exit 0 || exit 127
+  analyzeLog && exit 0 || exit $ERROR_SR_ANALYZE
 fi
 
-checkBin "$soundConverterBin" || exit 126
-checkConfiguration || exit 126
+checkBin "$soundConverterBin" || exit $ERROR_CHECK_BIN
+checkConfiguration || exit $ERROR_CHECK_CONFIG
 
 [ -z "$mode" ] && usage
 [ -z "$path" ] && usage
@@ -158,7 +158,7 @@ esac
 
 # Prepares the destination sound file list.
 preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
-prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit 3
+prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit $ERROR_SR_PREPARE
 
 # Launches the speech recognition on the list.
 manageSpeechRecognition "$preparedSoundFileList" "$resultFile"

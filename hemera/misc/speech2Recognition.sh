@@ -41,7 +41,7 @@ function usage() {
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
 
-  exit 1
+  exit $ERROR_USAGE
 }
 
 
@@ -87,10 +87,10 @@ while [ $iteration -le $iterationCount ]; do
   writeMessage "Iteration $iteration/$iterationCount, text to speech then recognize is '$textToSpeech'"
 
   # Generates the speech sound file.
-  "$speechDir/scripts/speech.sh" $additionalOptions -t "$text" -o "$speechSoundFile" || exit 11
+  "$speechDir/scripts/speech.sh" $additionalOptions -t "$text" -o "$speechSoundFile" || exit $ERROR_CORE_MODULE
 
   # Launches speech recognition from wav file.
-  "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit 11
+  "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
 
   # Prepares for potential next iteration.
   iteration=$( expr $iteration + 1 )

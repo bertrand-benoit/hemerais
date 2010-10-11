@@ -23,11 +23,11 @@
 #
 # must NOT be directly called.
 
-[ "$moduleMode" != "espeak" ] && exit 101
+[ "$moduleMode" != "espeak" ] && exit $ERROR_MODE
 
 # espeak configuration
-espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit 100
-espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit 100
+espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
+espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # usage: checkConfiguration
 function checkConfiguration() {

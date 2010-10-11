@@ -23,25 +23,25 @@
 #
 # must NOT be directly called.
 
-[ "$moduleMode" != "sphinx3" ] && exit 101
+[ "$moduleMode" != "sphinx3" ] && exit $ERROR_MODE
 
 # Tool configuration.
-sphinx3DecoderBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit 100
-sphinx3DecoderOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit 100
+sphinx3DecoderBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
+sphinx3DecoderOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # Data configuration.
 dataDir="$currentDir/../data"
 
-lexicalModelWords="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.words" ) || exit 100
-lexicalModelFillers="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.fillers" ) || exit 100
+lexicalModelWords="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.words" ) || exit $ERROR_CONFIG_VARIOUS
+lexicalModelFillers="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.fillers" ) || exit $ERROR_CONFIG_VARIOUS
 
-languageModel="$dataDir/models/language/"$( getConfigValue "$CONFIG_KEY.sphinx3.languageModel" ) || exit 100
+languageModel="$dataDir/models/language/"$( getConfigValue "$CONFIG_KEY.sphinx3.languageModel" ) || exit $ERROR_CONFIG_VARIOUS
 
-acousticModelDefinition="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.definition" ) || exit 100
-acousticModelMeans="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.means" ) || exit 100
-acousticModelVariances="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.variances" ) || exit 100
-acousticModelMixtureWeights="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.mixtureWeights" ) || exit 100
-acousticModelTransitionMatrices="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.transitionMatrices" ) || exit 100
+acousticModelDefinition="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.definition" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelMeans="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.means" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelVariances="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.variances" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelMixtureWeights="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.mixtureWeights" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelTransitionMatrices="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.transitionMatrices" ) || exit $ERROR_CONFIG_VARIOUS
 
 # usage: checkConfiguration
 function checkConfiguration() {

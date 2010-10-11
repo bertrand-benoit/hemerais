@@ -38,14 +38,14 @@ h_configurationFile="$installDir/config/hemera.conf"
 [ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)."
 
 # Updates environment path if needed.
-additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit 100
-additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit 100
+additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit $ERROR_CONFIG_VARIOUS
+additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit $ERROR_CONFIG_VARIOUS
 [ ! -z "$additionalBinPath" ] && export PATH=$additionalBinPath:$PATH
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
 # Defines some global variables about directories.
 h_daemonDir="$installDir/scripts/daemon"
-h_logDir=$( getConfigPath "hemera.run.log" ) || exit 100
+h_logDir=$( getConfigPath "hemera.run.log" ) || exit $ERROR_CONFIG_PATH
 updateStructure "$h_logDir"
 
 # Structure:
@@ -53,7 +53,7 @@ updateStructure "$h_logDir"
 #  queue/input/cur    input under processing
 #  queue/input/err    input with unknown type or error occurs while processing
 #  queue/input/done   input managed
-queueDir=$( getConfigPath "hemera.run.queue" ) || exit 100
+queueDir=$( getConfigPath "hemera.run.queue" ) || exit $ERROR_CONFIG_PATH
 inputDir="$queueDir/input"
 h_newInputDir="$inputDir/new"
 h_curInputDir="$inputDir/cur"
@@ -67,7 +67,7 @@ updateStructure "$h_doneInputDir"
 # Structure:
 #  tmp/work   temporary files
 #  tmp/pid    PID files
-tmpDir=$( getConfigPath "hemera.run.temp" ) || exit 100
+tmpDir=$( getConfigPath "hemera.run.temp" ) || exit $ERROR_CONFIG_PATH
 h_workDir="$tmpDir/work"
 h_pidDir="$tmpDir/pid"
 updateStructure "$h_workDir"
@@ -76,16 +76,6 @@ updateStructure "$h_pidDir"
 # Defines some other global variables.
 h_inputList="$h_logDir/inputList"
 h_fileDate=$(date +"%s")
-
-## Terminology.
-# Each input file name begins with a sub string giving the type of input:
-#  recordedSpeech_: recorded speech (-> usually needs speech recognition)
-#  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
-#  speech_: test to speech result (-> according to mode, speech recognition can be needed)
-SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
-
-# Defines some constants.
-UNKNOWN_COMMAND="Commande incomprise !"
 
 # Defines the log file if not already done.
 if [ -z "$h_logFile" ]; then

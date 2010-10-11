@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
+# Copyright (C) 2010 Bertrand Benoit <projettwk@users.sourceforge.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see http://www.gnu.org/licenses
+# or write to the Free Software Foundation,Inc., 51 Franklin Street,
+# Fifth Floor, Boston, MA 02110-1301  USA
+#
+# Version: 1.0
+# Description: defines Hemera constants.
+#
+# This script must NOT be directly called.
+
+## General constants
+
+# timeout (in seconds) when stopping process, before killing it.
+PROCESS_STOP_TIMEOUT=10
+DAEMON_SPECIAL_RUN_ACTION="-R"
+
+## Error code
+# Default error message code.
+ERROR_DEFAULT=101
+
+# Error code after showing usage.
+ERROR_USAGE=102
+
+# Command line syntax not respected.
+ERROR_BAD_CLI=103
+
+# Bad/incomplete environment (like missing Java or Ant)
+ERROR_ENVIRONMENT=104
+
+# Invalid configuration, or path definition.
+ERROR_CONFIG_VARIOUS=105
+ERROR_CONFIG_PATH=106
+
+# Binary or data configured file not found.
+ERROR_CHECK_BIN=107
+ERROR_CHECK_CONFIG=108
+
+# Bad/unsupported mode.
+ERROR_MODE=109
+
+# External tool fault (like wget).
+ERROR_EXTERNAL_TOOL=110
+
+# Error while processing input.
+ERROR_INPUT_PROCESS=111
+
+# General core module error.
+ERROR_CORE_MODULE=112
+
+# Speech Recognition core module, error while analyzing result.
+ERROR_SR_ANALYZE=113
+
+# Speech Recognition core module, error while preparing speech file.
+ERROR_SR_PREPARE=114
+
+## Core module constants.
+# Each input file name begins with a sub string giving the type of input:
+#  recordedSpeech_: recorded speech (-> usually needs speech recognition)
+#  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
+#  speech_: test to speech result (-> according to mode, speech recognition can be needed)
+SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
+
+# Defines some constants.
+UNKNOWN_COMMAND="Commande incomprise !"

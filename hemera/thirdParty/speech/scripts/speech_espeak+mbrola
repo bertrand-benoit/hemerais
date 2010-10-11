@@ -23,17 +23,17 @@
 #
 # must NOT be directly called.
 
-[ "$moduleMode" != "espeak+mbrola" ] && exit 101
+[ "$moduleMode" != "espeak+mbrola" ] && exit $ERROR_MODE
 
 # espeak configuration
-espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit 100
-espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit 100
+espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
+espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # mbrola configuration
-mbrolaBin=$( getConfigPath "$CONFIG_KEY.mbrola.path" ) || exit 100
+mbrolaBin=$( getConfigPath "$CONFIG_KEY.mbrola.path" ) || exit $ERROR_CONFIG_PATH
 # Language must be coherent with hemera.core.speech.espeak.language configuration.
 dataDir="$currentDir/../data"
-mbrolaLanguageFile="$dataDir/language/"$( getConfigValue "$CONFIG_KEY.mbrola.language" ) || exit 100
+mbrolaLanguageFile="$dataDir/language/"$( getConfigValue "$CONFIG_KEY.mbrola.language" ) || exit $ERROR_CONFIG_VARIOUS
 
 # usage: checkConfiguration
 function checkConfiguration() {

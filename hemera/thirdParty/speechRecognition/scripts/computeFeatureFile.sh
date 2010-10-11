@@ -34,8 +34,8 @@ source "$installDir/scripts/setEnvironment.sh"
 CONFIG_KEY="hemera.core.speechRecognition"
 
 # Tool configuration.
-soundFeatureCreatorBin=$( getConfigPath "$CONFIG_KEY.soundFeatureCreator.path" ) || exit 100
-soundFeatureCreatorOptions=$( getConfigValue "$CONFIG_KEY.soundFeatureCreator.options" ) || exit 100
+soundFeatureCreatorBin=$( getConfigPath "$CONFIG_KEY.soundFeatureCreator.path" ) || exit $ERROR_CONFIG_PATH
+soundFeatureCreatorOptions=$( getConfigValue "$CONFIG_KEY.soundFeatureCreator.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 #########################
 ## Functions
@@ -46,7 +46,7 @@ function usage() {
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
 
-  exit 1
+  exit $ERROR_USAGE
 }
 
 
@@ -63,7 +63,7 @@ do
 done
 
 [ -z "$soundFile" ] && usage
-[ ! -f "$soundFile" ] && echo -e "$soundFile not found." >&2 && exit 1
+[ ! -f "$soundFile" ] && echo -e "$soundFile not found." >&2 && exit $ERROR_BAD_CLI
 
 #########################
 ## INSTRUCTIONS
