@@ -33,10 +33,10 @@ SUPPORTED_MODE="local client server"
 
 # Gets the mode, and ensures it is a supported one.
 hemeraMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode" || errorMessage "Unsupported mode: $hemeraMode"
+checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode" || errorMessage "Unsupported mode: $hemeraMode" $ERROR_MODE
 
 # "Not yet implemented" message to help adaptation with potential futur other speech tools.
-[[ "$hemeraMode" != "local" ]] && errorMessage "Not yet implemented mode: $hemeraMode"
+[[ "$hemeraMode" != "local" ]] && errorMessage "Not yet implemented mode: $hemeraMode" $ERROR_MODE
 
 # Gets activation information.
 inputMonitorActivation=$( getConfigValue "$CONFIG_KEY.activation.inputMonitor" ) || exit $ERROR_CONFIG_VARIOUS
@@ -85,7 +85,7 @@ if [ "$hemeraMode" = "local" ]; then
     start)	option="-S";;
     status)	option="-T";;
     stop)	option="-K";;
-    h|[?])	errorMessage "Unknown action: $action";; 
+    h|[?])	errorMessage "Unknown action: $action" $ERROR_BAD_CLI;; 
   esac
 
   # Adds verbose if needed.

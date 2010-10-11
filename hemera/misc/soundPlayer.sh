@@ -55,7 +55,7 @@ do
 done
 
 # Checks binaries availability (checks sound player only if speech output is NOT defined).
-[ -z "$filePath" ] && errorMessage "You must specify sound file path"
+[ -z "$filePath" ] && errorMessage "You must specify sound file path" $ERROR_BAD_CLI
 
 #########################
 ## INSTRUCTIONS

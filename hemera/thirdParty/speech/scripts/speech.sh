@@ -36,10 +36,10 @@ SUPPORTED_MODE="espeak espeak+mbrola X"
 
 # Gets the mode, and ensures it is a supported one.
 moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
+checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode" $ERROR_MODE
 
 # "Not yet implemented" message to help adaptation with potential futur other speech tools.
-[[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]] && errorMessage "Not yet implemented mode: $moduleMode"
+[[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]] && errorMessage "Not yet implemented mode: $moduleMode" $ERROR_MODE
 
 # Default.
 DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit $ERROR_CONFIG_VARIOUS

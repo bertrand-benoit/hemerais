@@ -35,7 +35,7 @@ h_libDir="$installDir/lib"
 
 # Defines configuration file, and ensures the system has been configured.
 h_configurationFile="$installDir/config/hemera.conf"
-[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)."
+[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)." $ERROR_BAD_CLI
 
 # Updates environment path if needed.
 additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit $ERROR_CONFIG_VARIOUS

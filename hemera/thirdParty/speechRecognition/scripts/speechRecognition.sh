@@ -38,10 +38,10 @@ DEFAULT_SPEECH_FILE_PATTEN="*.wav"
 
 # Gets the mode, and ensures it is a supported one.
 moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode"
+checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode" $ERROR_MODE
 
 # "Not yet implemented" message to help adaptation with potential futur other speechRecognition tools.
-[[ "$moduleMode" != "sphinx3" ]] && errorMessage "Not yet implemented mode: $moduleMode"
+[[ "$moduleMode" != "sphinx3" ]] && errorMessage "Not yet implemented mode: $moduleMode" $ERROR_MODE
 
 # Gets functions specific to mode.
 source "$currentDir/speechRecognition_$moduleMode"
@@ -131,7 +131,7 @@ checkConfiguration || exit $ERROR_CHECK_CONFIG
 
 [ -z "$mode" ] && usage
 [ -z "$path" ] && usage
-[ ! -e "$path" ] && errorMessage "$path not found." 1
+[ ! -e "$path" ] && errorMessage "$path not found." $ERROR_BAD_CLI
 [ -z "$speechFilePattern" ] && speechFilePattern="$DEFAULT_SPEECH_FILE_PATTEN"
 
 #########################

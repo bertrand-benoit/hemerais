@@ -101,7 +101,7 @@ done
 [ -z "$inputString" ] && inputString="undefinedInput"
 
 # Ensures the input (still) exists.
-[ ! -f "$h_newInputDir/$inputName" ] && errorMessage "$inputString: $inputName not found"
+[ ! -f "$h_newInputDir/$inputName" ] && errorMessage "$inputString: $inputName not found" $ERROR_BAD_CLI
 
 #########################
 ## INSTRUCTIONS
@@ -123,5 +123,5 @@ case "$inputType" in
     manageRecognitionResult "$curInputPath"
   ;;
 
-  [?]) errorMessage "$inputString: unknow type, $inputName will be ignored";;
+  [?]) errorMessage "$inputString: unknow type, $inputName will be ignored" $ERROR_BAD_CLI;;
 esac

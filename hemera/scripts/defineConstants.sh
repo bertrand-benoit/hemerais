@@ -39,7 +39,11 @@ ERROR_USAGE=102
 # Command line syntax not respected.
 ERROR_BAD_CLI=103
 
-# Bad/incomplete environment (like missing Java or Ant)
+# Bad/incomplete environment, like:
+#  - missing Java or Ant
+#  - bad user (e.g. Hemera setup)
+#  - permission issue (e.g. while updating structure)
+#  - Hemera not built
 ERROR_ENVIRONMENT=104
 
 # Invalid configuration, or path definition.

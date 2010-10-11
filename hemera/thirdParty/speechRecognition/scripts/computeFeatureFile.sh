@@ -63,7 +63,7 @@ do
 done
 
 [ -z "$soundFile" ] && usage
-[ ! -f "$soundFile" ] && echo -e "$soundFile not found." >&2 && exit $ERROR_BAD_CLI
+[ ! -f "$soundFile" ] && errorMessage "$soundFile not found." $ERROR_BAD_CLI
 
 #########################
 ## INSTRUCTIONS
