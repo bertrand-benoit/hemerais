@@ -31,9 +31,6 @@ sphinx3Dir=$( ls -1d $binDir/sphinx3* 2>&1 )
 [ $? -ne 0 ] && echo -e "unable to find directory corresponding to pattern: $binDir/sphinx3*" && exit 1
 echo "found $sphinx3Dir"
 
-lmConvertBin="/home/bsquare/programmation/projects/hemera/hemeraFiles/fromSource/sphinx3/src/programs/sphinx3_lm_convert"
-
-
 # Updates environment consequently.
 echo -ne "Updating enviroment ... "
 export LIA_PHON_REP="$liaPhonDir"
@@ -79,7 +76,7 @@ echo -e "Adding add-dummy-bows to language model file ($lmFileTmpSortedDummy)"
 $( cat "$lmFileTmpSorted" | awk -f $srilmBinDir/add-dummy-bows > "$lmFileTmpSortedDummy" ) || exit 1
 
 echo -e "\nConverting to DMP format ($lmFile)"
-"$lmConvertBin" -i "$lmFileTmpSortedDummy" -ienc utf8 -o "$lmFile" -oenc utf8 || exit 1
+"$sphinx3Dir/src/programs/sphinx3_lm_convert" -i "$lmFileTmpSortedDummy" -ienc utf8 -o "$lmFile" -oenc utf8 || exit 1
 
 echo -e "\n-> Successfully created language model: $lmFile"
 
