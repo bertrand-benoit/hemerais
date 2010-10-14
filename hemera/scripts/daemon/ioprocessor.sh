@@ -49,11 +49,14 @@ pidFile="$h_pidDir/ioProcessor.pid"
 
 # N.B.: the -D (for daemon) option must be only internally used.
 # N.B.: the -R (for run) option must be only internally used.
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 while getopts "STKDRvh" opt
 do
  case "$opt" in
         S)
+          # Removes potential speech running lock file, and speech to play list.
+          rm -f "$h_speechRunningLockFile" "$h_speechToPlayList"
           action="start"
           newLogFile="$h_logFile"
           outputFile="$newLogFile"

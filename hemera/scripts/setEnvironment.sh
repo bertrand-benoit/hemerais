@@ -73,9 +73,15 @@ h_pidDir="$tmpDir/pid"
 updateStructure "$h_workDir"
 updateStructure "$h_pidDir"
 
-# Defines some other global variables.
-h_inputList="$h_logDir/inputList"
+## Defines some other global variables.
 h_fileDate=$(date +"%s")
+
+# inputMonitor/ioProcessor.
+h_inputList="$h_logDir/inputList"
+
+# processInput
+h_speechRunningLockFile="$h_workDir/speech.lck"
+h_speechToPlayList="$h_workDir/speechToPlay.txt"
 
 # Defines the log file if not already done.
 if [ -z "$h_logFile" ]; then
