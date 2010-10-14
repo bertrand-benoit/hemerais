@@ -47,7 +47,8 @@ function usage() {
 
 #########################
 ## Command line management
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 iterationCount=1
 while getopts "t:I:vh" opt
 do

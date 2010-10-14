@@ -45,7 +45,8 @@ pidFile="$h_pidDir/inputMonitor.pid"
 ## Command line management
 
 # N.B.: the -D option must be only internally used.
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 while getopts "DSTKvh" opt
 do
  case "$opt" in

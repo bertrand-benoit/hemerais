@@ -117,7 +117,8 @@ MODE_FILE=3
 MODE_DEFINITION=4
 MODE_INTERACTIVE=10
 
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 language="$DEFAULT_LANGUAGE"
 while getopts "t:u:f:d:io:l:vh" opt
 do

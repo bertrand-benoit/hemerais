@@ -44,7 +44,8 @@ function usage() {
 
 #########################
 ## Command line management
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 while getopts "f:vh" opt
 do
  case "$opt" in

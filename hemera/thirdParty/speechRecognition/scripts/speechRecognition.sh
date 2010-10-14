@@ -102,7 +102,8 @@ function manageSpeechRecognition() {
 SOURCE_MODE_SOUND_FILE=1
 SOURCE_MODE_LIST_FILE=2
 SOURCE_MODE_DIR=3
-verbose=0
+# Defines verbose to 0 if not already defined.
+verbose=${verbose:-0}
 force=0
 # N.B.: -Z is an hidden option allowing to analyze specified log file;
 #  it must be used for internal purposes only.
