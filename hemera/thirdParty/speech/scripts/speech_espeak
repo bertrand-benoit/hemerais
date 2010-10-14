@@ -41,7 +41,7 @@ function speechSentence() {
   #  - uses espeak to generate speech sound
   #  - uses finally the speech sound player
   info "System will play speech '$1', using only espeak"
-  "$espeakBin" -v "$language" $espeakOptions $2 "$1" |$soundPlayerBin $soundPlayerOptions
+  "$espeakBin" -v "$language" $espeakOptions $2 "$1" |"$soundPlayerBin" $soundPlayerOptions
 }
 
 # Usage: speechFileContents <file path>
