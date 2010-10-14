@@ -44,6 +44,7 @@ ERROR_BAD_CLI=103
 #  - bad user (e.g. Hemera setup)
 #  - permission issue (e.g. while updating structure)
 #  - Hemera not built
+#  - Cleaning is requested while Hemera is running
 ERROR_ENVIRONMENT=104
 
 # Invalid configuration, or path definition.

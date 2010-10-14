@@ -43,5 +43,12 @@ ANT="$ANT_HOME/bin/ant"
 #########################
 ## INSTRUCTIONS
 target="${1:-libraries}"
+
+# Special management for "clean" target.
+if [ "$target" = "clean" ]; then
+  # Ensures Hemera is not ruuning (checking PID file).
+  [ $( find "$h_pidDir" -type f |wc -l ) -gt 0 ] && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
+fi
+
 writeMessage "Making Hemera target: $target ... " 0
 "$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo "done" || echo "error (See $h_logFile)"
