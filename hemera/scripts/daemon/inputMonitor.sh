@@ -57,6 +57,7 @@ do
           rm -f "$h_inputList" && touch "$h_inputList"
           outputFile="$h_inputList"
           newLogFile="$h_logFile"
+          export noconsole=1
         ;;
         T)      action="status";;
         K)      action="stop";;
