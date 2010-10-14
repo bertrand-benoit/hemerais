@@ -73,7 +73,7 @@ function manageRecognitionResult() {
   local _inputPath="$1"
 
   # Removes wav file information from input file.
-  # If there is finally nothing to say, replace with an default speech.
+  # If there is finally nothing to say, replace with a default speech.
   sed -i 's/([^)]*)$//' "$_inputPath"
   sed -i "$( echo "s/^$/${UNKNOWN_COMMAND}/" )" "$_inputPath"
 
