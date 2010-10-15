@@ -32,8 +32,8 @@ scripstDir="$installDir/scripts"
 category="IOProcessorStressTests"
 source "$installDir/scripts/setEnvironment.sh"
 
-INPUT_COUNT_1=10
-INPUT_COUNT_2=10
+INPUT_COUNT_1=500
+INPUT_COUNT_2=500
 INPUT_COUNT=$( expr $INPUT_COUNT_1 + $INPUT_COUNT_2 )
 
 #########################
@@ -95,8 +95,8 @@ function launchInputGenerationAndCheck() {
   sleep 2
   generateLotsOfInput $( expr 1 + $INPUT_COUNT_1) $( expr $INPUT_COUNT_1 + $INPUT_COUNT_2) "$1"
 
-  # Waits until all input has been managed.
-  waitUntilAllInputManaged 2
+  # Waits until all input has been managed (timeout: 10 s)
+  waitUntilAllInputManaged 10
 
   # Checks if all input has been well managed.
   checkInputManagement $INPUT_COUNT
