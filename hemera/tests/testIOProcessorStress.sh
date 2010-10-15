@@ -77,15 +77,6 @@ function cleanAllNewInput() {
   rm -Rf "$h_newInputDir/*"
 }
 
-# usage: waitUntilAllInputManaged <timeout>
-function waitUntilAllInputManaged() {
-  local _remainingTime=$1
-  while ! isEmptyDirectory "$h_newInputDir" && [ $_remainingTime -gt 0 ]; do
-    sleep 1
-    let _remainingTime--
-  done
-}
-
 # usage: launchInputGenerationAndCheck [simu]
 # simu: keyword to use if inputMonitor is not started.
 function launchInputGenerationAndCheck() {
