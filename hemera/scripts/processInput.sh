@@ -79,6 +79,25 @@ function notifyErrInput() {
   [ "$1" != "noExit" ] && exit $ERROR_INPUT_PROCESS || return 0
 }
 
+# usage: extractRecognitionResultCommand <input path>
+function extractRecognitionResultCommand() {
+  local _inputPath="$1"
+  head -n 1 "$_inputPath" |awk '{print $1}'
+}
+
+# usage: extractRecognitionResultArgument <input path>
+function extractRecognitionResultArgument() {
+  local _inputPath="$1"
+  head -n 1 "$_inputPath" |sed -e 's/^[^ \t]*[ \t]//'
+}
+
+# usage: getRunningSpeechPID
+function getRunningSpeechPID() {
+  # Ensures there is one.
+  [ ! -f "$h_speechRunningLockFile" ] && return 1
+  cat "$h_speechRunningLockFile"
+}
+
 # usage: manageRecognitionResult <input path>
 function manageRecognitionResult() {
   local _inputPath="$1"
@@ -88,8 +107,49 @@ function manageRecognitionResult() {
   sed -i 's/([^)]*)$//' "$_inputPath"
   sed -i "$( echo "s/^$/${UNKNOWN_COMMAND}/" )" "$_inputPath"
 
-  # TODO: interpret potential command.
+  # Checks if the first word correspond to a command.
+  case $( extractRecognitionResultCommand "$_inputPath" ) in
+    recherche|rechercher)
+      writeMessage "$inputString: starting definition search"
+      termToDefine=$( extractRecognitionResultArgument "$_inputPath" )
+      h_logFile="$h_logFile" noconsole=1 "$speechScript" -d "$termToDefine" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
+    ;;
 
+    mode)
+    ;;
+
+    pause)
+      # TODO: check if there is command argument
+      writeMessage "$inputString: pausing current speech, if any"
+      runningSpeechPID=$( getRunningSpeechPID )
+      if [ $? -ne 0 ]; then
+        writeMessage "$inputString: there is no current speech."
+        h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "Il n'y a rien à mettre en pause" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
+      fi
+
+      # Pauses the running speech process.
+      kill -s STOP "$runningSpeechPID" && notifyDoneInput || notifyErrInput
+    ;;
+
+    continue)
+      # TODO: check if there is command argument
+      writeMessage "$inputString: continuing last paused speech, if any"
+      runningSpeechPID=$( getRunningSpeechPID )
+      if [ $? -ne 0 ]; then
+        writeMessage "$inputString: there is no paused speech."
+        h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "Il n'y a rien à continuer" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
+      fi
+
+      # Continues the running speech process.
+      kill -s CONT "$runningSpeechPID" && notifyDoneInput || notifyErrInput
+    ;;
+
+
+    stop)
+    ;;
+  esac
+
+  # If no command has been found, or in special mode like "perroquet", speech recognition must be speech by Hemera.
   # Generates speech sound file as new input.
   h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
 }
