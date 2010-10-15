@@ -37,7 +37,7 @@ source "$installDir/scripts/setEnvironment.sh"
 writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/hemera.sh" -K
 
-# Starting inputMonitor.
+# Starts inputMonitor.
 category="IOProcessorTests"
 writeMessage "Test system will start some daemons"
 "$scripstDir/daemon/inputMonitor.sh" -S
@@ -49,10 +49,8 @@ export noconsole=0
 # Starts IO processor.
 "$scripstDir/daemon/ioprocessor.sh" -S
 
-# TODO: Mode tests.
-
-## Search/Pause/Continue/Stop tests.
-writeMessage "Starting tests on: Search/Pause/Continue/Stop commands"
+## Test 1: Search/Pause/Continue/Stop tests.
+writeMessage "Test 1: starting tests on: Search/Pause/Continue/Stop commands"
 echo "recherche intelligence artificielle" > "$h_newInputDir/recognitionResult_test1.txt"
 sleep 1
 echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
@@ -63,5 +61,8 @@ echo "stop" > "$h_newInputDir/recognitionResult_test4.txt"
 
 waitUntilAllInputManaged 3
 
-# Stops IO processor.
+# TODO: Mode tests.
+
+# Stops IO processor, and input monitor.
 "$scripstDir/daemon/ioprocessor.sh" -K
+"$scripstDir/daemon/inputMonitor.sh" -K
