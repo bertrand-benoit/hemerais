@@ -1,11 +1,20 @@
 VERSION 0.1.0
 =============
 
+2010-10-18  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * manageSound.sh: implemented new script allowing to manage sound play/pause/continue/stop action linked to ONE process
+
+ * implemented new tests system:
+
+   - testManageSound.sh: implemented tests script allowing to test play/pause/continue/stop action
+
 2010-10-15  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * improved system allowing to kill child processes (no more "broken pipe")
 
- * implemented tests system:
+ * implemented new tests system:
+
    - testIOProcessorStress.sh: implemented tests script allowing to stress ioprocessor with or without inputMonitor (up to 1000 inputs)
 
    - testCommandInterpretation: implemented tests script allowing to simulate command (e.g. search/pause/continue/stop)
@@ -15,6 +24,7 @@ VERSION 0.1.0
  * makeHemera.sh: disabled clean request if Hemera is started
 
  * ioprocessor.sh:
+
    - managed speech recognition result creating by default a speech sound file as new input
 
    - implemented a system allowing to NOT play several speech sound file simultaneously
@@ -96,6 +106,7 @@ VERSION 0.1.0
 2010-09-01  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * improved speech recognition core module:
+
    - better sphinx3 support
 
    - log analyzer system (to get feedback asap in case of multiple recognition) giving result and speech recognition statistics
@@ -105,6 +116,7 @@ VERSION 0.1.0
  * implemented first version of speech recognition core module
 
  * implemented some speech recognition tools allowing to:
+
    - convert from wav format to raw format
 
    - create feature file from raw file
