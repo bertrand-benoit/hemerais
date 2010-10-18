@@ -51,12 +51,16 @@ export noconsole=0
 
 ## Test 1: Search/Pause/Continue/Stop tests.
 writeMessage "Test 1: starting tests on: Search/Pause/Continue/Stop commands"
+writeMessage "Test 1: launching search"
 echo "recherche intelligence artificielle" > "$h_newInputDir/recognitionResult_test1.txt"
-sleep 5
+sleep 7
+writeMessage "Test 1: pause"
 echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
-sleep 1
+sleep 3
+writeMessage "Test 1: continue"
 echo "continue" > "$h_newInputDir/recognitionResult_test3.txt"
-sleep 1
+sleep 3
+writeMessage "Test 1: stop"
 echo "stop" > "$h_newInputDir/recognitionResult_test4.txt"
 
 waitUntilAllInputManaged
