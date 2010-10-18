@@ -27,7 +27,7 @@ After installation, you should either update your environment variables JAVA_HOM
 
 Java properties
 ---------------
-If you want launching Hemera java piece (like the Java sound player) in an IDE (e.g. Eclipse), you should specify the following properties:
+If you want launching Hemera java piece in an IDE (e.g. Eclipse), you should specify the following properties:
  -Djava.system.class.loader=hemera.HemeraClassLoader -> this specific classloader loads the Hemera properties file automatically
  -Dhemera.property.file=${workspace_loc}/hemera/config/hemera.conf -> the Hemera properties file
 
