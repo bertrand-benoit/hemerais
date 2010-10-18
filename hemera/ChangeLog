@@ -1,0 +1,118 @@
+VERSION 0.1.0
+=============
+
+2010-10-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved system allowing to kill child processes (no more "broken pipe")
+
+ * implemented tests system:
+   - testIOProcessorStress.sh: implemented tests script allowing to stress ioprocessor with or without inputMonitor (up to 1000 inputs)
+
+   - testCommandInterpretation: implemented tests script allowing to simulate command (e.g. search/pause/continue/stop)
+
+2010-10-14  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * makeHemera.sh: disabled clean request if Hemera is started
+
+ * ioprocessor.sh:
+   - managed speech recognition result creating by default a speech sound file as new input
+
+   - implemented a system allowing to NOT play several speech sound file simultaneously
+
+   - fixed utility method getLastLinesFromN which was not atomic and so failed with real-time stress
+
+ * improved some global variables management (did not reset anymore if already set)
+
+2010-10-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * renamed all Hemera global variable prefixing with "h_" for better legibility
+
+ * factorized constants in a dedicated script
+
+ * formalized error code status (constants definition, and use everywhere)
+
+2010-10-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * ioprocessor.sh: improved input management (input not found, incoming input while managing some, real-time)
+
+ * processInput.sh: implemented first version of script processing ONE input in background
+
+2010-09-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * hemera.sh: implemented script allowing to start/status/stop Hemera according to configuration (initially named startHemera.sh)
+
+2010-09-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved process/pid system
+
+ * implemented a system allowing to kill child processes when daemon is stopped
+
+ * ioprocessor.sh: implemented first version of input/output processor daemon
+
+2010-09-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * makeHemera.sh: improved system allowing to specify target on command line
+
+2010-09-23  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented a process/pid system allowing to start/status/stop daemon
+
+ * various improvements (functions updating environment, new configuration elements, new global variable)
+
+ * checkConfig.sh: implemented new script allowing to check Hemera configuration
+ 
+ * inputMonitor.sh: implemented first version of input monitor daemon (initially named eventManager)
+
+ * soundRecorder.sh: implemented sound recorder daemon
+
+2010-09-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented Hemera Java base
+
+2010-09-13  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * makeHemera.sh: implemented new script allowing to build or clean Hemera
+
+ * help.sh: implemented new script allowing to give help on each available scripts/tools (and link to documentation)
+
+2010-09-09  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * added license information (GPLv3)
+
+ * setupHemera.sh: implemented new script allowing to update Operating System for Hemera integration
+
+2010-09-06  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * updated speech recognition core module to be fully configurable
+
+ * speech2Recognition.sh: added option allowing to specify iteration count, improved given information
+
+2010-09-03  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * created configuration system
+
+ * updated speech core module to be fully configurable
+
+2010-09-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved speech recognition core module:
+   - better sphinx3 support
+
+   - log analyzer system (to get feedback asap in case of multiple recognition) giving result and speech recognition statistics
+
+2010-08-13  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented first version of speech recognition core module
+
+ * implemented some speech recognition tools allowing to:
+   - convert from wav format to raw format
+
+   - create feature file from raw file
+
+ * speech2Recognition.sh: implemented new tool allowing to perform text to speech, then speech recognition
+
+2010-08-12  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * created main project
+
+ * implemented first version of speech core module
