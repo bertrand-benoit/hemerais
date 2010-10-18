@@ -98,11 +98,11 @@ hemera.core.speech.tool.path="espeak"
 hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
 
 # The sound player (path and options).
-# e.g.: aplay or misc/soundPlayer.sh
-hemera.core.speech.soundPlayer.path="aplay"
-# e.g.: for aplay: -q -r22050 -fS16
-#       for misc/soundPlayer.sh: -f
-hemera.core.speech.soundPlayer.options="-q -r22050 -fS16"
+# e.g.: play/sox or aplay
+hemera.core.speech.soundPlayer.path="play"
+# e.g.: for play: -q -r22050
+#       for aplay: -q -r22050 -fS16
+hemera.core.speech.soundPlayer.options="-q -r22050"
 
 ## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
 # Default language.

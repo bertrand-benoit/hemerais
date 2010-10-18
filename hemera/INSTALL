@@ -45,13 +45,10 @@ Each core piece requires third party element.
     - check/update the hemera.core.iomanager.inputMonitor.* configuration elements
     - check/update the hemera.core.iomanager.ioProcessorMonitor.* configuration elements
 
- - sox: Audio file converter (See http://sox.sourceforge.net)
+ - sox: Audio file player (See http://sox.sourceforge.net)
     - yum install sox
-    - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
-
- - aplay: Audio file player (See http://www.alsa-project.org/main/index.php/Main_Page)
-    - yum install alsa-utils
     - check/update the hemera.core.speech.soundPlayer.* configuration elements
+
 
  Speech
  -------
@@ -72,8 +69,9 @@ Each core piece requires third party element.
 
  Speech Recognition
  -------------------
- - sox: Audio file converter (See http://sox.sourceforge.net)
+ - sox: Audio file recorder and converter (See http://sox.sourceforge.net)
     - yum install sox
+    - check/update the hemera.core.speechRecognition.soundRecorder.* configuration elements
     - check/update the hemera.core.speechRecognition.soundConverter.* configuration elements
 
  - sphinx3 (See http://cmusphinx.sourceforge.net)
