@@ -34,10 +34,7 @@ source "$installDir/scripts/setEnvironment.sh"
 # Defines path to various core module main script.
 speechRecognitionScript="$installDir/thirdParty/speechRecognition/scripts/speechRecognition.sh"
 speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
-
-# sound player configuration
-soundPlayerBin=$( getConfigPath "hemera.core.speech.soundPlayer.path" ) || exit $ERROR_CONFIG_PATH
-soundPlayerOptions=$( getConfigValue "hemera.core.speech.soundPlayer.options" ) || exit $ERROR_CONFIG_VARIOUS
+manageSoundScript="$installDir/scripts/manageSound.sh"
 
 #########################
 ## Functions
@@ -91,13 +88,6 @@ function extractRecognitionResultArgument() {
   head -n 1 "$_inputPath" |sed -e 's/^[^ \t]*[ \t]//'
 }
 
-# usage: getRunningSpeechPID
-function getRunningSpeechPID() {
-  # Ensures there is one.
-  [ ! -f "$h_speechRunningLockFile" ] && return 1
-  cat "$h_speechRunningLockFile"
-}
-
 # usage: manageRecognitionResult <input path>
 function manageRecognitionResult() {
   local _inputPath="$1"
@@ -121,31 +111,20 @@ function manageRecognitionResult() {
     pause)
       # TODO: check if there is command argument
       writeMessage "$inputString: pausing current speech, if any"
-      runningSpeechPID=$( getRunningSpeechPID )
-      if [ $? -ne 0 ]; then
-        writeMessage "$inputString: there is no current speech."
-        h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "Il n'y a rien à mettre en pause" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
-      fi
-
-      # Pauses the running speech process.
-      kill -s STOP "$runningSpeechPID" && notifyDoneInput || notifyErrInput
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -P && notifyDoneInput || notifyErrInput
     ;;
 
     continue)
       # TODO: check if there is command argument
       writeMessage "$inputString: continuing last paused speech, if any"
-      runningSpeechPID=$( getRunningSpeechPID )
-      if [ $? -ne 0 ]; then
-        writeMessage "$inputString: there is no paused speech."
-        h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "Il n'y a rien à continuer" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
-      fi
-
-      # Continues the running speech process.
-      kill -s CONT "$runningSpeechPID" && notifyDoneInput || notifyErrInput
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -C && notifyDoneInput || notifyErrInput
     ;;
 
 
     stop)
+      # TODO: check if there is command argument
+      writeMessage "$inputString: stopping last paused speech, if any"
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -S && notifyDoneInput || notifyErrInput
     ;;
   esac
 
@@ -180,8 +159,6 @@ function speechListGet() {
 function manageSpeech() {
   local _inputPath="$1"
 
-  ! checkBin "$soundPlayerBin" && notifyErrInput
-
   # Checks if there is already running speech.
   if [ -f "$h_speechRunningLockFile" ]; then
     writeMessage "$inputString: Hemera is already speaking, this input will be managed later"
@@ -192,11 +169,11 @@ function manageSpeech() {
     # "Locks" to specify speech "is running" (with the pid of this main script
     #  for pause/continue/stop management, and ensures it will be removed
     #  when script is exiting.
-    echo "$$" > "$h_speechRunningLockFile"
+    touch "$h_speechRunningLockFile"
 
     # Manages this speech (and potential following ones).
     while [ 1 ]; do
-      "$soundPlayerBin" $soundPlayerOptions "$_inputPath" && notifyDoneInput "noExit" || notifyErrInput "noExit"
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -f "$_inputPath" && notifyDoneInput "noExit" || notifyErrInput "noExit"
 
        # Checks if there is more speech to play (list must exist, and it must not be empty).
        [ ! -s "$h_speechToPlayList" ] && break
