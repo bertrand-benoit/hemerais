@@ -1,6 +1,4 @@
 short term:
- - implement a pause/continue/stop system to speech core module (using signals: kill -stop to pause, and kill -cont to continue, usual kill to stop)
-
  - implement commands interpretor (mode/rechercher ...)
 
  - create rich enough linguistic and language models
@@ -11,4 +9,4 @@ middle term:
 
 
 long term:
- - implement new core module 
+ - implement new core modules
