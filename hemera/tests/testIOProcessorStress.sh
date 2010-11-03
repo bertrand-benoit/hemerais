@@ -98,6 +98,15 @@ function launchInputGenerationAndCheck() {
 writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/hemera.sh" -K
 
+# Ensures there is no remaining inputs from previous launch
+#  (otherwise the waitUntilAllInputManaged call will reach the timeout).
+cleanNotManagedInput
+
+# Initializes Hemera mode.
+# N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
+initHemeraMode || exit $ERROR_ENVIRONMENT
+
+# Defines main log file.
 mainLogFile="$h_logFile"
 
 ## Test 1

@@ -24,6 +24,10 @@
 # This script must NOT be directly called.
 
 ## General constants
+# Hemera modes.
+HEMERA_MODE_NORMAL="normal"
+HEMERA_MODE_SECURITY="security"
+HEMERA_MODE_PARROT="parrot"
 
 # timeout (in seconds) when stopping process, before killing it.
 PROCESS_STOP_TIMEOUT=10

@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="start"
+category="hemera"
 source "$installDir/scripts/setEnvironment.sh"
 
 CONFIG_KEY="hemera.run"
@@ -83,9 +83,21 @@ done
 if [ "$hemeraMode" = "local" ]; then
   # Defines option to use according to action.
   case "$action" in
-    start)	option="-S";;
-    status)	option="-T";;
+    start)
+      # Initializes Hemera mode.
+      initHemeraMode || exit $ERROR_ENVIRONMENT
+      option="-S"
+    ;;
+
+    status)
+      # Informs about current Hemera mode.
+      hemeraMode=$( getHemeraMode ) || exit $ERROR_ENVIRONMENT
+      writeMessage "Current Hemera mode is '$hemeraMode'"
+      option="-T"
+    ;;
+
     stop)	option="-K";;
+
     h|[?])	errorMessage "Unknown action: $action" $ERROR_BAD_CLI;; 
   esac
 

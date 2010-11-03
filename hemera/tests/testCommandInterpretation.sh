@@ -30,12 +30,21 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 scripstDir="$installDir/scripts"
 category="IOProcessorTests"
+verbose=1
 source "$installDir/scripts/setEnvironment.sh"
 
 #########################
 ## INSTRUCTIONS
 writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/hemera.sh" -K
+
+# Ensures there is no remaining inputs from previous launch
+#  (otherwise the waitUntilAllInputManaged call will reach the timeout).
+cleanNotManagedInput
+
+# Initializes Hemera mode.
+# N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
+initHemeraMode || exit $ERROR_ENVIRONMENT
 
 # Starts inputMonitor.
 category="IOProcessorTests"
@@ -54,7 +63,7 @@ writeMessage "Test 1: starting tests on: Search/Pause/Continue/Stop commands"
 writeMessage "Test 1: launching search"
 echo "recherche intelligence artificielle" > "$h_newInputDir/recognitionResult_test1.txt"
 sleep 7
-writeMessage "Test 1: pause"
+writeMessage "Test 1: pause for 3 seconds"
 echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
 sleep 3
 writeMessage "Test 1: continue"

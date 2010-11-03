@@ -76,8 +76,11 @@ updateStructure "$h_pidDir"
 ## Defines some other global variables.
 h_fileDate=$(date +"%s")
 
+# Hemera mode.
+h_modeFile="$h_workDir/mode.txt"
+
 # inputMonitor/ioProcessor.
-h_inputList="$h_logDir/inputList"
+h_inputList="$h_logDir/inputList.txt"
 
 # processInput
 h_speechRunningLockFile="$h_workDir/runningSpeech.lck"
