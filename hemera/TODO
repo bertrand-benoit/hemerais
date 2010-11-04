@@ -1,11 +1,14 @@
 short term:
  - implement commands interpretor (mode/rechercher ...)
+ - localized some sentences
+ - fixed speech.sh (espeak output format) with sentence "censée répéter l'on"
 
  - create rich enough linguistic and language models
 
 
 middle term:
  - adapt LIUM acoustic models
+ - create a configuration file merger
 
 
 long term:
