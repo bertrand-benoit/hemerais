@@ -43,6 +43,15 @@ additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit $ERROR_CONFIG_VA
 [ ! -z "$additionalBinPath" ] && export PATH=$additionalBinPath:$PATH
 [ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
 
+# Hemera Locale.
+h_locale=$( getConfigValue "hemera.locale" ) || exit $ERROR_CONFIG_VARIOUS
+h_i18nFile="$installDir/locale/hemera-i18n.$h_locale"
+[ ! -f "$h_i18nFile" ] && errorMessage "$h_i18nFile NOT found. You must configure the locale (See $h_configurationFile.sample)." $ERROR_BAD_CLI
+source "$h_i18nFile"
+
+# Updates some internationalized constants.
+HEMERA_SUPPORTED_MODES_I18N=( "$HEMERA_MODE_NORMAL_I18N" "$HEMERA_MODE_SECURITY_I18N" "$HEMERA_MODE_PARROT_I18N" )
+
 # Defines some global variables about directories.
 h_daemonDir="$installDir/scripts/daemon"
 h_logDir=$( getConfigPath "hemera.run.log" ) || exit $ERROR_CONFIG_PATH

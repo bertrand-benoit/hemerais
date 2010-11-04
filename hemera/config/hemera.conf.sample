@@ -27,6 +27,10 @@ hemera.path.bin=""
 # It is needed if you compile some third-party tools without installing them to OS.
 hemera.path.lib=""
 
+# Language of Internationalized Hemera strings.
+# N.B.: a file named hemera-i18n.<hemera.locale> must exist in locale/ sub-directory.
+hemera.locale="fr"
+
 # The Hemera log verbose level among 0=no verbose, 3=highly verbose.
 hemera.log.verbose=0
 

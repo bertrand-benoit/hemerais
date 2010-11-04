@@ -28,6 +28,7 @@
 HEMERA_MODE_NORMAL="normal"
 HEMERA_MODE_SECURITY="security"
 HEMERA_MODE_PARROT="parrot"
+HEMERA_SUPPORTED_MODES=( "$HEMERA_MODE_NORMAL" "$HEMERA_MODE_SECURITY" "$HEMERA_MODE_PARROT" )
 
 # timeout (in seconds) when stopping process, before killing it.
 PROCESS_STOP_TIMEOUT=10
@@ -79,10 +80,8 @@ ERROR_SR_PREPARE=114
 
 ## Core module constants.
 # Each input file name begins with a sub string giving the type of input:
+#  mode_: mode to activate (it is important to NOT take care of mode update asap it is requested, all previous input must be managed priorly)
 #  recordedSpeech_: recorded speech (-> usually needs speech recognition)
 #  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
 #  speech_: test to speech result (-> according to mode, speech recognition can be needed)
-SUPPORTED_TYPE="recordedSpeech recognitionResult speech"
-
-# Defines some constants.
-UNKNOWN_COMMAND="Commande incomprise !"
+SUPPORTED_TYPE="mode recordedSpeech recognitionResult speech"
