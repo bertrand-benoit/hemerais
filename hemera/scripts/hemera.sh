@@ -108,4 +108,7 @@ if [ "$hemeraMode" = "local" ]; then
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
   [ "$soundRecorderActivation" = "localhost" ] && "$h_daemonDir/soundRecorder.sh" $option
+
+  # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
+  rm -f "$h_pidDir"/* >/dev/null 2>&1
 fi
