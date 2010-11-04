@@ -31,25 +31,131 @@ installDir=$( dirname "$currentDir" )
 scripstDir="$installDir/scripts"
 category="IOProcessorTests"
 verbose=1
+
+# Defines priorly log file to avoid erasing while cleaning potential previous launch.
+export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
+
 source "$installDir/scripts/setEnvironment.sh"
+
+# Informs about log file now that functions are available.
+writeMessage "LogFile: $h_logFile"
+
+# Defines some additionals variables.
+speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
+
+#########################
+## FUNCTIONS
+
+# usage: waitForMode <mode> <timeout>
+function waitForMode() {
+  local _mode="$1" _remainingTime=${2:-60}
+  writeMessage "Waiting until mode is changed to $_mode (timeout: $_remainingTime seconds)"
+  while [ 1 ]; do
+    # Checks if there is remaining time.
+    [ $_remainingTime -eq 0 ] && break
+
+    # Checks if the awaited mode is reached.
+    hemeraMode=$( getHemeraMode ) || exit $ERROR_ENVIRONMENT
+    [ "$hemeraMode" = $_mode ] && break
+
+    sleep 1
+    let _remainingTime--
+  done
+}
+
+
+# usage: test1
+# Search/Pause/Continue/Stop tests.
+function test1() {
+  writeMessage "Test 1: starting tests on: Search/Pause/Continue/Stop commands"
+  writeMessage "Test 1: launching search"
+  echo "recherche intelligence artificielle" > "$h_newInputDir/recognitionResult_test1.txt"
+
+  # Waits until this input has been managed, which means it is neither in "new", neiter in "cur" directories.
+  while [ -f "$h_newInputDir/recognitionResult_test1.txt" ] || [ -f "$h_curInputDir/recognitionResult_test1.txt" ]; do
+    sleep 1
+  done
+
+  # From there, the speech starts playing, lets it during few seconds.
+  sleep 3
+
+  writeMessage "Test 1: pause for 3 seconds"
+  echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
+  sleep 3
+  writeMessage "Test 1: continue"
+  echo "continue" > "$h_newInputDir/recognitionResult_test3.txt"
+  sleep 3
+  writeMessage "Test 1: stop"
+  echo "stop" > "$h_newInputDir/recognitionResult_test4.txt"
+
+  waitUntilAllInputManaged
+}
+
+# usage: test2
+# mode tests.
+function test2() {
+  local STRING1="Ceci est un test." STRING2="Perroquet, perroquet, perroquet." STRING2b="dire quelque chose"
+  local STRING3="rechercher la vérité absolue" STRING4="pause" STRING5="continue" STRING6="stop"
+  local STRING7="Les commandes suivantes doivent êtres répétées, et non interprétées"
+  local STRING8="Je ne suis plus censée répéter ce que l'on me dit"
+
+  writeMessage "Test 2: starting mode tests"
+  writeMessage "Test 2: activating parrot mode"
+  echo "mode perroquet" > "$h_newInputDir/recognitionResult_test1.txt"
+  waitForMode "$HEMERA_MODE_PARROT"
+
+  writeMessage "Test 2: must repeat '$STRING1'"
+  echo "$STRING1" > "$h_newInputDir/recognitionResult_test2.txt"
+  sleep 2
+  writeMessage "Test 2: must repeat '$STRING2'"
+  echo "$STRING2" > "$h_newInputDir/recognitionResult_test3.txt"
+  sleep 2
+  writeMessage "Test 2: must repeat '$STRING2b'"
+  echo "$STRING2b" > "$h_newInputDir/recognitionResult_test3b.txt"
+  sleep 2
+
+  writeMessage "Test 2: inform about what must happen ($STRING7 : $STRING3, $STRING4, $STRING5, $STRING6)"
+  "$speechScript" -t "$STRING7" -o "$h_newInputDir/speech_test4.wav"
+  waitUntilAllInputManaged
+  echo "$STRING3" > "$h_newInputDir/recognitionResult_test5.txt"
+  echo "$STRING4" > "$h_newInputDir/recognitionResult_test6.txt"
+  echo "$STRING5" > "$h_newInputDir/recognitionResult_test7.txt"
+  echo "$STRING6" > "$h_newInputDir/recognitionResult_test8.txt"
+  sleep 3
+
+  writeMessage "Test 2: activating normal mode"
+  echo "mode normal" > "$h_newInputDir/recognitionResult_test9.txt"
+  waitForMode "$HEMERA_MODE_NORMAL"
+
+  writeMessage "Test 2: inform about what must happen ($STRING8)"
+  "$speechScript" -t "$STRING8" -o "$h_newInputDir/speech_test10.wav"
+  waitUntilAllInputManaged
+  "$speechScript" -t "Les commandes suivantes doivent produire une erreur, et ne doivent pas êtres répétées" -o "$h_newInputDir/speech_test11.wav"
+  echo "dire" > "$h_newInputDir/recognitionResult_test11b.txt" # must produce an error because this command requires an argument
+  echo "rechercher" > "$h_newInputDir/recognitionResult_test12.txt" # must produce an error because this command requires an argument
+  echo "pause quelque chose" > "$h_newInputDir/recognitionResult_test13.txt" # must produce an error because this command supports NO argument
+  echo "continue quelque chose" > "$h_newInputDir/recognitionResult_test14.txt" # must produce an error because this command supports NO argument
+  echo "stop quelque chose" > "$h_newInputDir/recognitionResult_test15.txt" # must produce an error because this command supports NO argument
+
+  waitUntilAllInputManaged
+}
 
 #########################
 ## INSTRUCTIONS
 writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/hemera.sh" -K
 
-# Ensures there is no remaining inputs from previous launch
-#  (otherwise the waitUntilAllInputManaged call will reach the timeout).
-cleanNotManagedInput
-
-# Initializes Hemera mode.
-# N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
-initHemeraMode || exit $ERROR_ENVIRONMENT
+# Cleans everything, ensuring tests works on new "empty" structure.
+"$scripstDir/makeHemera.sh" clean
 
 # Starts inputMonitor.
 category="IOProcessorTests"
 writeMessage "Test system will start some daemons"
 "$scripstDir/daemon/inputMonitor.sh" -S
+
+# Initializes Hemera mode.
+# N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
+initHemeraMode || exit $ERROR_ENVIRONMENT
 
 # We want all information about input management.
 # export verbose=1
@@ -58,23 +164,14 @@ export noconsole=0
 # Starts IO processor.
 "$scripstDir/daemon/ioprocessor.sh" -S
 
+# Waits a little, everything is well started.
+sleep 2
+
 ## Test 1: Search/Pause/Continue/Stop tests.
-writeMessage "Test 1: starting tests on: Search/Pause/Continue/Stop commands"
-writeMessage "Test 1: launching search"
-echo "recherche intelligence artificielle" > "$h_newInputDir/recognitionResult_test1.txt"
-sleep 7
-writeMessage "Test 1: pause for 3 seconds"
-echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
-sleep 3
-writeMessage "Test 1: continue"
-echo "continue" > "$h_newInputDir/recognitionResult_test3.txt"
-sleep 3
-writeMessage "Test 1: stop"
-echo "stop" > "$h_newInputDir/recognitionResult_test4.txt"
+test1
 
-waitUntilAllInputManaged
-
-# TODO: Mode tests.
+## Test 2: Mode tests.
+test2
 
 # Stops IO processor, and input monitor.
 "$scripstDir/daemon/ioprocessor.sh" -K
