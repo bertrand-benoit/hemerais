@@ -88,7 +88,18 @@ if [ -s "$pidFile" ]; then
   runningProcessPID=$( getPIDFromFile $pidFile )
 
   # Checks if the process still exists.
-  ! isRunningProcess "$pidFile" "$soundPlayerBin" && rm -f "$pidFile" && writeMessage "manageSound process with PID '$runningProcessPID' has completed. Removed corresponding pid file." && exit 0
+  # If it is not the case, remove the PID file, and if an only if the action is not "play", the system exists (because none of
+  #  the other action has sense if the process has completed).
+  if ! isRunningProcess "$pidFile" "$soundPlayerBin"; then
+    rm -f "$pidFile"
+    writeMessage "manageSound process with PID '$runningProcessPID' has completed. Removed corresponding pid file. Requested action is $action."
+
+    # Resets the running process PID because it has completed (otherwise potential play action could not be done).
+    runningProcessPID=""
+
+    # Exists only if NOT play action.
+    [ $action != "play" ] && exit 0
+  fi
 fi
 
 # According to the action.
