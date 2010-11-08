@@ -136,6 +136,8 @@ function test2() {
   echo "pause quelque chose" > "$h_newInputDir/recognitionResult_test13.txt" # must produce an error because this command supports NO argument
   echo "continue quelque chose" > "$h_newInputDir/recognitionResult_test14.txt" # must produce an error because this command supports NO argument
   echo "stop quelque chose" > "$h_newInputDir/recognitionResult_test15.txt" # must produce an error because this command supports NO argument
+  echo "" > "$h_newInputDir/recognitionResult_test16.txt" # must produce an error because it simulates a bad speech recognition
+  echo "commandNonTrouvée" > "$h_newInputDir/recognitionResult_test17.txt" # must produce an error because this command is not found
 
   waitUntilAllInputManaged
 }
