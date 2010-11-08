@@ -1,15 +1,24 @@
 VERSION 0.1.0
 =============
 
+2010-11-08  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * completed Hemera strings internationalized system
+
 2010-11-04  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * implemented Hemera mode system ("normal" and "parrot" mode are fully managed)
 
- * added new say command
-
- * improved robustness of commands (e.g. count of argument) and added speech error message when needed
-
  * prepared Hemera strings internationalized system
+
+ * commands interpretation:
+   - added new SAY command
+
+   - completed management of all commands
+
+   - improved robustness (e.g. count of argument)
+
+   - added speech error message when needed
 
 2010-10-18  Bertrand Benoit <projettwk@users.sourceforge.net>
 
