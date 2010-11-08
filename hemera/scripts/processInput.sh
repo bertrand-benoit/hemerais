@@ -111,112 +111,103 @@ function manageRecognitionResult() {
   # Removes wav file information from input file.
   # If there is finally nothing to say, replace with a default speech.
   sed -i 's/([^)]*)$//' "$_inputPath"
-  sed -i "$( echo "s/^$/${UNKNOWN_COMMAND}/" )" "$_inputPath"
+
+  # Checks if there is still something recognized.
+  if [ $( cat "$_inputPath" |grep -v "^$" |wc -l ) -eq 0 ]; then
+    speechToSay "$NOT_RECOGNIZED_COMMAND_I18N" "$_inputPath"
+    notifyErrInput
+  fi
 
   # Checks if the first word correspond to a command.
+  potentialCommand=$( extractRecognitionResultCommand "$_inputPath" )
   wordsCount=$( extractRecognitionResultWordCount "$_inputPath" )
-  case $( extractRecognitionResultCommand "$_inputPath" ) in
-    mode)
-      # Ensures there is at least but no more than one argument.
-      if [ $wordsCount -ne 2 ]; then
-        # TODO: localize message.
-        speechToSay "La commande mode nécessite un et un seul argument" "$_inputPath"
+
+  # Checks if the first argument matches one of the internationalized command.
+  if matchesOneOf "${MODE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures there is at least but no more than one argument.
+    if [ $wordsCount -ne 2 ]; then
+      speechToSay "$MODE_CMD_BAD_USE_I18N" "$_inputPath"
+      notifyErrInput
+    else
+      writeMessage "$inputString: MODE command detected -> checking requested mode"
+
+      # Gets the requested mode and ensures it is a supported one.
+      requestedMode=$( extractRecognitionResultArgumentN "$_inputPath" 2 )
+      if ! checkAvailableValue "${HEMERA_SUPPORTED_MODES_I18N[*]}" "$requestedMode"; then
+        badMode="$requestedMode"
+        supportedMode=$( echo "${HEMERA_SUPPORTED_MODES_I18N[*]}" |sed -e 's/[ ]/; /g;' )
+        speechToSay "$( eval echo "$MODE_CMD_BAD_MODE_I18N" )" "$_inputPath"
         notifyErrInput
       else
-        writeMessage "$inputString: mode command detected -> checking requested mode"
-
-        # Gets the requested mode and ensures it is a supported one.
-        requestedMode=$( extractRecognitionResultArgumentN "$_inputPath" 2 )
-        if ! checkAvailableValue "${HEMERA_SUPPORTED_MODES_I18N[*]}" "$requestedMode"; then
-          speechToSay "Le mode $requestedMode n'est pas supporté. Les modes suivants le sont : ${HEMERA_SUPPORTED_MODES_I18N[*]}" "$_inputPath"
-          notifyErrInput
-        else
-          # Generates a new input defining the mode -> it is important that existing new/current input are managed before this mode is
-          #  activated.
-          writeMessage "$inputString: mode $requestedMode supported -> preparing mode update"
-          modeToActivate "$requestedMode" "$_inputPath" && notifyDoneInput || notifyErrInput
-        fi
+        # Generates a new input defining the mode -> it is important that existing new/current input are managed before this mode is
+        #  activated.
+        writeMessage "$inputString: mode $requestedMode supported -> preparing mode update"
+        modeToActivate "$requestedMode" "$_inputPath" && notifyDoneInput || notifyErrInput
       fi
-    ;;
-
-    dire)
-      # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-      if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-        # Ensures there is at least one argument.
-        if [ $wordsCount -lt 2 ]; then
-          # TODO: localize message.
-          speechToSay "La commande dire nécessite au moins un argument" "$_inputPath"
-          notifyErrInput
-        else
-          whatToSay=$( extractRecognitionResultArgument "$_inputPath" )
-          writeMessage "$inputString: say command detected -> preparing what to say: $whatToSay"
-          speechToSay "$whatToSay" "$_inputPath" && notifyDoneInput || notifyErrInput
-        fi
+    fi
+  elif matchesOneOf "${SAY_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
+    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
+      # Ensures there is at least one argument.
+      if [ $wordsCount -lt 2 ]; then
+        speechToSay "$SAY_CMD_BAD_USE_I18N" "$_inputPath"
+        notifyErrInput
+      else
+        whatToSay=$( extractRecognitionResultArgument "$_inputPath" )
+        writeMessage "$inputString: SAY command detected -> preparing what to say: $whatToSay"
+        speechToSay "$whatToSay" "$_inputPath" && notifyDoneInput || notifyErrInput
       fi
-    ;;
-
-    recherche|rechercher)
-      # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-      if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-        # Ensures there is at least one argument.
-        if [ $wordsCount -lt 2 ]; then
-          # TODO: localize message.
-          speechToSay "La commande rechercher nécessite au moins un argument" "$_inputPath"
-          notifyErrInput
-        else
-          termToDefine=$( extractRecognitionResultArgument "$_inputPath" )
-          writeMessage "$inputString: search command detected -> starting definition search about: $termToDefine"
-          h_logFile="$h_logFile" noconsole=1 "$speechScript" -d "$termToDefine" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
-        fi
+    fi
+  elif matchesOneOf "${SEARCH_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
+    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
+      # Ensures there is at least one argument.
+      if [ $wordsCount -lt 2 ]; then
+        speechToSay "$SEARCH_CMD_BAD_USE_I18N" "$_inputPath"
+        notifyErrInput
+      else
+        termToDefine=$( extractRecognitionResultArgument "$_inputPath" )
+        writeMessage "$inputString: SEARCH command detected -> starting definition search about: $termToDefine"
+        h_logFile="$h_logFile" noconsole=1 "$speechScript" -d "$termToDefine" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
       fi
-    ;;
-
-    pause)
-      # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-      if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-        # Ensures there is no argument.
-        if [ $wordsCount -ne 1 ]; then
-          # TODO: localize message.
-          speechToSay "La commande pause ne prend pas d'argument" "$_inputPath"
-          notifyErrInput
-        else
-          writeMessage "$inputString: pause command detected -> pausing current speech, if any"
-          "$manageSoundScript" -p "$h_speechRunningPIDFile" -P && notifyDoneInput || notifyErrInput
-        fi
+    fi
+  elif matchesOneOf "${PAUSE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
+    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
+      # Ensures there is no argument.
+      if [ $wordsCount -ne 1 ]; then
+        speechToSay "$PAUSE_CMD_BAD_USE_I18N" "$_inputPath"
+        notifyErrInput
+      else
+        writeMessage "$inputString: PAUSE command detected -> pausing current speech, if any"
+        "$manageSoundScript" -p "$h_speechRunningPIDFile" -P && notifyDoneInput || notifyErrInput
       fi
-    ;;
-
-    continue)
-      # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-      if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-        # Ensures there is no argument.
-        if [ $wordsCount -ne 1 ]; then
-          # TODO: localize message.
-          speechToSay "La commande continue ne prend pas d'argument" "$_inputPath"
-          notifyErrInput
-        else
-          writeMessage "$inputString: continue command detected -> continuing last paused speech, if any"
-          "$manageSoundScript" -p "$h_speechRunningPIDFile" -C && notifyDoneInput || notifyErrInput
-        fi
+    fi
+  elif matchesOneOf "${CONTINUE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
+    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
+      # Ensures there is no argument.
+      if [ $wordsCount -ne 1 ]; then
+        speechToSay "$CONTINUE_CMD_BAD_USE_I18N" "$_inputPath"
+        notifyErrInput
+      else
+        writeMessage "$inputString: CONTINUE command detected -> continuing last paused speech, if any"
+        "$manageSoundScript" -p "$h_speechRunningPIDFile" -C && notifyDoneInput || notifyErrInput
       fi
-    ;;
-
-
-    stop)
-      # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-      if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-        # Ensures there is no argument.
-        if [ $wordsCount -ne 1 ]; then
-          # TODO: localize message.
-          speechToSay "La commande stop ne prend pas d'argument" "$_inputPath"
-          notifyErrInput
-        else
-          writeMessage "$inputString: stop command detected -> stopping last paused speech, if any"
-          "$manageSoundScript" -p "$h_speechRunningPIDFile" -S && notifyDoneInput || notifyErrInput
-        fi
+    fi
+  elif matchesOneOf "${STOP_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
+    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
+      # Ensures there is no argument.
+      if [ $wordsCount -ne 1 ]; then
+        speechToSay "$STOP_CMD_BAD_USE_I18N" "$_inputPath"
+        notifyErrInput
+      else
+        writeMessage "$inputString: STOP command detected -> stopping last paused speech, if any"
+        "$manageSoundScript" -p "$h_speechRunningPIDFile" -S && notifyDoneInput || notifyErrInput
       fi
-    ;;
-  esac
+    fi
+  fi
 
   # If no command has been found:
   #  - in parrot mode, speech recognition must be speech by Hemera
@@ -224,8 +215,8 @@ function manageRecognitionResult() {
   if [ "$hemeraMode" = "$HEMERA_MODE_PARROT" ]; then
     h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
   else
-    errorMessageEnd=$( cat "$_inputPath" |tr -d '\n' )
-    speechToSay "La commande suivante est incomprise : $errorMessageEnd" "$_inputPath"
+    notFoundCommand=$( cat "$_inputPath" |tr -d '\n' )
+    speechToSay "$( eval echo "$NOT_FOUND_COMMAND_I18N" )" "$_inputPath"
     notifyErrInput
   fi
 }
