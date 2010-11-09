@@ -27,7 +27,12 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$currentDir" )
+installDir=$( dirname "$currentDir" )"/../hemera"
+
+# Ensures hemera main project is available in the same root directory.
+[ ! -d "$installDir" ] && echo -e "Unable to find hemera main project ($installDir)" && exit 1
+
+# completes configuration.
 scripstDir="$installDir/scripts"
 category="IOProcessorTests"
 source "$installDir/scripts/setEnvironment.sh"
