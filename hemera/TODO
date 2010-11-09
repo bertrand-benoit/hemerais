@@ -1,5 +1,4 @@
 short term:
- - fix speech.sh (espeak output format) with sentence "censée répéter l'on"
  - update checkConfig.sh to ensure internationalized files are ok; and that some characters are well escaped (like quote)
 
  - extract tests system to a dedicated project
