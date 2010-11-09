@@ -2,13 +2,15 @@
 #
 # Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
 # Version: 1.0
-# Description: creates linguistic and language models.
+# Description: creates lexical and language models.
 
 #########################
 ## CONFIGURATION
-
 currentDir=$( dirname "$( which $0 )" )
 binDir="$currentDir/bin"
+
+# Checks if the --copy option has been given.
+[ $# -ge 1 ] && [ "$1" = "--copy" ] && copyModel=1 || copyModel=0
 
 # Ensures various tools are installed.
 echo -ne "Checking SRILM availability ... "
@@ -53,6 +55,31 @@ lexicalWordPhones="$buildDir/wordsPhones.tmp.utf8"
 lexicalWordDic="data/hemera_dic.utf8"
 
 #########################
+## FUNCTIONS
+
+# usage: manageModelCopyToMainProject <model file> <destination dir>
+# Checks if the --copy has been used, inform about it if it is not the case.
+function manageModelCopyToMainProject() {
+  local _sourceFile="$1" _destinationFile="$2"
+  # Manages potential models copy.
+  if [ $copyModel -eq 0 ]; then
+    # Informs about the option (at the end instead of the beginning otherwise the user may not see the information).
+    echo -e "\nYou can use the --copy option for this script to automagically copy successfully created models to hemera main project (which must be in the same root directory), in corresponding sub-directories."
+  else
+    # Ensures Hemera main project is available.
+    hemeraMainDir=$( dirname "$currentDir" )"/hemera"
+    [ ! -d "$hemeraMainDir" ] && echo -e "Unable to find hemera main project ($hemeraMainDir)" && return 1
+
+    # Ensures the destination file does not already exist.
+    destinationFilePath="$hemeraMainDir/$_destinationFile/"$( basename "$_sourceFile" )
+    echo -ne "Manging copy of model $_sourceFile ... "
+    [ -f "$destinationFilePath" ] && echo -ne "creating backup of existing model ... " && mv -f "$destinationFilePath" "$destinationFilePath".bak
+    echo -ne "copying ... " && cp -f "$_sourceFile" "$destinationFilePath" && echo "done (as $destinationFilePath)" && return 0
+    return 1
+  fi
+}
+
+#########################
 ## INSTRUCTIONS
 # sphinx3_lm_convert needs relative path, so moves to the current directory.
 cd "$currentDir"
@@ -79,6 +106,8 @@ echo -e "\nConverting to DMP format ($lmFile)"
 "$sphinx3Dir/src/programs/sphinx3_lm_convert" -i "$lmFileTmpSortedDummy" -ienc utf8 -o "$lmFile" -oenc utf8 || exit 1
 
 echo -e "\n-> Successfully created language model: $lmFile"
+manageModelCopyToMainProject "$lmFile" "thirdParty/speechRecognition/data/models/language"
+
 
 echo -e "\n***** Linguistic model *****"
 # IMPORTANT: lia works in ISO8859-1, not in UTF-8
@@ -94,4 +123,5 @@ $( iconv -f ISO8859-1 -t utf8 $lexicalWordPhonesTmp > "$lexicalWordPhones" ) || 
 echo -e "Creating words dic for sphinx3 ($lexicalWordDic)"
 $( "$currentDir"/convertToSphinx3Format.pl "$lexicalWordPhones" |sort -u > "$lexicalWordDic" ) || exit 1
 
-echo -e "\n-> Successfully created linguistic model: $lexicalWordDic"
+echo -e "\n-> Successfully created lexical model: $lexicalWordDic"
+manageModelCopyToMainProject "$lexicalWordDic" "thirdParty/speechRecognition/data/models/lexical"
