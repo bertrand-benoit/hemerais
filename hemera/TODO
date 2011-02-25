@@ -1,6 +1,4 @@
 short term:
- - update checkConfig.sh to ensure internationalized files are ok; and that some characters are well escaped (like quote)
-
  - create rich enough linguistic and language models
 
 middle term:

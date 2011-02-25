@@ -1,6 +1,10 @@
 VERSION 0.1.0
 =============
 
+2011-02-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * updated checkConfig.sh to ensure internationalized files are ok (special characters are well escaped, i18n elements are well defined ...)
+
 2010-11-08  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * completed Hemera strings internationalized system

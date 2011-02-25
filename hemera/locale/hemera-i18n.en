@@ -19,19 +19,19 @@
 # Fifth Floor, Boston, MA 02110-1301  USA
 #
 # Version: 1.0
-# Description: French Internationalized Hemera strings.
+# Description: English Internationalized Hemera strings.
 #
 # This script must NOT be directly called.
 
 ## General constants
 ## Hemera modes.
 HEMERA_MODE_NORMAL_I18N="normal"
-HEMERA_MODE_SECURITY_I18N="sécurité"
-HEMERA_MODE_PARROT_I18N="perroquet"
+HEMERA_MODE_SECURITY_I18N="security"
+HEMERA_MODE_PARROT_I18N="parrot"
 
 ## Commands.
 # Internationalized command patterns.
-# Each command patterns must fit the syntax (take care of the space after/before parenthesis): ( "<pattern1>" ["<pattern2>" ... "<patternN>"] )
+# Each command must fit the syntax (take care of the space after/before parenthesis): ( "<pattern1>" ["<pattern2>" ... "<patternN>"] )
 # These patterns will be directly used with =~ GNU/Bash binary operator;
 #  so, corresponding syntax must be extended regular expression like in regex3.
 # Each pattern must correspond to only ONE word, characters with accent are allowed.
@@ -40,25 +40,25 @@ HEMERA_MODE_PARROT_I18N="perroquet"
 # e.g. for the command SAY, let's say we want "say" and something beginning by "rep" (like repeat), the format will so be:
 # ( "say" "rep.*" )
 MODE_CMD_PATTERN_I18N=( "mode" )
-SAY_CMD_PATTERN_I18N=( "dire" "dis" "répète" "répéter" )
-SEARCH_CMD_PATTERN_I18N=( "recherche" "rechercher" )
-PAUSE_CMD_PATTERN_I18N=( "pause" "attend" "attendre" )
-CONTINUE_CMD_PATTERN_I18N=( "continue" "continuer" "poursuivre" )
-STOP_CMD_PATTERN_I18N=( "arrêt" "arrêter" "stop" )
+SAY_CMD_PATTERN_I18N=( "say" "repeat" )
+SEARCH_CMD_PATTERN_I18N=( "search" )
+PAUSE_CMD_PATTERN_I18N=( "pause" "wait" )
+CONTINUE_CMD_PATTERN_I18N=( "continue" )
+STOP_CMD_PATTERN_I18N=( "stop" )
 
 # Information following successfull command recognition.
-MODE_CMD_BAD_USE_I18N="Activation du mode"
+MODE_CMD_BAD_USE_I18N="Activated mode"
 
 # Command recognition error or bad use.
 # Sometimes, variables are specified in strings, they will be replaced by corresponding value; in this case (and ONLY this one)
 #  all following characters must be escaped: $'
-MODE_CMD_BAD_USE_I18N="La commande mode nécessite un et un seul argument"
-MODE_CMD_BAD_MODE_I18N="Le mode \$badMode n\'est pas supporté. Les modes suivants le sont : \$supportedMode"
-SAY_CMD_BAD_USE_I18N="La commande dire nécessite au moins un argument"
-SEARCH_CMD_BAD_USE_I18N="La commande rechercher nécessite au moins un argument"
-PAUSE_CMD_BAD_USE_I18N="La commande pause ne prend pas d'argument"
-CONTINUE_CMD_BAD_USE_I18N="La commande continue ne prend pas d'argument"
-STOP_CMD_BAD_USE_I18N="La commande stop ne prend pas d'argument"
+MODE_CMD_BAD_USE_I18N="Mode command requires only one argument"
+MODE_CMD_BAD_MODE_I18N="Mode \$badMode is not supported. Allowed modes are: \$supportedMode"
+SAY_CMD_BAD_USE_I18N="Say command requires at least one argument"
+SEARCH_CMD_BAD_USE_I18N="Search command requires at least one argument"
+PAUSE_CMD_BAD_USE_I18N="Pause command doesn't require argument"
+CONTINUE_CMD_BAD_USE_I18N="Continue command does not require argument"
+STOP_CMD_BAD_USE_I18N="Stop command does not require argument"
 
-NOT_RECOGNIZED_COMMAND_I18N="Commande non reconnue !"
-NOT_FOUND_COMMAND_I18N="La commande suivante est incomprise : \$notFoundCommand"
+NOT_RECOGNIZED_COMMAND_I18N="Command not recognized !"
+NOT_FOUND_COMMAND_I18N="Command not found : \$notFoundCommand"
