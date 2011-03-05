@@ -30,6 +30,8 @@
 [ -z "$installDir" ] && echo -e "This script must NOT be directly called. installDir variable not defined" >&2 && exit 1
 source "$installDir/scripts/utilities.sh"
 
+checkEnvironment || $ERROR_ENVIRONMENT
+
 # Updates configuration.
 h_libDir="$installDir/lib"
 

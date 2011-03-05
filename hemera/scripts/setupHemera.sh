@@ -36,6 +36,7 @@ h_configurationFile="$installDir/config/hemera.conf"
 ## INSTRUCTIONS
 # Ensures user is root.
 [ "$( whoami )" != "root" ] && errorMessage "Setup must be launched by root superuser." $ERROR_ENVIRONMENT
+checkEnvironment || $ERROR_ENVIRONMENT
 
 writeMessage "Defined installDir=$installDir"
 
