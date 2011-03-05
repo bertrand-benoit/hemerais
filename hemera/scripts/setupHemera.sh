@@ -28,7 +28,14 @@ installDir=$( dirname "$currentDir" )
 source "$installDir/scripts/utilities.sh"
 
 category="setup"
-sysconfigFile="/etc/sysconfig/hemera"
+if [ -d "/etc/sysconfig" ]; then
+  sysconfigFile="/etc/sysconfig/hemera"
+elif [ -d "/etc/default" ]; then
+  sysconfigFile="/etc/default/hemera"
+else
+  errorMessage "Unable to find system config directory (/etc/sysconfig and /etc/default not found" $ERROR_ENVIRONMENT
+fi
+
 profileFile="/etc/profile.d/hemera.sh"
 h_configurationFile="$installDir/config/hemera.conf"
 
