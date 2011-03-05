@@ -98,7 +98,8 @@ hemera.core.speech.mode="espeak+mbrola"
 hemera.core.speech.tool.path="espeak"
 # espeak options samples:
 # with espeak mode: -s 130 --stdout
-# with espeak+mbrola mode: -p 45 -s 150 -zqx
+# with espeak+mbrola mode: -p 45 -s 150 -zqx [--pho]
+# N.B.: in recent version of espeak, the --pho option must be used to output in mbrola format
 hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
 
 # The sound player (path and options).

@@ -73,7 +73,7 @@ function usage() {
 # usage: startInteractiveMode
 function startInteractiveMode() {
   while read line; do
-    speechSentence "$line"
+    speechSentence "$line" || exit $ERROR_SPEECH
   done
 }
 

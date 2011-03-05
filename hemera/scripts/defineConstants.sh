@@ -78,6 +78,9 @@ ERROR_SR_ANALYZE=113
 # Speech Recognition core module, error while preparing speech file.
 ERROR_SR_PREPARE=114
 
+# Speech core module, error while preparing speech file.
+ERROR_SPEECH=115
+
 ## Core module constants.
 # Each input file name begins with a sub string giving the type of input:
 #  mode_: mode to activate (it is important to NOT take care of mode update asap it is requested, all previous input must be managed priorly)
