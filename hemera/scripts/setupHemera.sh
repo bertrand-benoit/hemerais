@@ -72,7 +72,7 @@ if [ -f "$sysconfigFile" ]; then
   source "$sysconfigFile"
 
   # Updates the path.
-  source "$installDir/scripts/updatePath.sh"
+  source "\$installDir/scripts/updatePath.sh"
 fi
 End-of-Message
   chmod +x "$profileFile"
