@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
-# Copyright (C) 2010 Bertrand Benoit <projettwk@users.sourceforge.net>
+# Copyright (C) 2010-2011 Bertrand Benoit <projettwk@users.sourceforge.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$currentDir" )"/../hemera"
+installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # Ensures hemera main project is available in the same root directory.
 [ ! -d "$installDir" ] && echo -e "Unable to find hemera main project ($installDir)" && exit 1
