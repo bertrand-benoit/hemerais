@@ -55,9 +55,13 @@ function showScriptDescription() {
 ## INSTRUCTIONS
 echo -e "Hemera - Intelligent System - Help"
 echo -e "Online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page"
+echo -e "Quick Start: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Hemera_Quick_Start"
+echo -e "Troubleshooting: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Troubleshooting"
+echo -e "Help Forum: https://sourceforge.net/projects/hemerais/forums/forum/1202771"
 echo -e "Configuration file: config/hemera.conf"
 echo -e "Check your configuration: scripts/checkConfig.sh"
 echo -e "See README and INSTALL files."
+echo -e "In case of problem with a command, check the generated log which contains lots of information."
 echo -e "\nAvailable tools"
 
 # Looks for scripts directory everywhere.
