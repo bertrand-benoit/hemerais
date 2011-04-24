@@ -101,7 +101,7 @@
 
         <Footer><![CDATA[<center>Hemera - Intelligent System<br/>Javadoc</center>]]></Footer>
 
-        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010&nbsp;&nbsp;<a href="mailto:projettwk@users.sourceforge.net">Bertrand Benoit</a>, <a href="https://sourceforge.net/projects/hemerais/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
+        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010-2011&nbsp;&nbsp;<a href="mailto:projettwk@users.sourceforge.net">Bertrand Benoit</a>, <a href="https://sourceforge.net/projects/hemerais/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
     </javadoc>
   </target>
 
