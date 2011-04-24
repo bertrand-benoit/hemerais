@@ -1,0 +1,2 @@
+This project includes some Third-party tools, likes Struts 2.
+Corresponding licenses can be found in the root directory of this project.
