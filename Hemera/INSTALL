@@ -3,7 +3,7 @@ Installation
 ------------
  - let's call [HEMERA_ROOT_PATH] the directory where hemera project will be installed
  - get the source code
-svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/hemera [HEMERA_ROOT_PATH]/Hemera
+svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/Hemera [HEMERA_ROOT_PATH]/Hemera
 
 Setup
 -----
