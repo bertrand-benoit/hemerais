@@ -22,7 +22,7 @@
 <html>
  <head>
   <title>Hemera Web Service module</title>
-   <h1>Hemera Web Service module</h1>
+   <h1>Hemera Web Service module (jsp version)</h1>
  </head>
 
  <body>

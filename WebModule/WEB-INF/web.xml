@@ -24,7 +24,16 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd">
 
 <web-app>
-  
+  <filter>
+    <filter-name>struts2</filter-name>
+    <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>struts2</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <display-name>Hemera Web Service module</display-name>
     
     <context-param>
@@ -38,9 +47,9 @@
   </error-page>
   
   <welcome-file-list>
-      <welcome-file>pages/index.html</welcome-file>
+      <welcome-file>index</welcome-file>
   </welcome-file-list>
-  
+<!--  
   <servlet>
     <servlet-name>HemeraConfig</servlet-name>
     <servlet-class>org.hemera.ConfigServlet</servlet-class>
@@ -50,7 +59,7 @@
     <servlet-name>HemeraConfig</servlet-name>
     <url-pattern>/config</url-pattern>
   </servlet-mapping>
-
+-->
     <session-config>
       <session-timeout>5</session-timeout>
     </session-config>

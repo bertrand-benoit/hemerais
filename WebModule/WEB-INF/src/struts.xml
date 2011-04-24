@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
   Copyright (C) 2010-2011 Bertrand Benoit <projettwk@users.sourceforge.net>
@@ -17,18 +18,30 @@
   or write to the Free Software Foundation,Inc., 51 Franklin Street,
   Fifth Floor, Boston, MA 02110-1301  USA 
 -->
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
- <head>
-  <title>Hemera Web Service module</title>
-   <h1>Hemera Web Service module</h1>
- </head>
+<struts>
 
- <body>
-  <a href="configuration">Hemera Configuration</a><br />
-  <a href="processing">See Hemera processing systems</a><br />
-  <a href="visual">See Visual Representation of Hemera</a><br />
-  <a href="resources">System resources usage</a><br />
- </body>
-</html>
+	<constant name="struts.devMode" value="true" />
+
+	<package name="org.hemera" extends="struts-default">
+        
+        <!-- Redirect on index, if no action is specified. -->
+        <action name="">
+			<result>/pages/index.jsp</result>
+		</action>
+
+		<action name="index">
+			<result>/pages/index.jsp</result>
+		</action>
+		
+				
+        <action name="configuration" class="org.hemera.ConfigurationAction" method="execute">
+          <result name="success">/pages/configuration.jsp</result>
+        </action>
+
+	</package>
+
+</struts>
