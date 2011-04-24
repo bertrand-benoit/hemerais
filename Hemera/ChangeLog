@@ -1,5 +1,31 @@
+VERSION 0.2.0
+=============
+
+2011-04-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * Web module: implemented first version (ready for Tomcat)
+
+ * renamed Hemera, Samples and Tests repository projects for better methodology (make difference between main project and remote folder containing some projects)
+
+2011-04-20  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * help.sh: added lots of additional information
+
+
 VERSION 0.1.0
 =============
+
+2011-04-08  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * released 0.1 version
+
+2011-03-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved robustneed of speech core module (in case of espeak/mbrola error)
+
+ * added support to Debian-like GNU/Linux distribution
+
+ * setupHemera.sh: fixed created profile file
 
 2011-02-25  Bertrand Benoit <projettwk@users.sourceforge.net>
 
