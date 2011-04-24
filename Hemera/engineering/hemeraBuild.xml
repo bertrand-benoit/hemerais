@@ -26,14 +26,6 @@
   <property name="lib" value="../lib"/>
   <property name="defaultRun" value="../run"/>
 
-        <!-- Defines the specific path containing among other things the jar library. -->
-<!--        <path id="project.class.path">
-                 Needed for some java specific library
-                <fileset dir="${env.JDK_PATH}/jre/lib/">
-                        <include name="*.jar"/>
-                </fileset>
-        </path>-->
-
 <!-- Initialization -->
   <target name="init">
     <mkdir dir="${doc}"/>
