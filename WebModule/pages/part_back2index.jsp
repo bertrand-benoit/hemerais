@@ -25,6 +25,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
   <br />
+  <hr />
   <a href="<s:url action="index"/>">
     <s:text name="menu.back2index"/>
   </a>

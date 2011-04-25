@@ -25,6 +25,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
  <head>
+   <link rel="stylesheet" href="pages/styles/default.css" media="screen" type="text/css" />
    <title><s:text name="hemera.title"/></title>
    <h1><s:text name="hemera.title"/></h1>
  </head>
