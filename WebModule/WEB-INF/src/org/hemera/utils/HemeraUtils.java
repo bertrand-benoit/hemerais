@@ -20,10 +20,15 @@
 
 package org.hemera.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -52,6 +57,8 @@ public class HemeraUtils {
     /** Hemera properties file. */
     static final String CONFIGURATION_FILE_SUBPATH = "config/hemera.conf";
     static Properties HEMERA_CONFIGURATION = null;
+
+    static final String CHANGELOG_FILE_SUBPATH = "ChangeLog";
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -121,16 +128,16 @@ public class HemeraUtils {
 
         // Opens the configuration file.
         final String installDir = getInstallDir();
-        final File configuratioFile = new File(installDir, CONFIGURATION_FILE_SUBPATH);
+        final File configurationFile = new File(installDir, CONFIGURATION_FILE_SUBPATH);
         final Properties properties = new OrderedProperties();
 
         // Adds some information.
         properties.put("hemera.installDir", installDir);
 
-        logger.info("Opening configuration file '" + configuratioFile + "'.");
+        logger.info("Opening configuration file '" + configurationFile + "'.");
         FileInputStream inputStream;
         try {
-            inputStream = new FileInputStream(configuratioFile);
+            inputStream = new FileInputStream(configurationFile);
         }
         catch (final FileNotFoundException e) {
             throw new IllegalStateException("Unable to find Hemera configuration file '" + CONFIGURATION_FILE_SUBPATH + "'. You must configure Hemera first.", e);
@@ -156,6 +163,70 @@ public class HemeraUtils {
         logger.info("Hemera configuration file successfully loaded.");
         HEMERA_CONFIGURATION = properties;
         return HEMERA_CONFIGURATION;
+    }
+
+    /**
+     * @param path
+     *            the path of the file whose contents is wanted.
+     * @param formatSpaces
+     *            <code>true</code> if spaces must be formatted as HTML spaces (&nbsp;), <code>false</code> otherwise.
+     * @param formatEmails
+     *            <code>true</code> if e-mail adresses must be formatted (mailto ...), <code>false</code> otherwise.
+     * @return the contents of the file corresponding to specified path.
+     */
+    public static final Collection<String> getFileContent(final String path, final boolean formatSpaces, final boolean formatEmails) {
+        final List<String> fileContents = new ArrayList<String>(64);
+        logger.info("Opening file '" + path + "'.");
+        FileInputStream inputStream;
+        try {
+            inputStream = new FileInputStream(path);
+        }
+        catch (final FileNotFoundException e) {
+            throw new IllegalStateException("Unable to find specified file '" + path + "'.", e);
+        }
+
+        // Loads configuration as properties.
+        try {
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                // N.B.: in case email format and space format is activated, we do NOT want that created
+                //  <a> link is broken when formatting spaces just after; using temporary a special characters sequence
+                //  which will be replaced just after space formatting.
+                if (formatEmails && line.contains("@"))
+                    line = line.replaceAll("[ ]([a-zA-Z][a-zA-Z ]*)[ ]<([a-zA-Z0-9.-]*@[a-zA-Z0-9.-]*)>", " <a€£href='mailto:$2'>$1</a> ");
+
+                if (formatSpaces)
+                    line = line.replaceAll(" ", "&nbsp;");
+
+                if (formatEmails)
+                    line = line.replaceAll("€£", " ");
+
+                fileContents.add(line);
+            }
+        }
+        catch (final Exception e) {
+            throw new IllegalStateException("Unable to read specified file '" + path + "'.", e);
+        }
+        finally {
+            try {
+                inputStream.close();
+            }
+            catch (final IOException e) {
+                throw new IllegalStateException("Unable to close specified file '" + path + "'.", e);
+            }
+        }
+
+        logger.info("Successfully loaded file '" + path + "'.");
+        return fileContents;
+    }
+
+    /**
+     * @return the contents of changeLog.
+     */
+    public static final Collection<String> getChangeLogContents() {
+        return getFileContent(getInstallDir() + "/" + CHANGELOG_FILE_SUBPATH, true, true);
     }
 
 }

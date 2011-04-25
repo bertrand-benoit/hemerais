@@ -45,6 +45,10 @@
     <action name="configuration" class="org.hemera.ConfigurationAction" method="execute">
       <result>/pages/configuration.jsp</result>
     </action>
+        
+    <action name="changelog" class="org.hemera.ChangeLogAction" method="execute">
+      <result>/pages/changelog.jsp</result>
+    </action>
 
 	</package>
 
