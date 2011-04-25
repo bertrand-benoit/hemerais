@@ -84,6 +84,11 @@
         <classpath refid="classpath"/>
         <compilerarg compiler="org.eclipse.jdt.core.JDTCompilerAdapter" line="-warn:deprecation -g -verbose -1.6"/>
     </javac>
+
+  	<!-- Copies resources files. -->
+  	<copy todir="${bin}">
+  	  <fileset dir="${src}" defaultexcludes="true" includes="**/*.properties,**/*.xml" />
+  	</copy>
   </target>
 
   <target name="build" depends="init,compilation" description="Generates war file">
@@ -91,7 +96,7 @@
     <jar destfile="${warFile}"
       index="false"
       filesonly="false">
-        <fileset dir="${root}" defaultexcludes="true" includes="WEB-INF/**,pages/**"/>
+        <fileset dir="${root}" defaultexcludes="true" includes="WEB-INF/**,pages/**" excludes="WEB-INF/src/**" />
     </jar>
   </target>
 
