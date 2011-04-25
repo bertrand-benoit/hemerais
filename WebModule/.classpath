@@ -17,5 +17,8 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/ognl-3.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/struts2-core-2.2.1.1.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/xwork-core-2.2.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/bsquare/programmation/projects/hemera/Hemera/thirdParty/webServices/bin/tomcat/lib/tomcat-api.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/struts2-dojo-plugin-2.2.1.1.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
