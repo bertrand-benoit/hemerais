@@ -24,6 +24,7 @@ html {
 	font-size: 100%;
 }
 
+/********************** Configuration page **********************/
 #properties {
 	border-spacing: 3px;
 	width: 90%;
@@ -36,4 +37,8 @@ html {
 
 tr.propertiesTR1 {
 	background-color: lightgrey;
+}
+
+tr.propertiesTR2 {
+
 }

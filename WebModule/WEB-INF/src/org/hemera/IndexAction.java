@@ -24,12 +24,12 @@ import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * Hemera - Intelligent System
- * Web Service config controller.
+ * Web Service index controller.
  * 
  * @author Bertrand Benoit <projettwk@users.sourceforge.net>
  * @since 0.2
  */
-public class ConfigurationAction extends ActionSupport {
+public final class IndexAction extends ActionSupport {
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -37,7 +37,7 @@ public class ConfigurationAction extends ActionSupport {
     /*                                                                                      */
     /****************************************************************************************/
 
-    private static final long serialVersionUID = -6739146819275708950L;
+    private static final long serialVersionUID = 1405439634571138061L;
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -45,7 +45,7 @@ public class ConfigurationAction extends ActionSupport {
     /*                                                                                      */
     /****************************************************************************************/
 
-    private ConfigurationModel configurationModel;
+    private IndexModel indexModel;
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -58,7 +58,7 @@ public class ConfigurationAction extends ActionSupport {
      */
     @Override
     public final String execute() throws Exception {
-        configurationModel = new ConfigurationModel();
+        indexModel = new IndexModel();
         return SUCCESS;
     }
 
@@ -69,16 +69,10 @@ public class ConfigurationAction extends ActionSupport {
     /****************************************************************************************/
 
     /**
-     * @return the configuration model.
+     * @return the indexModel
      */
-    public final ConfigurationModel getConfigurationModel() {
-        return configurationModel;
+    public final IndexModel getIndexModel() {
+        return indexModel;
     }
-
-    /****************************************************************************************/
-    /*                                                                                      */
-    /* Specific methods                                                                     */
-    /*                                                                                      */
-    /****************************************************************************************/
 
 }

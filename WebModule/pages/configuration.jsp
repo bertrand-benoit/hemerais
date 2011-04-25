@@ -25,26 +25,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
-  <link rel="stylesheet" href="pages/styles/default.css" media="screen" type="text/css" />  
-  <title>Hemera Web Service module - Configuration</title>
-   <h1>Hemera Web Service module - Configuration</h1>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
+   <link rel="stylesheet" href="pages/styles/default.css" media="screen" type="text/css" />  
+   <title><s:text name="hemera.title"/> - <s:text name="menu.configuration"/></title>
+   <h1><s:text name="hemera.title"/> - <s:text name="menu.configuration"/></h1>
  </head>
 
  <body>
-  <s:property value="configuration.installDir" /><br /><br />
+  <s:property value="configurationModel.installDir" /><br /><br />
   
   <table id="properties">
-    <s:iterator value="configuration.propertySet" status="propertyStatus">      
+    <s:iterator value="configurationModel.propertySet" status="propertyStatus">      
      <tr class="<s:if test="#propertyStatus.odd == true ">propertiesTR1</s:if><s:else>propertiesTR2</s:else>">
        <td><s:property value="key"/></td>
        <td><s:property value="value"/></td>
      </tr>   
     </s:iterator>
-  </table> 
-  
+  </table>
 
-  <br /><br />
-  <a href="<s:url action="index"/>">Back to Hemera Index</a>
+  <s:include value="/pages/part_back2index.jsp"/>
+  <s:include value="/pages/part_languages_select.jsp"/>
  </body>
 </html>

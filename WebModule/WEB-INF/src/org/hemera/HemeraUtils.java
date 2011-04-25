@@ -26,6 +26,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 /**
  * Hemera - Intelligent System
  * Utilities.
@@ -40,6 +42,8 @@ public class HemeraUtils {
     /* Constants */
     /*                                                                                      */
     /****************************************************************************************/
+
+    private static final Logger logger = Logger.getLogger("org.hemera.web");
 
     /** Hemera sysconfig file and installation directory. */
     static final String SYSCONFIG_FILE = "/etc/sysconfig/hemera";
@@ -68,19 +72,23 @@ public class HemeraUtils {
         FileInputStream inputStream;
         try {
             inputStream = new FileInputStream(SYSCONFIG_FILE);
-        } catch (final FileNotFoundException e) {
+        }
+        catch (final FileNotFoundException e) {
             throw new IllegalStateException("Unable to find Hemera sysconfig file '" + SYSCONFIG_FILE + "'. You must setup Hemera first.", e);
         }
 
         // Loads sysconfig as properties.
         try {
             properties.load(inputStream);
-        } catch (final Exception e) {
+        }
+        catch (final Exception e) {
             throw new IllegalStateException("Unable to load Hemera sysconfig file '" + SYSCONFIG_FILE + "'.", e);
-        } finally {
+        }
+        finally {
             try {
                 inputStream.close();
-            } catch (final IOException e) {
+            }
+            catch (final IOException e) {
                 throw new IllegalStateException("Unable to close Hemera sysconfig file '" + SYSCONFIG_FILE + "'.", e);
             }
         }
@@ -88,6 +96,13 @@ public class HemeraUtils {
         // Finally registers the Hemera installation directory.
         INSTALL_DIR = properties.getProperty("installDir").replaceAll("\"", "");
         return INSTALL_DIR;
+    }
+
+    /**
+     * @return Hemera ChangeLog file path.
+     */
+    public static final String getChangeLogFilePath() {
+        return getInstallDir() + "/ChangeLog";
     }
 
     /**
@@ -102,21 +117,25 @@ public class HemeraUtils {
         final String installDir = getInstallDir();
         final Properties properties = new Properties();
         FileInputStream inputStream;
-        try { // /home/bsquare/programmation/projects/hemera/Hemera"/config/hemera.conf
+        try {
             inputStream = new FileInputStream(new File(installDir, CONFIGURATION_FILE_SUBPATH));
-        } catch (final FileNotFoundException e) {
+        }
+        catch (final FileNotFoundException e) {
             throw new IllegalStateException("Unable to find Hemera configuration file '" + CONFIGURATION_FILE_SUBPATH + "'. You must configure Hemera first.", e);
         }
 
         // Loads configuration as properties.
         try {
             properties.load(inputStream);
-        } catch (final Exception e) {
+        }
+        catch (final Exception e) {
             throw new IllegalStateException("Unable to load Hemera configuration file '" + CONFIGURATION_FILE_SUBPATH + "'.", e);
-        } finally {
+        }
+        finally {
             try {
                 inputStream.close();
-            } catch (final IOException e) {
+            }
+            catch (final IOException e) {
                 throw new IllegalStateException("Unable to close Hemera configuration file '" + CONFIGURATION_FILE_SUBPATH + "'.", e);
             }
         }

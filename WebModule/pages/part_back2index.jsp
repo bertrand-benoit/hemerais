@@ -15,7 +15,7 @@
   You should have received a copy of the GNU General Public License
   along with this program; if not, see http://www.gnu.org/licenses
   or write to the Free Software Foundation,Inc., 51 Franklin Street,
-  Fifth Floor, Boston, MA 02110-1301  USA 
+  Fifth Floor, Boston, MA 02110-1301  USA   
 -->
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -23,24 +23,8 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
- <head>
-   <title><s:text name="hemera.title"/></title>
-   <h1><s:text name="hemera.title"/></h1>
- </head>
 
- <body>
-    <ul> 
-      <s:iterator var="menuItem" value="indexModel.menu">            
-        <s:url id="itemURL" action="%{#menuItem}" />      
-        <li>
-         <s:a href="%{itemURL}">
-          <s:text name="menu.%{#menuItem}"/>
-         </s:a>
-        </li><br />
-      </s:iterator>
-    </ul>
-    
-    <s:include value="/pages/part_languages_select.jsp"/>
- </body>
-</html>
+  <br />
+  <a href="<s:url action="index"/>">
+    <s:text name="menu.back2index"/>
+  </a>

@@ -26,21 +26,25 @@
 
 	<constant name="struts.devMode" value="true" />
 
-	<package name="org.hemera" extends="struts-default">
-        
-        <!-- Redirect on index, if no action is specified. -->
-        <action name="">
-			<result>/pages/index.jsp</result>
-		</action>
+  <!-- Defines the global i18n messages file. -->
+  <constant name="struts.locale" value="en" />
+  <constant name="struts.custom.i18n.resources" value="messages" />
+  <constant name="struts.i18n.encoding" value="UTF-8" />
 
-		<action name="index">
-			<result>/pages/index.jsp</result>
-		</action>
-		
+	<package name="org.hemera" namespace="/" extends="struts-default">
+        
+    <!-- Redirect on index, if no action is specified. -->
+    <action name="" class="org.hemera.IndexAction" method="execute">
+      <result>/pages/index.jsp</result>
+    </action>
+    
+    <action name="index" class="org.hemera.IndexAction" method="execute">
+      <result>/pages/index.jsp</result>
+    </action>
 				
-        <action name="configuration" class="org.hemera.ConfigurationAction" method="execute">
-          <result name="success">/pages/configuration.jsp</result>
-        </action>
+    <action name="configuration" class="org.hemera.ConfigurationAction" method="execute">
+      <result>/pages/configuration.jsp</result>
+    </action>
 
 	</package>
 

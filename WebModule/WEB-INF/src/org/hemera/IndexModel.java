@@ -20,16 +20,17 @@
 
 package org.hemera;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Hemera - Intelligent System
- * Web Service config controller.
+ * Web Service index model.
  * 
  * @author Bertrand Benoit <projettwk@users.sourceforge.net>
  * @since 0.2
  */
-public class ConfigurationAction extends ActionSupport {
+public class IndexModel {
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -37,7 +38,7 @@ public class ConfigurationAction extends ActionSupport {
     /*                                                                                      */
     /****************************************************************************************/
 
-    private static final long serialVersionUID = -6739146819275708950L;
+    private final Collection<String> menu;
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -45,21 +46,20 @@ public class ConfigurationAction extends ActionSupport {
     /*                                                                                      */
     /****************************************************************************************/
 
-    private ConfigurationModel configurationModel;
-
     /****************************************************************************************/
     /*                                                                                      */
-    /* Implementation of ActionSupport                                                      */
+    /* Constructors                                                                         */
     /*                                                                                      */
     /****************************************************************************************/
 
-    /**
-     * @see com.opensymphony.xwork2.ActionSupport#execute()
-     */
-    @Override
-    public final String execute() throws Exception {
-        configurationModel = new ConfigurationModel();
-        return SUCCESS;
+    public IndexModel() {
+        menu = new ArrayList<String>(8);
+        menu.add("configuration");
+        menu.add("processing");
+        menu.add("visual");
+        menu.add("resources");
+        menu.add("changelog");
+        menu.add("licenses");
     }
 
     /****************************************************************************************/
@@ -69,10 +69,10 @@ public class ConfigurationAction extends ActionSupport {
     /****************************************************************************************/
 
     /**
-     * @return the configuration model.
+     * @return the menu
      */
-    public final ConfigurationModel getConfigurationModel() {
-        return configurationModel;
+    public final Collection<String> getMenu() {
+        return menu;
     }
 
     /****************************************************************************************/

@@ -20,24 +20,18 @@
 
 package org.hemera;
 
-import com.opensymphony.xwork2.ActionSupport;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Hemera - Intelligent System
- * Web Service config controller.
+ * Web Service config model.
  * 
  * @author Bertrand Benoit <projettwk@users.sourceforge.net>
  * @since 0.2
  */
-public class ConfigurationAction extends ActionSupport {
-
-    /****************************************************************************************/
-    /*                                                                                      */
-    /* Constants                                                                            */
-    /*                                                                                      */
-    /****************************************************************************************/
-
-    private static final long serialVersionUID = -6739146819275708950L;
+public final class ConfigurationModel {
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -45,21 +39,20 @@ public class ConfigurationAction extends ActionSupport {
     /*                                                                                      */
     /****************************************************************************************/
 
-    private ConfigurationModel configurationModel;
+    private final String installDir;
+    private final String changeLog;
+    private final Properties properties;
 
     /****************************************************************************************/
     /*                                                                                      */
-    /* Implementation of ActionSupport                                                      */
+    /* Constructors                                                                         */
     /*                                                                                      */
     /****************************************************************************************/
 
-    /**
-     * @see com.opensymphony.xwork2.ActionSupport#execute()
-     */
-    @Override
-    public final String execute() throws Exception {
-        configurationModel = new ConfigurationModel();
-        return SUCCESS;
+    public ConfigurationModel() {
+        installDir = HemeraUtils.getInstallDir();
+        changeLog = HemeraUtils.getInstallDir();
+        properties = HemeraUtils.getConfiguration();
     }
 
     /****************************************************************************************/
@@ -69,10 +62,21 @@ public class ConfigurationAction extends ActionSupport {
     /****************************************************************************************/
 
     /**
-     * @return the configuration model.
+     * @return the installDir
      */
-    public final ConfigurationModel getConfigurationModel() {
-        return configurationModel;
+    public final String getInstallDir() {
+        return installDir;
+    }
+
+    /**
+     * @return the changeLog
+     */
+    public final String getChangeLog() {
+        return changeLog;
+    }
+
+    public final Set<Entry<Object, Object>> getPropertySet() {
+        return properties.entrySet();
     }
 
     /****************************************************************************************/
