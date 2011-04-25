@@ -18,32 +18,38 @@
  * Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-package org.hemera;
+package org.hemera.utils;
 
-import java.util.Map.Entry;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import org.hemera.utils.HemeraUtils;
-
 /**
  * Hemera - Intelligent System
- * Web Service config model.
+ * Properties implementation which keeps loaded file order.
  * 
  * @author Bertrand Benoit <projettwk@users.sourceforge.net>
  * @since 0.2
  */
-public final class ConfigurationModel {
+public final class OrderedProperties extends Properties {
 
+    /****************************************************************************************/
+    /*                                                                                      */
+    /* Constants                                                                            */
+    /*                                                                                      */
+    /****************************************************************************************/
+
+    private static final long serialVersionUID = 1065594927434955726L;
     /****************************************************************************************/
     /*                                                                                      */
     /* Attributes                                                                           */
     /*                                                                                      */
     /****************************************************************************************/
 
-    private final String installDir;
-    private final String changeLog;
-    private final Properties properties;
+    private final Map<Object, Object> orderedMap = new LinkedHashMap<Object, Object>();
 
     /****************************************************************************************/
     /*                                                                                      */
@@ -51,40 +57,51 @@ public final class ConfigurationModel {
     /*                                                                                      */
     /****************************************************************************************/
 
-    public ConfigurationModel() {
-        installDir = HemeraUtils.getInstallDir();
-        changeLog = HemeraUtils.getInstallDir();
-        properties = HemeraUtils.getConfiguration();
+    public OrderedProperties() {
+        super();
+    }
+
+    public OrderedProperties(final Properties defaults) {
+        super(defaults);
     }
 
     /****************************************************************************************/
     /*                                                                                      */
-    /* Getters / Setters                                                                    */
+    /* Overrides of Properties methods                                                      */
     /*                                                                                      */
     /****************************************************************************************/
 
     /**
-     * @return the installDir
+     * @see java.util.Hashtable#keys()
      */
-    public final String getInstallDir() {
-        return installDir;
+    @Override
+    public final Enumeration<Object> keys() {
+        return Collections.<Object> enumeration(orderedMap.keySet());
     }
 
     /**
-     * @return the changeLog
+     * @see java.util.Hashtable#put(java.lang.Object, java.lang.Object)
      */
-    public final String getChangeLog() {
-        return changeLog;
+    @Override
+    public final Object put(final Object key, final Object value) {
+        orderedMap.put(key, String.valueOf(value).replaceAll("\"", ""));
+        return super.put(key, value);
     }
 
-    public final Set<Entry<Object, Object>> getPropertySet() {
-        return properties.entrySet();
+    /**
+     * @see java.util.Hashtable#keySet()
+     */
+    @Override
+    public final Set<Object> keySet() {
+        return orderedMap.keySet();
     }
 
-    /****************************************************************************************/
-    /*                                                                                      */
-    /* Specific methods                                                                     */
-    /*                                                                                      */
-    /****************************************************************************************/
+    /**
+     * @see java.util.Hashtable#entrySet()
+     */
+    @Override
+    public final Set<java.util.Map.Entry<Object, Object>> entrySet() {
+        return orderedMap.entrySet();
+    }
 
 }

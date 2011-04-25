@@ -32,8 +32,6 @@
  </head>
 
  <body>
-  <s:property value="configurationModel.installDir" /><br /><br />
-  
   <table id="properties">
     <s:iterator value="configurationModel.propertySet" status="propertyStatus">      
      <tr class="<s:if test="#propertyStatus.odd == true ">propertiesTR1</s:if><s:else>propertiesTR2</s:else>">

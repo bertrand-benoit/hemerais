@@ -18,7 +18,7 @@
  * Fifth Floor, Boston, MA 02110-1301  USA
  */
 
-package org.hemera;
+package org.hemera.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,7 +39,7 @@ public class HemeraUtils {
 
     /****************************************************************************************/
     /*                                                                                      */
-    /* Constants */
+    /* Constants                                                                            */
     /*                                                                                      */
     /****************************************************************************************/
 
@@ -64,10 +64,13 @@ public class HemeraUtils {
      */
     public static final String getInstallDir() {
         // Checks if it has already been registered.
-        if (INSTALL_DIR != null)
+        if (INSTALL_DIR != null) {
+            logger.debug("Giving already loaded Hemera installation directory.");
             return INSTALL_DIR;
+        }
 
         // Opens the sysconfig file.
+        logger.info("Opening sysconfig file '" + SYSCONFIG_FILE + "' to extract installation directory.");
         final Properties properties = new Properties();
         FileInputStream inputStream;
         try {
@@ -95,6 +98,7 @@ public class HemeraUtils {
 
         // Finally registers the Hemera installation directory.
         INSTALL_DIR = properties.getProperty("installDir").replaceAll("\"", "");
+        logger.info("Installation directory defined to '" + INSTALL_DIR + "'.");
         return INSTALL_DIR;
     }
 
@@ -110,15 +114,23 @@ public class HemeraUtils {
      */
     public static final Properties getConfiguration() {
         // Checks if it has already been registered.
-        if (HEMERA_CONFIGURATION != null)
+        if (HEMERA_CONFIGURATION != null) {
+            logger.debug("Giving already loaded Hemera configuration.");
             return HEMERA_CONFIGURATION;
+        }
 
         // Opens the configuration file.
         final String installDir = getInstallDir();
-        final Properties properties = new Properties();
+        final File configuratioFile = new File(installDir, CONFIGURATION_FILE_SUBPATH);
+        final Properties properties = new OrderedProperties();
+
+        // Adds some information.
+        properties.put("hemera.installDir", installDir);
+
+        logger.info("Opening configuration file '" + configuratioFile + "'.");
         FileInputStream inputStream;
         try {
-            inputStream = new FileInputStream(new File(installDir, CONFIGURATION_FILE_SUBPATH));
+            inputStream = new FileInputStream(configuratioFile);
         }
         catch (final FileNotFoundException e) {
             throw new IllegalStateException("Unable to find Hemera configuration file '" + CONFIGURATION_FILE_SUBPATH + "'. You must configure Hemera first.", e);
@@ -141,6 +153,7 @@ public class HemeraUtils {
         }
 
         // It is fully loaded, registers it.
+        logger.info("Hemera configuration file successfully loaded.");
         HEMERA_CONFIGURATION = properties;
         return HEMERA_CONFIGURATION;
     }
