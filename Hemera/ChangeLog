@@ -1,6 +1,17 @@
 VERSION 0.2.0
 =============
 
+2011-04-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * Web module:
+   - added use of Struts 2, log4j and javassist
+
+   - internationalized messages of existing pages
+
+   - added dynamic Index pages giving access to all functionalities
+
+   - implemented language selector (English and French for now)
+
 2011-04-24  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * Web module: implemented first version (ready for Tomcat)
