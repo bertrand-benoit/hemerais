@@ -33,7 +33,7 @@
  <body>
     <ul> 
       <s:iterator var="menuItem" value="indexModel.menu">            
-        <s:url id="itemURL" action="%{#menuItem}" />      
+        <s:url var="itemURL" action="%{#menuItem}" />      
         <li>
          <s:a href="%{itemURL}">
           <s:text name="menu.%{#menuItem}"/>
