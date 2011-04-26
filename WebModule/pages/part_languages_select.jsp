@@ -24,19 +24,27 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
-<s:url id="index_en" action="index">
+<s:url id="index_en" action="%{#request['struts.actionMapping']['name']}">
   <s:param name="request_locale">en</s:param>
 </s:url>
-<s:url id="index_fr" action="index">
+<s:url id="index_fr" action="%{#request['struts.actionMapping']['name']}">
   <s:param name="request_locale">fr</s:param>
 </s:url>
 
 <br />
 <p>
   <s:text name="language.change"/>
-  <s:a href="%{index_en}">
-    <s:text name="language.en"/></s:a>&nbsp;&nbsp;
-  <s:a href="%{index_fr}">
-    <s:text name="language.fr"/>
-  </s:a>
+  
+  <!-- N.B.: does not show language which is already selected. -->
+  <s:if test="%{#action['locale']['language']!='en'}">
+    <s:a href="%{index_en}">
+      <s:text name="language.en"/>
+    </s:a>&nbsp;&nbsp;
+  </s:if>
+
+  <s:if test="%{#action['locale']['language']!='fr'}">
+    <s:a href="%{index_fr}">
+      <s:text name="language.fr"/>
+    </s:a>
+  </s:if>
 </p>
