@@ -96,7 +96,7 @@
     <jar destfile="${warFile}"
       index="false"
       filesonly="false">
-        <fileset dir="${root}" defaultexcludes="true" includes="WEB-INF/**,pages/**" excludes="WEB-INF/src/**" />
+        <fileset dir="${root}" defaultexcludes="true" includes="LICENSE*.txt,WEB-INF/**,pages/**" excludes="WEB-INF/src/**" />
     </jar>
   </target>
 
