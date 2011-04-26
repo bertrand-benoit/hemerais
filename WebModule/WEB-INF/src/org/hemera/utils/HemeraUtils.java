@@ -31,7 +31,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import javax.naming.Context;
+import javax.naming.NamingException;
+
 import org.apache.log4j.Logger;
+
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * Hemera - Intelligent System
@@ -50,6 +55,9 @@ public class HemeraUtils {
 
     private static final Logger logger = Logger.getLogger("org.hemera.web");
 
+    /** Hemera WebApp. */
+    static String HEMERA_WEBAPP_ROOT = null;
+
     /** Hemera sysconfig file and installation directory. */
     static final String SYSCONFIG_FILE = "/etc/sysconfig/hemera";
     static String INSTALL_DIR = null;
@@ -58,6 +66,7 @@ public class HemeraUtils {
     static final String CONFIGURATION_FILE_SUBPATH = "config/hemera.conf";
     static Properties HEMERA_CONFIGURATION = null;
 
+    /** Hemera ChangeLog. */
     static final String CHANGELOG_FILE_SUBPATH = "ChangeLog";
 
     /****************************************************************************************/
@@ -65,6 +74,22 @@ public class HemeraUtils {
     /* Utilities methods */
     /*                                                                                      */
     /****************************************************************************************/
+
+    /**
+     * @return the root directory of this webApp (working in development mode, or in exploitation mode (as WAR file)).
+     * @throws NamingException
+     */
+    public static final String getWebAppRoot() throws NamingException {
+        // Checks if it has already been registered.
+        if (HEMERA_WEBAPP_ROOT != null) {
+            logger.debug("Giving already loaded Hemera WebApp root.");
+            return HEMERA_WEBAPP_ROOT;
+        }
+
+        HEMERA_WEBAPP_ROOT = ((Context) ActionContext.getContext().getApplication().get("org.apache.catalina.resources")).getNameInNamespace();
+        logger.info("Hemera WebApp root defined to '" + HEMERA_WEBAPP_ROOT + "'.");
+        return HEMERA_WEBAPP_ROOT;
+    }
 
     /**
      * @return Hemera installation directory.
