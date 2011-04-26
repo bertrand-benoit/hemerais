@@ -49,6 +49,10 @@
     <action name="changelog" class="org.hemera.ChangeLogAction" method="execute">
       <result>/pages/changelog.jsp</result>
     </action>
+    
+    <action name="licenses" class="org.hemera.LicenseAction" method="execute">
+      <result>/pages/licenses.jsp</result>
+    </action>
 
 	</package>
 
