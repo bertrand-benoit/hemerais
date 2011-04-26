@@ -1,6 +1,13 @@
 VERSION 0.2.0
 =============
 
+2011-04-26  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * Web module:
+   - implemented Licenses page giving access to licenses of used third-party 
+   
+   - improved language selector (current page action is kept, and current language is no more shown) 
+ 
 2011-04-25  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * Web module:
@@ -8,9 +15,11 @@ VERSION 0.2.0
 
    - internationalized messages of existing pages
 
-   - added dynamic Index pages giving access to all functionalities
-
    - implemented language selector (English and French for now)
+
+   - implemented Index page giving access to all functionalities
+   
+   - implemented ChangeLog page giving access to this file (and usable e-mail link)
 
 2011-04-24  Bertrand Benoit <projettwk@users.sourceforge.net>
 
