@@ -26,7 +26,7 @@
 <html>
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
-   <link rel="stylesheet" href="pages/styles/default.css" media="screen" type="text/css" />  
+   <link rel="stylesheet" href="<s:url value="pages/styles/default.css"/>" type="text/css" />  
    <title><s:text name="hemera.title"/> - <s:text name="menu.configuration"/></title>
    <h1><s:text name="hemera.title"/> - <s:text name="menu.configuration"/></h1>
  </head>

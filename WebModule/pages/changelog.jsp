@@ -26,7 +26,7 @@
 <html>
  <head>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   <link rel="stylesheet" href="pages/styles/default.css" media="screen" type="text/css" />  
+   <link rel="stylesheet" href="<s:url value="pages/styles/default.css"/>" type="text/css" />
    <title><s:text name="hemera.title"/> - <s:text name="menu.changelog"/></title>
    <h1><s:text name="hemera.title"/> - <s:text name="menu.changelog"/></h1>
  </head>
@@ -35,7 +35,6 @@
     <s:iterator value="changeLogModel.contents">
      <s:property escape="false"/><br />
     </s:iterator>
-  </table>
 
   <s:include value="/pages/part_back2index.jsp"/>
   <s:include value="/pages/part_languages_select.jsp"/>
