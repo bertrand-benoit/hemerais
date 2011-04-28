@@ -57,7 +57,6 @@ public class IndexModel {
         menu.add("configuration");
         menu.add("processing");
         menu.add("visual");
-        menu.add("resources");
         menu.add("changelog");
         menu.add("licenses");
     }
