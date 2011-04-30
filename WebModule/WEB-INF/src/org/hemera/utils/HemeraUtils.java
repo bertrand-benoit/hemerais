@@ -24,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -69,9 +70,12 @@ public class HemeraUtils {
     /** Hemera ChangeLog. */
     static final String CHANGELOG_FILE_SUBPATH = "ChangeLog";
 
+    /** Hemera run queue directory. */
+    static final String HEMERA_RUNQUEUE_DIRECTORY = "run/queue/input";
+
     /****************************************************************************************/
     /*                                                                                      */
-    /* Utilities methods */
+    /* Utilities methods: directories & configuration                                       */
     /*                                                                                      */
     /****************************************************************************************/
 
@@ -190,6 +194,12 @@ public class HemeraUtils {
         return HEMERA_CONFIGURATION;
     }
 
+    /****************************************************************************************/
+    /*                                                                                      */
+    /* Utilities methods: file contents                                                     */
+    /*                                                                                      */
+    /****************************************************************************************/
+
     /**
      * @param path
      *            the path of the file whose contents is wanted.
@@ -252,6 +262,55 @@ public class HemeraUtils {
      */
     public static final Collection<String> getChangeLogContents() {
         return getFileContent(getInstallDir() + "/" + CHANGELOG_FILE_SUBPATH, true, true);
+    }
+
+    /****************************************************************************************/
+    /*                                                                                      */
+    /* Utilities methods: input queue                                                       */
+    /*                                                                                      */
+    /****************************************************************************************/
+
+    /**
+     * @return the count of input in specified sub directory.
+     */
+    private static final int getInputCount(final String subDir, final FilenameFilter filter) {
+        final File dir = new File(getInstallDir(), HEMERA_RUNQUEUE_DIRECTORY + "/" + subDir);
+        // Ensures it exists (it won't be the case if Hemera is not started).
+        if (!dir.exists())
+            return 0;
+
+        // Returns the count of input.
+        final File[] files = dir.listFiles(filter);
+        return files == null ? 0 : files.length;
+    }
+
+    /**
+     * @return the count of input in new.
+     */
+    public static final int getNewInputCount() {
+        return getInputCount("new", null);
+    }
+
+    /**
+     * @return the count of input in error.
+     */
+    public static final int getErrorInputCount() {
+        return getInputCount("err", null);
+    }
+
+    /**
+     * @param type
+     *            the type of input to count, among: speech, speech_recognitionResult, recognitionResult.
+     * @return the count of specific input in cur.
+     */
+    public static final int getCurInputCount(final String type) {
+        return getInputCount("cur", new FilenameFilter() {
+
+            @Override
+            public boolean accept(final File dir, final String name) {
+                return name.startsWith(type);
+            }
+        });
     }
 
 }

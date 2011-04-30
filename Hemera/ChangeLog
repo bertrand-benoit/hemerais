@@ -1,6 +1,11 @@
 VERSION 0.2.0
 =============
 
+2011-04-30  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * Web module:
+   - implemented Processing Systems page giving real-time graph of new/error input, and each processing activities among: speech, recorded speech and recognition result 
+
 2011-04-26  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * Web module:

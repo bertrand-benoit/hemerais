@@ -46,6 +46,10 @@
       <result>/pages/configuration.jsp</result>
     </action>
         
+    <action name="processing" class="org.hemera.ProcessingAction" method="execute">
+      <result>/pages/processing.jsp</result>
+    </action>
+    
     <action name="changelog" class="org.hemera.ChangeLogAction" method="execute">
       <result>/pages/changelog.jsp</result>
     </action>
@@ -53,7 +57,12 @@
     <action name="licenses" class="org.hemera.LicenseAction" method="execute">
       <result>/pages/licenses.jsp</result>
     </action>
-
 	</package>
+	
+  <package name="org.hemera.json" namespace="/" extends="json-default">
+    <action name="processingData" class="org.hemera.json.ProcessingDataAction">
+      <result type="json" />
+    </action>
+  </package>
 
 </struts>
