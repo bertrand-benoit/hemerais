@@ -6,6 +6,7 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/tomcat-api.jar"/>
 	<classpathentry kind="src" path="WEB-INF/src"/>
 	<classpathentry kind="src" output="work" path="work"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
@@ -17,7 +18,6 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/ognl-3.0.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/struts2-core-2.2.1.1.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/xwork-core-2.2.1.1.jar"/>
-	<classpathentry kind="lib" path="/home/bsquare/programmation/projects/hemera/Hemera/thirdParty/webServices/bin/tomcat/lib/tomcat-api.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/struts2-dojo-plugin-2.2.1.1.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/json-lib-2.1-jdk15.jar"/>
