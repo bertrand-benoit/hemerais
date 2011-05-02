@@ -38,10 +38,11 @@ checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode" || errorMessage "Unsupported
 # "Not yet implemented" message to help adaptation with potential futur other speech tools.
 [[ "$hemeraMode" != "local" ]] && errorMessage "Not yet implemented mode: $hemeraMode" $ERROR_MODE
 
-# Gets activation information.
+# Gets activation information.
 inputMonitorActivation=$( getConfigValue "$CONFIG_KEY.activation.inputMonitor" ) || exit $ERROR_CONFIG_VARIOUS
 ioProcessorActivation=$( getConfigValue "$CONFIG_KEY.activation.ioProcessor" ) || exit $ERROR_CONFIG_VARIOUS
 soundRecorderActivation=$( getConfigValue "$CONFIG_KEY.activation.soundRecorder" ) || exit $ERROR_CONFIG_VARIOUS
+tomcatActivation=$( getConfigValue "$CONFIG_KEY.activation.tomcat" ) || exit $ERROR_CONFIG_VARIOUS
 
 #########################
 ## FUNCTIONS
@@ -101,13 +102,35 @@ if [ "$hemeraMode" = "local" ]; then
     h|[?])	errorMessage "Unknown action: $action" $ERROR_BAD_CLI;; 
   esac
 
-  # Adds verbose if needed.
+  # Adds verbose if needed.
   [ $verbose -eq 1 ] && option="-v $option"
 
-  # According to components activation.
+  # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
   [ "$soundRecorderActivation" = "localhost" ] && "$h_daemonDir/soundRecorder.sh" $option
+  
+  if [ "$tomcatActivation" = "localhost" ]; then
+    tomcatBase="$installDir/thirdParty/webServices/bin/tomcat"
+    case "$action" in
+      start)
+        tomcatBin="$tomcatBase/bin/startup.sh";;
+      stop)
+        tomcatBin="$tomcatBase/bin/shutdown.sh";;
+      *)
+        tomcatBin="";;
+    esac
+
+    # Checks if a command has been specified.
+    if [ ! -z "$tomcatBin" ]; then
+      if [ ! -x "$tomcatBin" ]; then
+        warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
+      else
+        writeMessage "tomcat $action ... " 0
+        "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo "failed"
+      fi
+    fi
+  fi
 
   # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
   rm -f "$h_pidDir"/* >/dev/null 2>&1
