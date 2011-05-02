@@ -62,8 +62,16 @@ hemera.run.activation.inputMonitor=localhost
 hemera.run.activation.ioProcessor=localhost
 hemera.run.activation.soundRecorder=localhost
 
+# Defines if Hemera start/stop system must start/stop Tomcat.
+# It works only for local installation of Tomcat, in which case a directory (or symbolic link)
+#  named 'tomcat' must exists in thirdParty/webServices/bin/.
+# The system will look for bin/startup.sh and bin/shutdown.sh Tomcat script (provided by
+#  binary version of Tomcat).
+# Any value different of "localhost" will disable the automatic management of Tomcat.
+hemera.run.activation.tomcat=localhost
 
-### Source code management.
+
+### Environment.
 ###########################
 # Home directory (i.e. root directory) of Java Development Kit installation
 # N.B.: JAVA_HOME environment variable is regarded if not set here.
@@ -85,6 +93,19 @@ hemera.core.iomanager.inputMonitor.options="-q --format '%f' -e close_write -m $
 # It looks at $input file for one more available input to manage.
 hemera.core.iomanager.ioProcessorMonitor.path="inotifywait"
 hemera.core.iomanager.ioProcessorMonitor.options="-qq -e modify $input"
+
+
+### Web services module.
+#######################
+# The URL of the manager of the tomcat installation to use (can be local or remote).
+hemera.web.tomcat.manager.url=http://localhost:8080/manager
+
+# Login/password of user to use to [un]deploy Hemera web services module.
+# On the server, the $TOMCAT_HOME/conf/tomcat-users.xml must define the role "manager-gui" to this user.
+# e.g.: <user username="hemera" password="hemera" roles="manager-gui"/>
+# This user must have the "manager" role
+hemera.web.tomcat.username=hemera
+hemera.web.tomcat.password=hemera
 
 
 ### Speech core module.
