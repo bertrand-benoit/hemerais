@@ -1,6 +1,13 @@
 VERSION 0.2.0
 =============
 
+2011-05-02  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * added some configuration elements allowing to request Tomcat management when starting/stopping Hemera
+ 
+ * Web module:
+   - improved build.xml and adpated to work with remote installation of Tomcat (using catalina-ant third-party tool)   
+
 2011-04-30  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * Web module:
