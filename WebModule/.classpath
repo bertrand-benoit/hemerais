@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/struts2-dojo-plugin-2.2.1.1.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/json-lib-2.1-jdk15.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/struts2-json-plugin-2.2.1.1.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/catalina-ant.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>

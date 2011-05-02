@@ -20,46 +20,37 @@
 <project name="Hemera - Intelligent System - Web module" default="build" basedir=".">
 <!-- Constants definition -->
   <property environment="env"/>
-  <property name="root" value=".."/>
+  <property name="root" value="${basedir}/.."/>
   <property name="src" value="${root}/WEB-INF/src"/>
   <property name="bin" value="${root}/WEB-INF/classes"/>
   <property name="build" value="${root}/build"/>
   <property name="warFile" value="${build}/Hemera.war"/>
 	
-  <!-- Assuming Hemera main project is in same project, and Tomcat has well been installed 
-        (at least a symbolic link has been created. -->
-  <property name="hemeraMain" value="${root}/../Hemera"/>	
-  <property name="tomcat" value="${hemeraMain}/thirdParty/webServices/bin/tomcat"/>
-  <property name="struts" value="${hemeraMain}/thirdParty/webServices/bin/struts"/>	
+  <!-- Assuming Hemera main project is in same directory. -->
+  <property name="hemeraMain" value="${root}/../Hemera"/>
 
 <!-- Initialization -->
   <target name="init">
     <mkdir dir="${build}"/>
   </target>
 
-  <target name="webServiceCheck" description="Ensures Hemera Web Services third-party are well installed">
+  <target name="environmentCheck" description="Ensures Hemera Web Services third-party are well installed">
   	<!-- Checks if Hemera main is found. -->
   	<condition property="HemeraMainfound">
   	  <available file="${hemeraMain}" type="dir" />
   	</condition>
   	<fail unless="HemeraMainfound" message="Unable to find Hemera main project (${hemeraMain} not found). For [un]deploy, you must install WebModule project in the same parent directory than Hemera main project." />
   	
-  	<!-- Checks if Hemera Web Services third-party are well installed. -->
-  	<condition property="TomcatFound">
-  	  <available file="${tomcat}" type="dir" />
-  	</condition>
-  	<fail unless="TomcatFound" message="Unable to find Tomcat (${tomcat} not found). For [un]deploy, you must install it or make a symbolic link to existing installation (See online documentation)." />
+	<!-- Loads Hemera configuration file. -->
+	<property file="${hemeraMain}/config/hemera.conf" />
 
-  	<condition property="StrutsFound">
-  	  <available file="${struts}" type="dir" />
-  	</condition>
-  	<fail unless="StrutsFound" message="Unable to find Struts (${struts} not found). For [un]deploy, you must install it or make a symbolic link to existing installation (See online documentation)." />
-
-    <!-- Defines needed classpath (including tomcat, struts and other needed Third-party applications. -->
+    <!-- Defines needed classpath (including catalina-ant, struts and other needed Third-party applications. -->
     <path id="classpath">
-      <fileset dir="${tomcat}/lib/" includes="*.jar"/>
-      <fileset dir="${struts}/lib/" includes="*.jar"/>
+      <fileset dir="${root}/WEB-INF/lib/" includes="*.jar" excludes="catalina-ant.jar" />
     </path>
+    
+    <taskdef resource="org/apache/catalina/ant/antlib.xml"
+              classpath="${root}/WEB-INF/lib/catalina-ant.jar"/>
   </target>
 
 <!-- Cleaning -->
@@ -72,7 +63,7 @@
   <target name="all" depends="deploy" />
 
 <!-- Source code management targets -->
-  <target name="compilation" depends="webServiceCheck" description="Performs the compilation">
+  <target name="compilation" depends="environmentCheck" description="Performs the compilation">
     <mkdir dir="${bin}"/>
 
     <javac srcdir="${src}"
@@ -101,12 +92,14 @@
   </target>
 
 <!-- Web Service management -->
-  <target name="deploy" depends="webServiceCheck,build" description="Deploys Hemera war file">
-    <copy file="${warFile}" todir="${tomcat}/webapps"/>
+  <target name="deploy" depends="environmentCheck,build" description="Deploys Hemera war file on defined Tomcat server">
+    <deploy url="${hemera.web.tomcat.manager.url}" username="${hemera.web.tomcat.username}"
+       password="${hemera.web.tomcat.password}" path="/Hemera" war="${warFile}"/>
   </target>
-	
-  <target name="undeploy" depends="webServiceCheck" description="Undeploys Hemera war file">
-    <delete file="${tomcat}/webapps/Hemera.war"/>
+  
+  <target name="undeploy" depends="environmentCheck,build" description="Undeploys Hemera war file on defined Tomcat server">
+    <undeploy url="${hemera.web.tomcat.manager.url}" username="${hemera.web.tomcat.username}"
+       password="${hemera.web.tomcat.password}" path="/Hemera"/>
   </target>
 
 </project>
