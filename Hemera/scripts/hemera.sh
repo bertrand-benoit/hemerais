@@ -109,14 +109,18 @@ if [ "$hemeraMode" = "local" ]; then
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
   [ "$soundRecorderActivation" = "localhost" ] && "$h_daemonDir/soundRecorder.sh" $option
-  
-  if [ "$tomcatActivation" = "localhost" ]; then
-    tomcatBase="$installDir/thirdParty/webServices/bin/tomcat"
+
+  # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
+  [ "$action" = "stop" ] && rm -f "$h_pidDir"/* >/dev/null 2>&1
+
+  if [ "$tomcatActivation" = "localhost" ] && [ "$action" != "status" ]; then
+    manageTomcatHome || exit $ERROR_ENVIRONMENT
+
     case "$action" in
       start)
-        tomcatBin="$tomcatBase/bin/startup.sh";;
+        tomcatBin="$h_tomcatDir/bin/startup.sh";;
       stop)
-        tomcatBin="$tomcatBase/bin/shutdown.sh";;
+        tomcatBin="$h_tomcatDir/bin/shutdown.sh";;
       *)
         tomcatBin="";;
     esac
@@ -126,12 +130,9 @@ if [ "$hemeraMode" = "local" ]; then
       if [ ! -x "$tomcatBin" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else
-        writeMessage "tomcat $action ... " 0
+        writeMessage "Apache Tomcat $action ... " 0
         "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo "failed"
       fi
     fi
   fi
-
-  # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
-  [ "$action" = "stop" ] && rm -f "$h_pidDir"/* >/dev/null 2>&1
 fi

@@ -87,3 +87,12 @@ for localeFile in $( find "$installDir/locale" -maxdepth 1 -type f -regextype po
   [ ! -z "$unknownI18NElements" ] &&  warning "($localFileName) following i18n definition are unknown: $unknownI18NElements"
 done
 writeMessage "Checking locale files (END)"
+
+# Checks environment configuration.
+manageJavaHome || exit $ERROR_ENVIRONMENT
+manageAntHome || exit $ERROR_ENVIRONMENT
+
+tomcatActivation=$( getConfigValue "hemera.run.activation.tomcat" ) || exit $ERROR_CONFIG_VARIOUS
+if [ "$tomcatActivation" = "localhost" ]; then
+  manageTomcatHome || exit $ERROR_ENVIRONMENT
+fi
