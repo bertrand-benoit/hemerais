@@ -1,9 +1,20 @@
 VERSION 0.2.0
 =============
 
+2011-05-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * hemera.sh:
+   - fixed PID files removal (only done with 'stop' action)
+   
+   - improved Apache Tomcat start/stop management
+
+ * checkConfig.sh: added check on Java, Apache Ant, and (if configured to be used locally) Apache Tomcat 
+ 
 2011-05-02  Bertrand Benoit <projettwk@users.sourceforge.net>
 
- * added some configuration elements allowing to request Tomcat management when starting/stopping Hemera
+ * added some configuration elements allowing to request Apache Tomcat management when starting/stopping Hemera
+ 
+ * hemera.sh: added Apache Tomcat start/stop management according to configuration
  
  * Web module:
    - improved build.xml and adpated to work with remote installation of Tomcat (using catalina-ant third-party tool)   
