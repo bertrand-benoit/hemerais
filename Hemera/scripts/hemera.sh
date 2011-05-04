@@ -133,5 +133,5 @@ if [ "$hemeraMode" = "local" ]; then
   fi
 
   # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
-  rm -f "$h_pidDir"/* >/dev/null 2>&1
+  [ "$action" = "stop" ] && rm -f "$h_pidDir"/* >/dev/null 2>&1
 fi
