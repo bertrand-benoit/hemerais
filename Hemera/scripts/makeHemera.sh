@@ -42,7 +42,7 @@ ANT="$ANT_HOME/bin/ant"
 
 #########################
 ## INSTRUCTIONS
-target="${1:-libraries}"
+target="${1:-all}"
 
 # Special management for "clean" target.
 if [ "$target" = "clean" ]; then
@@ -50,5 +50,21 @@ if [ "$target" = "clean" ]; then
   [ $( find "$h_pidDir" -type f |wc -l ) -gt 0 ] && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
 fi
 
-writeMessage "Making Hemera target: $target ... " 0
-"$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo "done" || echo "error (See $h_logFile)"
+if [ "$target" != "webModule" ]; then
+  writeMessage "Making Hemera target: $target ... " 0
+  ! "$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
+  echo "done"
+fi
+
+# Checks if "all" or "webModule" target has been specified, and checks if corresponding 
+#  project is available.
+[ "$target" != "all" ] && [ "$target" != "webModule" ] && exit 0
+webModuleDir="$installDir/../HemeraWebModule"
+if [ ! -d "$webModuleDir" ]; then
+  [ "$target" = "webModule" ] && echo -e "Unable to find Hemera Web module ('$webModuleDir'). You must install it in the same parent directory." && exit 2
+  exit 0
+fi
+
+writeMessage "Making Hemera Web module ... " 0
+! "$ANT" -v -f "$webModuleDir/engineering/build.xml" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
+echo "done"
