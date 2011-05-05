@@ -40,9 +40,14 @@ profileFile="/etc/profile.d/hemera.sh"
 h_configurationFile="$installDir/config/hemera.conf"
 
 #########################
+## FUNCTIONS
+# usage: warnPermission
+function warnPermission() {
+  warning "Current user '"$( whoami )"' has not enough permission. Launch this script with 'sudo' or another user (or root) having enough permission."
+}
+
+#########################
 ## INSTRUCTIONS
-# Ensures user is root.
-[ "$( whoami )" != "root" ] && errorMessage "Setup must be launched by root superuser." $ERROR_ENVIRONMENT
 checkEnvironment || $ERROR_ENVIRONMENT
 
 writeMessage "Defined installDir=$installDir"
@@ -51,6 +56,9 @@ writeMessage "Defined installDir=$installDir"
 writeMessage "Managing System configuration file '$sysconfigFile' ... " 0
 if [ -f "$sysconfigFile" ]; then
   echo "ignored (already exist)."
+elif [ ! -w "$( dirname "$sysconfigFile" )" ]; then
+  echo "FAILED"
+  warnPermission
 else
 cat > $sysconfigFile << End-of-Message
 # Installation directory.
@@ -64,6 +72,9 @@ fi
 writeMessage "Managing Profile file '$profileFile' ... " 0
 if [ -f "$profileFile" ]; then
   echo "ignored (already exist)."
+elif [ ! -w "$( dirname "$profileFile" )" ]; then
+  echo "FAILED"
+  warnPermission
 else
 cat > $profileFile << End-of-Message
 # Ensures the configuration file exists.
@@ -79,7 +90,7 @@ End-of-Message
 
   echo "created."
 
-  writeMessage "Hemera main binary/script will be available after next reboot (source $profileFile for immediate effect in your shell)."
+  writeMessage "Hemera main binaries/scripts will be globally available in PATH after next reboot, or immediately if you source $profileFile in your shell."
 fi
 
 # Checks if Hemera has been configured.
