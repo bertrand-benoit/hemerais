@@ -136,13 +136,13 @@ function test2() {
   "$speechScript" -t "$STRING8" -o "$h_newInputDir/speech_test10.wav"
   waitUntilAllInputManaged
   "$speechScript" -t "Les commandes suivantes doivent produire une erreur, et ne doivent pas êtres répétées" -o "$h_newInputDir/speech_test11.wav"
-  echo "dire" > "$h_newInputDir/recognitionResult_test11b.txt" # must produce an error because this command requires an argument
-  echo "rechercher" > "$h_newInputDir/recognitionResult_test12.txt" # must produce an error because this command requires an argument
-  echo "pause quelque chose" > "$h_newInputDir/recognitionResult_test13.txt" # must produce an error because this command supports NO argument
-  echo "continue quelque chose" > "$h_newInputDir/recognitionResult_test14.txt" # must produce an error because this command supports NO argument
-  echo "stop quelque chose" > "$h_newInputDir/recognitionResult_test15.txt" # must produce an error because this command supports NO argument
-  echo "" > "$h_newInputDir/recognitionResult_test16.txt" # must produce an error because it simulates a bad speech recognition
-  echo "commandNonTrouvée" > "$h_newInputDir/recognitionResult_test17.txt" # must produce an error because this command is not found
+  echo "dire" > "$h_newInputDir/recognitionResult_error_test11b.txt" # must produce an error because this command requires an argument
+  echo "rechercher" > "$h_newInputDir/recognitionResult_error_test12.txt" # must produce an error because this command requires an argument
+  echo "pause quelque chose" > "$h_newInputDir/recognitionResult_error_test13.txt" # must produce an error because this command supports NO argument
+  echo "continue quelque chose" > "$h_newInputDir/recognitionResult_error_test14.txt" # must produce an error because this command supports NO argument
+  echo "stop quelque chose" > "$h_newInputDir/recognitionResult_error_test15.txt" # must produce an error because this command supports NO argument
+  echo "" > "$h_newInputDir/recognitionResult_error_test16.txt" # must produce an error because it simulates a bad speech recognition
+  echo "commandNonTrouvée" > "$h_newInputDir/recognitionResult_error_test17.txt" # must produce an error because this command is not found
 
   waitUntilAllInputManaged
 }
