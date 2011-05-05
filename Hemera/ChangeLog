@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-05-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * setupHemera.sh: replaced 'root user' check by 'needed permission' check. Added specific warning message if case of not enough permission.
+
 2011-05-04  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * hemera.sh:
