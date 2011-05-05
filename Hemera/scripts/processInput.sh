@@ -51,7 +51,7 @@ function usage() {
 
 # usage: notifyProcessInput
 function notifyProcessInput() {
-  info "$inputString: moving from new to processing input directory"
+  writeMessage "$inputString: managing supported input $inputName (specific log file: $h_logFile)"
   mv -f "$h_newInputDir/$inputName" "$h_curInputDir"
 }
 
@@ -59,7 +59,7 @@ function notifyProcessInput() {
 # usage: notifyDoneInput [noExit]
 # noExit: disable exist after input move.
 function notifyDoneInput() {
-  info "$inputString: moving from processing input directory to done one"
+  writeMessage "$inputString: successfully managed input $inputName (specific log file: $h_logFile)"
   mv -f "$h_curInputDir/$inputName" "$h_doneInputDir"
   # N.B.: if the function does not exit, it is very important to return 0, otherwise
   #  the "ko" status of the test will be regarded by the caller, like there was an error.
@@ -69,7 +69,7 @@ function notifyDoneInput() {
 # usage: notifyErrInput [noExit]
 # noExit: disable exist after input move.
 function notifyErrInput() {
-  info "$inputString: moving from processing input directory to error one"
+  writeMessage "$inputString: error while managing input $inputName (specific log file: $h_logFile)"
   mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
   # N.B.: if the function does not exit, it is very important to return 0, otherwise
   #  the "ko" status of the test will be regarded by the caller, like there was an error.
@@ -327,7 +327,6 @@ done
 #########################
 ## INSTRUCTIONS
 
-writeMessage "$inputString: managing supported input $inputName (specific log file: $h_logFile)"
 notifyProcessInput
 curInputPath="$h_curInputDir/$inputName"
 
