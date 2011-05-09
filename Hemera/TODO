@@ -1,5 +1,9 @@
 short term:
  - create rich enough linguistic and language models
+ - configuration comparator/merger
+ - plugins system (including existing "search" functionality)
+ - added ant task to ensure web module is not already deployed
+ - deploy automatically webmodule when launching setup
 
 middle term:
  - implement Web Services allowing to use various Hemera pieces as client/server, and to get lots of real-time information
