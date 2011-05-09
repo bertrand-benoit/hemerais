@@ -134,7 +134,7 @@ hemera.core.speech.soundPlayer.options="-q -r22050"
 # Default language.
 # espeak language samples:
 # with espeak mode: en
-# with espeak+mbrola mode: mb/mb-fr4
+# with espeak+mbrola mode: mb/mb-en1 or mb/mb-fr4
 hemera.core.speech.espeak.language="mb/mb-fr4"
 
 ## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
