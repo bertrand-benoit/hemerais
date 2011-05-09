@@ -37,7 +37,7 @@ MUST_NOT_BE_CALLED_LIMIT=25
 function showScriptDescription() {
   local _scriptDir=$( echo "$1" |sed -e 's/^[.]\///g;' )
 
-  echo -e " in $_scriptDir"
+  local _firstScript=1
   for scriptRaw in $( find "$_scriptDir" -maxdepth 1 -type f -perm /u+x ! -name "*~" |sort |sed -e 's/[ \t]/£/g;' ); do
     script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
 
@@ -46,6 +46,9 @@ function showScriptDescription() {
 
     # Extracts the description.
     description=$( head -n $DESCRIPTION_LINE_LIMIT "$script" |grep -re "# Description:" |sed -e 's/# Description: //' )
+
+    # Prints directory only if it is the first script to be shown.
+    [ $_firstScript -eq 1 ] && _firstScript=0 && echo -e " in $_scriptDir"
 
     printf "   \E[1m%-${SPACE_COUNT}s\E[0m\t%s\n" $( basename "$script" ) "$description"
   done
@@ -66,7 +69,7 @@ echo -e "\nAvailable tools"
 
 # Looks for scripts directory everywhere.
 cd "$installDir"
-for scriptsDirRaw in $( find -regextype posix-extended -type d -regex ".*(scripts|daemon)" |sort |sed -e 's/[ \t]/£/g;' ); do
+for scriptsDirRaw in $( find -regextype posix-extended -type d -regex ".*(scripts|daemon|speech|speechRecognition)" |sort |sed -e 's/[ \t]/£/g;' ); do
   scriptsDir=$( echo "$scriptsDirRaw" |sed -e 's/£/ /g;' )
   showScriptDescription "$scriptsDir"
 done

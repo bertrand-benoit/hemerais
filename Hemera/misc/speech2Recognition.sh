@@ -64,9 +64,9 @@ done
 
 #########################
 ## INSTRUCTIONS
-thirdPartyDir="$installDir/thirdParty"
-speechDir="$thirdPartyDir/speech"
-speechRecognitionDir="$thirdPartyDir/speechRecognition"
+coreDir="$installDir/scripts/core"
+speechDir="$coreDir/speech"
+speechRecognitionDir="$coreDir/speechRecognition"
 additionalOptions=""
 [ $verbose -eq 1 ] && additionalOptions="-v"
 
@@ -88,10 +88,10 @@ while [ $iteration -le $iterationCount ]; do
   writeMessage "Iteration $iteration/$iterationCount, text to speech then recognize is '$textToSpeech'"
 
   # Generates the speech sound file.
-  "$speechDir/scripts/speech.sh" $additionalOptions -t "$text" -o "$speechSoundFile" || exit $ERROR_CORE_MODULE
+  "$speechDir/speech.sh" $additionalOptions -t "$text" -o "$speechSoundFile" || exit $ERROR_CORE_MODULE
 
   # Launches speech recognition from wav file.
-  "$speechRecognitionDir/scripts/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
+  "$speechRecognitionDir/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
 
   # Prepares for potential next iteration.
   iteration=$( expr $iteration + 1 )

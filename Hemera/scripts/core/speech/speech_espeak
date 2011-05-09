@@ -19,20 +19,32 @@
 # Fifth Floor, Boston, MA 02110-1301  USA
 #
 # Version: 1.0
-# Description: updates PATH environment variable for better Hemera accessibility.
-# This script must NOT be directly called.
-# installDir variable must be defined.
+# Description: uses espeak to perfom text to speech.
+#
+# must NOT be directly called.
 
-# Ensures installDir variable is defined.
-[ -z "$installDir" ] && exit 0
+[ "$moduleMode" != "espeak" ] && exit $ERROR_MODE
 
-# Adds common scripts directory.
-additionalPath="$installDir/misc:$installDir/scripts"
+# espeak configuration
+espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
+espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
 
-# Adds each core sub-directory to PATH.
-for scriptsDirRaw in $( find "$installDir/scripts/core" -maxdepth 1 -type d |grep -vE "([.]|[.]svn)$" |sed -e 's/[ \t]/£/g;' ); do
-  scriptsDir=$( echo "$scriptsDirRaw" |sed -e 's/£/ /g;' )
-  additionalPath="$additionalPath:$scriptsDir"
-done
+# usage: checkConfiguration
+function checkConfiguration() {
+  checkBin "$espeakBin" || return 1
+  return 0
+}
 
-export PATH=$additionalPath:$PATH
+# Usage: speechSentence <sentence> [<additional options>]
+function speechSentence() {
+  # Modus operandi:
+  #  - uses espeak to generate speech sound
+  #  - uses finally the speech sound player
+  info "System will play speech '$1', using only espeak"
+  "$espeakBin" -v "$language" $espeakOptions $2 "$1" |"$soundPlayerBin" $soundPlayerOptions
+}
+
+# Usage: speechFileContents <file path>
+function speechFileContents() {
+  speechSentence "$1" "-m -f"
+}

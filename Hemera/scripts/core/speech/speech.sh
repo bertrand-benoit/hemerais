@@ -32,7 +32,7 @@ category="speech"
 source "$installDir/scripts/setEnvironment.sh"
 
 CONFIG_KEY="hemera.core.speech"
-SUPPORTED_MODE="espeak espeak+mbrola X"
+SUPPORTED_MODE="espeak espeak+mbrola"
 
 # Gets the mode, and ensures it is a supported one.
 moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS

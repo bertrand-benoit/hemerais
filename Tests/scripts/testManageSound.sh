@@ -37,8 +37,8 @@ scripstDir="$installDir/scripts"
 category="IOProcessorTests"
 source "$installDir/scripts/setEnvironment.sh"
 
-speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
-manageSoundScript="$scripstDir/manageSound.sh"
+speechScript="$scripstDir/core/speech/speech.sh"
+manageSoundScript="$scripstDir/core/system/manageSound.sh"
 
 speechSoundFile="/tmp/ia.wav"
 speechSoundPIDFile="/tmp/ia.pid"
@@ -47,7 +47,7 @@ speechSoundPIDFile="/tmp/ia.pid"
 ## INSTRUCTIONS
 rm -f "$speechSoundFile" "$speechSoundPIDFile"
 writeMessage "Generate speech sound file"
-"$installDir/thirdParty/speech/scripts/speech.sh" -d "Intelligence Artificielle" -o "$speechSoundFile"
+"$speechScript" -d "Intelligence Artificielle" -o "$speechSoundFile"
 
 # Launches sound play.
 "$manageSoundScript" -p "$speechSoundPIDFile" -f "$speechSoundFile" &

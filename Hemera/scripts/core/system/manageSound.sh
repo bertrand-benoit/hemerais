@@ -27,7 +27,7 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$currentDir" )
+installDir="$currentDir/../../../"
 category="manageSound"
 source "$installDir/scripts/setEnvironment.sh"
 

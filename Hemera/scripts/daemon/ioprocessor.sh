@@ -121,7 +121,7 @@ while [ 1 ]; do
     else
       # Launches background process on this input.
       curLogFile="$h_logFile.$inputString"
-      h_logFile="$curLogFile" "$installDir/scripts/processInput.sh" -i "$inputName" -S "$inputString" &
+      h_logFile="$curLogFile" "$installDir/scripts/core/system/processInput.sh" -i "$inputName" -S "$inputString" &
     fi
 
     # Memorizes a new input has been managed or ignored.

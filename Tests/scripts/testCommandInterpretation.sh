@@ -46,7 +46,7 @@ source "$installDir/scripts/setEnvironment.sh"
 writeMessage "LogFile: $h_logFile"
 
 # Defines some additionals variables.
-speechScript="$installDir/thirdParty/speech/scripts/speech.sh"
+speechScript="$scripstDir/core/speech/speech.sh"
 
 #########################
 ## FUNCTIONS

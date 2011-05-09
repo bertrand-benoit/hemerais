@@ -1,0 +1,183 @@
+#!/bin/bash
+#
+# Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
+# Copyright (C) 2010-2011 Bertrand Benoit <projettwk@users.sourceforge.net>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see http://www.gnu.org/licenses
+# or write to the Free Software Foundation,Inc., 51 Franklin Street,
+# Fifth Floor, Boston, MA 02110-1301  USA
+#
+# Version: 1.0
+# Description: uses sphinx3 to perfom speech recognition.
+#
+# must NOT be directly called.
+
+[ "$moduleMode" != "sphinx3" ] && exit $ERROR_MODE
+
+# Tool configuration.
+sphinx3DecoderBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
+sphinx3DecoderOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
+
+# Data configuration.
+dataDir="$installDir/thirdParty/speechRecognition/data"
+
+lexicalModelWords="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.words" ) || exit $ERROR_CONFIG_VARIOUS
+lexicalModelFillers="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.fillers" ) || exit $ERROR_CONFIG_VARIOUS
+
+languageModel="$dataDir/models/language/"$( getConfigValue "$CONFIG_KEY.sphinx3.languageModel" ) || exit $ERROR_CONFIG_VARIOUS
+
+acousticModelDefinition="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.definition" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelMeans="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.means" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelVariances="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.variances" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelMixtureWeights="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.mixtureWeights" ) || exit $ERROR_CONFIG_VARIOUS
+acousticModelTransitionMatrices="$dataDir/models/acoustic/"$( getConfigValue "$CONFIG_KEY.sphinx3.acousticModel.transitionMatrices" ) || exit $ERROR_CONFIG_VARIOUS
+
+# usage: checkConfiguration
+function checkConfiguration() {
+  checkBin "$sphinx3DecoderBin" || return 1
+  checkDataFile "$lexicalModelWords" || return 1
+  checkDataFile "$lexicalModelFillers" || return 1
+  checkDataFile "$languageModel" || return 1
+  checkDataFile "$acousticModelDefinition" || return 1
+  checkDataFile "$acousticModelMeans" || return 1
+  checkDataFile "$acousticModelVariances" || return 1
+  checkDataFile "$acousticModelMixtureWeights" || return 1
+  checkDataFile "$acousticModelTransitionMatrices" || return 1
+
+  return 0
+}
+
+# usage: prepareAudioSource <source wav file> <destination raw file>
+function prepareAudioSource() {
+  local wavFile="$1"
+  local rawFile="$2"
+  local mfcFile="$rawFile".mfc
+
+  # Checks if destination mfc file alreazdy exists, force is NOT set.
+  if [[ -f "$mfcFile" ]] && [[ $force -eq 0 ]]; then
+    writeMessage "Found feature sound file '$mfcFile' (use -F to recreate)."
+  else
+    # Modus operandi
+    #  1- converts the wav file to signed 16-bit little endian raw file
+    writeMessage "Converting sound file $wavFile ... " 0
+
+    # Defines input and output.
+    input="$wavFile"
+    output="$rawFile"
+
+    ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
+    echo "done"
+
+    #  2- computes the corresponding feature file
+    writeMessage "Creating feature sound file for $rawFile ... " 0
+    ! "$currentDir/computeFeatureFile.sh" -f "$rawFile" >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
+    echo "done"
+  fi
+  return 0
+}
+
+# usage: prepareSoundFileList <source sound list file> <control list file>
+function prepareSoundFileList() {
+  local _sourceSoundListFile="$1"
+  local _controlFile="$2"
+
+  # For each sound file of the specified list.
+  rm -f "$_controlFile"
+  for soundFileRaw in $( cat "$_sourceSoundListFile" |sed -e 's/[ \t]/£/g;' ); do
+    soundFile=$( echo "$soundFileRaw" |sed 's/£/ /g;' )
+    soundFileExtension=${soundFile/*./}
+
+    if [[ "$soundFileExtension" == "wav" ]]; then
+      rawSoundFile="$soundFile".raw
+      ! prepareAudioSource "$soundFile" "$rawSoundFile" && continue
+    else
+      rawSoundFile="$soundFile"
+    fi
+
+    echo "$rawSoundFile" >> "$_controlFile"
+  done
+}
+
+# usage: speechRecognitionFromList <control file> [<result file>]
+function speechRecognitionFromList() {
+  local _controlFile="$1"
+  local _resultFile="$2"
+
+  additionalOptions=""
+  [ ! -z "$_resultFile" ] && additionalOptions="-hyp $_resultFile"
+
+  # Moves to root because all files are regarded as relative to it.
+  cd /
+
+  # N.B.: uses MALLOC_CHECK_ to disable malloc error output (some version of sphinx3 are instable).
+  # Usually, it happens after result has been shown, so there is no harm to hide.
+  MALLOC_CHECK_=0 "$sphinx3DecoderBin" \
+    -mdef "$acousticModelDefinition" -mean "$acousticModelMeans" -var "$acousticModelVariances" \
+    -mixw "$acousticModelMixtureWeights" -tmat "$acousticModelTransitionMatrices" \
+    -lm "$languageModel" -dict "$lexicalModelWords" -fdict "$lexicalModelFillers" \
+    $sphinx3DecoderOptions -ctl "$_controlFile" $additionalOptions >> "$h_logFile" 2>&1
+
+    # Parameters information:
+    # First test, changed parameters:
+    #     -wlen 0.0256   -> default: 0.025625
+    #     -lowerf 130    -> default: 133.33334
+    #     -upperf 6800   -> default: 6855.4976
+    #     -silprob 0.01  -> default: 0.1
+    #     -fillprob 0.02 -> default: 0.1
+
+    # Default parameters:
+    #     -varnorm no
+    #     -cmn current
+    #     -feat 1s_c_d_dd
+    #     -alpha 0.97
+    #     -samprate 16000
+    #     -frate 100
+    #     -nfft 512
+    #     -nfilt 40
+    #     -ncep 13
+    #     -lw 9.5
+}
+
+# usage: analyzeLog
+function analyzeLog() {
+  local _tmpAnalyzeLog="$h_workDir/$h_fileDate-analyzeLog.tmp"
+  local _firstStep=1
+
+  # Performs at least one step, and as much needed until the "log file end" is reached.
+  rm -f "$_tmpAnalyzeLog"
+  while [[ $_firstStep -eq 1 ]] || [[ $( grep "$LOG_FILE_END" "$logToAnalyze" 2>/dev/null|wc -l ) -eq 0 ]]; do
+    sleep 1
+    _firstStep=0
+    for managedSoundFileRaw in $( grep -re "FWDVIT" "$logToAnalyze" |sed -e 's/^FWDVIT: \([^(]*\)(\([^)]*\))/\2/g;s/[ \t]/£/g;' ); do
+      managedSoundFile=$( echo "$managedSoundFileRaw" |sed -e 's/£/ /g' )
+
+      # Checks if the sound file has already been managed.
+      [ $( grep "$managedSoundFile" "$_tmpAnalyzeLog" 2>/dev/null|wc -l ) -gt 0 ] && continue
+
+      # Memorizes it has been shown.
+      echo "$managedSoundFile" >> "$_tmpAnalyzeLog"
+
+      # Shows information.
+      writeMessage "Managed sound file '$managedSoundFile':"
+      grep -re "$managedSoundFile" "$logToAnalyze" |grep -E "FWDVIT|stat.c" |grep -v "SUMMARY" |sed -e 's/^FWDVIT: \([^(]*\)(\([^)]*\))/  Result: \1/g;s/^INFO:[^:]*:.\([^(]*\)(\([^)]*\))/  Stats: \1/g;s/[]];/]\n       /g;'
+    done
+  done
+
+  writeMessage "Stopped result log analyzer."
+}
+
+# usage: analyzeLogStopWait
+function analyzeLogStopWait() {
+  sleep 2
+}
