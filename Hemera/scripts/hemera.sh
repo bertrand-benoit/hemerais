@@ -59,6 +59,11 @@ function usage() {
   exit $ERROR_USAGE
 }
 
+# usage: initialization
+function initialization() {
+  initializeCommandMap
+}
+
 #########################
 ## Command line management
 # Defines verbose to 0 if not already defined.
@@ -97,13 +102,20 @@ if [ "$hemeraMode" = "local" ]; then
       option="-T"
     ;;
 
-    stop)	option="-K";;
+    stop)
+      option="-K"
+    ;;
 
-    h|[?])	errorMessage "Unknown action: $action" $ERROR_BAD_CLI;; 
+    h|[?])
+      errorMessage "Unknown action: $action" $ERROR_BAD_CLI
+    ;; 
   esac
 
   # Adds verbose if needed.
   [ $verbose -eq 1 ] && option="-v $option"
+
+  # Initializes.
+  [ "$action" = "start" ] && ! initialization && exit $ERROR_ENVIRONMENT
 
   # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option

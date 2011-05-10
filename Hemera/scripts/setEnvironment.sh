@@ -90,6 +90,9 @@ h_fileDate=$(date +"%s")
 # Hemera mode.
 h_modeFile="$h_workDir/mode.txt"
 
+# Hemera command list.
+h_commandMap="$h_workDir/command.map"
+
 # inputMonitor/ioProcessor.
 h_inputList="$h_logDir/inputList.txt"
 
