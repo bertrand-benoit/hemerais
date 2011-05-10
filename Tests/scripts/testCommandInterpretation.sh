@@ -48,6 +48,16 @@ writeMessage "LogFile: $h_logFile"
 # Defines some additionals variables.
 speechScript="$scripstDir/core/speech/speech.sh"
 
+STRING1="Ceci est un test."
+STRING2="Perroquet, perroquet, perroquet."
+STRING2b="dire quelque chose"
+STRING3="rechercher la vérité absolue"
+STRING4="pause"
+STRING5="continue"
+STRING6="stop"
+STRING7="Les commandes suivantes doivent êtres répétées, et non interprétées"
+STRING8="Je ne suis plus censée répéter ce que l'on me dit"
+
 #########################
 ## FUNCTIONS
 
@@ -99,11 +109,6 @@ function test1() {
 # usage: test2
 # mode tests.
 function test2() {
-  local STRING1="Ceci est un test." STRING2="Perroquet, perroquet, perroquet." STRING2b="dire quelque chose"
-  local STRING3="rechercher la vérité absolue" STRING4="pause" STRING5="continue" STRING6="stop"
-  local STRING7="Les commandes suivantes doivent êtres répétées, et non interprétées"
-  local STRING8="Je ne suis plus censée répéter ce que l'on me dit"
-
   writeMessage "Test 2: starting mode tests"
   writeMessage "Test 2: activating parrot mode"
   echo "mode perroquet" > "$h_newInputDir/recognitionResult_test1.txt"
@@ -127,7 +132,11 @@ function test2() {
   echo "$STRING5" > "$h_newInputDir/recognitionResult_test7.txt"
   echo "$STRING6" > "$h_newInputDir/recognitionResult_test8.txt"
   sleep 3
+}
 
+# usage: test3
+# command error tests.
+function test3() {
   writeMessage "Test 2: activating normal mode"
   echo "mode normal" > "$h_newInputDir/recognitionResult_test9.txt"
   waitForMode "$HEMERA_MODE_NORMAL"
@@ -162,7 +171,9 @@ writeMessage "Test system will start some daemons"
 
 # Initializes Hemera mode.
 # N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
+# N.B.: starts inputMonitor BEFORE this initialization for environment to be created.
 initHemeraMode || exit $ERROR_ENVIRONMENT
+initializeCommandMap || exit $ERROR_ENVIRONMENT
 
 # We want all information about input management.
 # export verbose=1
@@ -179,6 +190,9 @@ test1
 
 ## Test 2: Mode tests.
 test2
+
+## Test 3: Command error tests.
+test3
 
 # Stops IO processor, and input monitor.
 "$scripstDir/daemon/ioprocessor.sh" -K
