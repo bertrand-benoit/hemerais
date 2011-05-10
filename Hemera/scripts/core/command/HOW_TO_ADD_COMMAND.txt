@@ -14,7 +14,7 @@ $_inputPath: the path of the input to manage
 $inputString: a string presentation of the input (useful for message)
 $hemeraMode: the Hemera mode
 $potentialCommand: the recognized command (1 word)
-$wordsCount: the count of recognized word (allowing to ensure command arguments has been specified)
+$wordsCount: the count of recognized words, including $potentialCommand (allowing to ensure command arguments has been specified)
 
 You can use following functions:
 writeMessage <message>
