@@ -34,6 +34,7 @@ source "$installDir/scripts/setEnvironment.sh"
 # Defines path to various core module main script.
 speechRecognitionScript="$installDir/scripts/core/speechRecognition/speechRecognition.sh"
 speechScript="$installDir/scripts/core/speech/speech.sh"
+commandScriptDir="$installDir/scripts/core/command"
 manageSoundScript="$currentDir/manageSound.sh"
 
 #########################
@@ -122,114 +123,32 @@ function manageRecognitionResult() {
   potentialCommand=$( extractRecognitionResultCommand "$_inputPath" )
   wordsCount=$( extractRecognitionResultWordCount "$_inputPath" )
 
-  # Checks if the first argument matches one of the internationalized command.
+  # Manages special commands like "mode" (e.g. to allow stopping 'parrot' mode).
   if matchesOneOf "${MODE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures there is at least but no more than one argument.
-    if [ $wordsCount -ne 2 ]; then
-      speechToSay "$MODE_CMD_BAD_USE_I18N" "$_inputPath"
-      notifyErrInput
-    else
-      writeMessage "$inputString: MODE command detected -> checking requested mode"
-
-      # Gets the requested mode and ensures it is a supported one.
-      requestedMode=$( extractRecognitionResultArgumentN "$_inputPath" 2 )
-      if ! checkAvailableValue "${HEMERA_SUPPORTED_MODES_I18N[*]}" "$requestedMode"; then
-        badMode="$requestedMode"
-        supportedMode=$( echo "${HEMERA_SUPPORTED_MODES_I18N[*]}" |sed -e 's/[ ]/; /g;' )
-        speechToSay "$( eval echo "$MODE_CMD_BAD_MODE_I18N" )" "$_inputPath"
-        notifyErrInput
-      else
-        # Generates a new input defining the mode -> it is important that existing new/current input are managed before this mode is
-        #  activated.
-        writeMessage "$inputString: mode $requestedMode supported -> preparing mode update"
-        modeToActivate "$requestedMode" "$_inputPath" && notifyDoneInput || notifyErrInput
-      fi
-    fi
-  elif matchesOneOf "${SAY_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-      # Ensures there is at least one argument.
-      if [ $wordsCount -lt 2 ]; then
-        speechToSay "$SAY_CMD_BAD_USE_I18N" "$_inputPath"
-        notifyErrInput
-      else
-        whatToSay=$( extractRecognitionResultArgument "$_inputPath" )
-        writeMessage "$inputString: SAY command detected -> preparing what to say: $whatToSay"
-        speechToSay "$whatToSay" "$_inputPath" && notifyDoneInput || notifyErrInput
-      fi
-    fi
-  elif matchesOneOf "${SEARCH_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-      # Ensures there is at least one argument.
-      if [ $wordsCount -lt 2 ]; then
-        speechToSay "$SEARCH_CMD_BAD_USE_I18N" "$_inputPath"
-        notifyErrInput
-      else
-        termToDefine=$( extractRecognitionResultArgument "$_inputPath" )
-        writeMessage "$inputString: SEARCH command detected -> starting definition search about: $termToDefine"
-        h_logFile="$h_logFile" noconsole=1 "$speechScript" -d "$termToDefine" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
-      fi
-    fi
-  elif matchesOneOf "${PAUSE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-      # Ensures there is no argument.
-      if [ $wordsCount -ne 1 ]; then
-        speechToSay "$PAUSE_CMD_BAD_USE_I18N" "$_inputPath"
-        notifyErrInput
-      else
-        writeMessage "$inputString: PAUSE command detected -> pausing current speech, if any"
-        "$manageSoundScript" -p "$h_speechRunningPIDFile" -P && notifyDoneInput || notifyErrInput
-      fi
-    fi
-  elif matchesOneOf "${CONTINUE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-      # Ensures there is no argument.
-      if [ $wordsCount -ne 1 ]; then
-        speechToSay "$CONTINUE_CMD_BAD_USE_I18N" "$_inputPath"
-        notifyErrInput
-      else
-        writeMessage "$inputString: CONTINUE command detected -> continuing last paused speech, if any"
-        "$manageSoundScript" -p "$h_speechRunningPIDFile" -C && notifyDoneInput || notifyErrInput
-      fi
-    fi
-  elif matchesOneOf "${STOP_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
-    # Ensures Hemera is not in parrot mode (in which case there is nothing to do there).
-    if [[ "$hemeraMode" != "$HEMERA_MODE_PARROT" ]]; then
-      # Ensures there is no argument.
-      if [ $wordsCount -ne 1 ]; then
-        speechToSay "$STOP_CMD_BAD_USE_I18N" "$_inputPath"
-        notifyErrInput
-      else
-        writeMessage "$inputString: STOP command detected -> stopping last paused speech, if any"
-        "$manageSoundScript" -p "$h_speechRunningPIDFile" -S && notifyDoneInput || notifyErrInput
-      fi
-    fi
+    source "$commandScriptDir/mode"
+    return 0
   fi
 
-  # If no command has been found:
-  #  - in parrot mode, speech recognition must be speech by Hemera
-  #  - otherwise, an error must be produced.
+  # Checks if 'parrot' mode is activated.
   if [ "$hemeraMode" = "$HEMERA_MODE_PARROT" ]; then
     h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
-  else
+    return 0
+  fi
+
+  # Attempts to get corresponding mapped command script.
+  commandScript=$( getMappedCommand "$potentialCommand" )
+
+  # Manages case command is not found.
+  if [ -z "$commandScript" ]; then
     notFoundCommand=$( cat "$_inputPath" |tr -d '\n' )
     speechToSay "$( eval echo "$NOT_FOUND_COMMAND_I18N" )" "$_inputPath"
     notifyErrInput
+    return 0
   fi
-}
 
-# usage: modeToActivate <mode> <input path>
-function modeToActivate() {
-  local _mode="$1" _inputPath="$2"
-
-  # Generates an input for informing of the update of the mode.
-  speechToSay "Activation du mode $_mode" "$_inputPath"
-
-  # Generates an input for updating the mode.
-  echo "$_mode" > "$h_newInputDir/mode_"$( basename "$_inputPath" )".txt"
+  # All is OK, launches the corresponding command script.
+  source "$commandScript"
+  return 0
 }
 
 # usage: speechToSay <text> <input path>

@@ -1,0 +1,29 @@
+
+To add a new command:
+ - create a new script NOT executable in this directory (see 'say' command script as sample)
+ - define the keyword of your command in comment, just after the Description, taking care of syntax
+ - update [HEMERA_ROOT_PATH]/locale/hemera-i18n.xx files to
+   - add XXX_PATTERN_I18N, XXX corresponding to your keyword
+   - add any internationalized message you need
+ - implement your command in your new script file
+
+Command script files must NOT be executable (they must NOT be launched directly), they are internally launched by Hemera system.
+
+You can use following variables:
+$_inputPath: the path of the input to manage
+$inputString: a string presentation of the input (useful for message)
+$hemeraMode: the Hemera mode
+$potentialCommand: the recognized command (1 word)
+$wordsCount: the count of recognized word (allowing to ensure command arguments has been specified)
+
+You can use following functions:
+writeMessage <message>
+ -> write message on standard output
+warning <message>
+ -> write message (prefixed with 'Warning' keyword) on error output
+speechToSay <message> <input path>
+ -> a new 'speech' input, containing specified message will be generated, including specified input path (to track inputs)
+notifyErrInput
+ -> the input management will be regarded as error (a message will give this information)
+notifyDoneInput
+ -> the input management will be regarded as successfull (a message will give this information)

@@ -47,7 +47,7 @@ CONTINUE_CMD_PATTERN_I18N=( "continue" "continuer" "poursuivre" )
 STOP_CMD_PATTERN_I18N=( "arrêt" "arrêter" "stop" )
 
 # Information following successfull command recognition.
-MODE_CMD_BAD_USE_I18N="Activation du mode"
+MODE_CMD_UPDATE_I18N="Activation du mode"
 
 # Command recognition error or bad use.
 # Sometimes, variables are specified in strings, they will be replaced by corresponding value; in this case (and ONLY this one)

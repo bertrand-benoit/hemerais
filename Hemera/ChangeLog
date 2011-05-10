@@ -1,9 +1,16 @@
 VERSION 0.2.0
 =============
 
+2011-05-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * important scripts structure update for better methodology and plug-ins development:
+   - extracted all command management from processInput.sh
+
+   - created dedicated sub scripts (as plug-ins) for each available commands: continue, mode, pause, say, search, stop
+
 2011-05-09  Bertrand Benoit <projettwk@users.sourceforge.net>
 
- * important scripts structure update for better methodology and plugins developement:
+ * important scripts structure update for better methodology and plug-ins development:
    - moved processInput.sh and manageSound.sh in scripts/core/system
 
    - speech scripts moved from thirdParty/speech/scripts to scripts/core/speech
