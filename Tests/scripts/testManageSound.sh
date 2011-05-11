@@ -23,6 +23,9 @@
 #
 # Usage: see usage function.
 
+# Ensures everything is stopped in same time of this script.
+trap 'writeMessage "Interrupting all tests"; "$scripstDir/hemera.sh" -K; exit 0' INT
+
 #########################
 ## CONFIGURATION
 # general

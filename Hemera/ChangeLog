@@ -7,6 +7,8 @@ VERSION 0.2.0
 
  * hemera.sh: 
    - with "status" action, information are given even if the recognized commands mode file does not exist
+   
+ * ensured everything is stopped when Tests are interrupted
 
 2011-05-10  Bertrand Benoit <projettwk@users.sourceforge.net>
 
