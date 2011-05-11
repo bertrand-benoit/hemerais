@@ -31,7 +31,7 @@ installDir="$currentDir/../../../"
 category="processInput"
 source "$installDir/scripts/setEnvironment.sh"
 
-# Defines path to various core module main script.
+# Defines path to various scripts.
 speechRecognitionScript="$installDir/scripts/core/speechRecognition/speechRecognition.sh"
 speechScript="$installDir/scripts/core/speech/speech.sh"
 commandScriptDir="$installDir/scripts/core/command"

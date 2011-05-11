@@ -44,6 +44,9 @@ ioprocessorBin="$0"
 # Defines the PID file.
 pidFile="$h_pidDir/ioProcessor.pid"
 
+# Defines path to various scripts.
+processInputScript="$installDir/scripts/core/system/processInput.sh"
+
 #########################
 ## Command line management
 
@@ -121,7 +124,7 @@ while [ 1 ]; do
     else
       # Launches background process on this input.
       curLogFile="$h_logFile.$inputString"
-      h_logFile="$curLogFile" "$installDir/scripts/core/system/processInput.sh" -i "$inputName" -S "$inputString" &
+      h_logFile="$curLogFile" "$processInputScript" -i "$inputName" -S "$inputString" &
     fi
 
     # Memorizes a new input has been managed or ignored.
