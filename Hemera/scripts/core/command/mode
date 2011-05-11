@@ -44,9 +44,9 @@ else
 
   # Gets the requested mode and ensures it is a supported one.
   requestedMode=$( extractRecognitionResultArgumentN "$_inputPath" 2 )
-  if ! checkAvailableValue "${HEMERA_SUPPORTED_MODES_I18N[*]}" "$requestedMode"; then
+  if ! checkAvailableValue "${H_SUPPORTED_RECO_CMD_MODES_I18N[*]}" "$requestedMode"; then
     badMode="$requestedMode"
-    supportedMode=$( echo "${HEMERA_SUPPORTED_MODES_I18N[*]}" |sed -e 's/[ ]/; /g;' )
+    supportedMode=$( echo "${H_SUPPORTED_RECO_CMD_MODES_I18N[*]}" |sed -e 's/[ ]/; /g;' )
     speechToSay "$( eval echo "$MODE_CMD_BAD_MODE_I18N" )" "$_inputPath"
     notifyErrInput
   else

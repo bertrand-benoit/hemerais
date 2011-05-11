@@ -90,15 +90,22 @@ if [ "$hemeraMode" = "local" ]; then
   # Defines option to use according to action.
   case "$action" in
     start)
-      # Initializes Hemera mode.
-      initHemeraMode || exit $ERROR_ENVIRONMENT
+      # Initializes recognized commands mode.
+      initRecoCmdMode || exit $ERROR_ENVIRONMENT
       option="-S"
     ;;
 
     status)
       # Informs about current Hemera mode.
-      hemeraMode=$( getHemeraMode ) || exit $ERROR_ENVIRONMENT
       writeMessage "Current Hemera mode is '$hemeraMode'"
+
+      # Informs about recognized commands mode.
+      if [ -f "$h_recoCmdModeFile" ]; then
+        recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
+        writeMessage "Current recognized commands mode is '$recoCmdMode'"
+      fi
+
+      # Prepares to inform about all daemons status.
       option="-T"
     ;;
 

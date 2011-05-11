@@ -106,8 +106,8 @@ function extractRecognitionResultArgumentN() {
 function manageRecognitionResult() {
   local _inputPath="$1"
 
-  # Gets Hemera mode.
-  hemeraMode=$( getHemeraMode ) || exit $ERROR_ENVIRONMENT
+  # Gets recognized commands mode.
+  recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
  
   # Removes wav file information from input file.
   # If there is finally nothing to say, replace with a default speech.
@@ -130,7 +130,7 @@ function manageRecognitionResult() {
   fi
 
   # Checks if 'parrot' mode is activated.
-  if [ "$hemeraMode" = "$HEMERA_MODE_PARROT" ]; then
+  if [ "$recoCmdMode" = "$H_RECO_CMD_MODE_PARROT" ]; then
     h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
     return 0
   fi
@@ -255,7 +255,7 @@ case "$inputType" in
   mode)
     requestedMode=$( head -n 1 "$curInputPath" |awk '{print $1}' )
     writeMessage "$inputString: updating mode to '$requestedMode'"
-    updateHemeraMode "$requestedMode" && notifyDoneInput || notifyErrInput
+    updateRecoCmdMode "$requestedMode" && notifyDoneInput || notifyErrInput
   ;;
 
   recordedSpeech)

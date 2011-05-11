@@ -52,7 +52,7 @@ h_i18nFile="$installDir/locale/hemera-i18n.$h_locale"
 source "$h_i18nFile"
 
 # Updates some internationalized constants.
-HEMERA_SUPPORTED_MODES_I18N=( "$HEMERA_MODE_NORMAL_I18N" "$HEMERA_MODE_SECURITY_I18N" "$HEMERA_MODE_PARROT_I18N" )
+H_SUPPORTED_RECO_CMD_MODES_I18N=( "$H_RECO_CMD_MODE_NORMAL_I18N" "$H_RECO_CMD_MODE_SECURITY_I18N" "$H_RECO_CMD_MODE_PARROT_I18N" )
 
 # Defines some global variables about directories.
 h_daemonDir="$installDir/scripts/daemon"
@@ -88,18 +88,18 @@ updateStructure "$h_pidDir"
 h_fileDate=$(date +"%s")
 
 # Hemera mode.
-h_modeFile="$h_workDir/mode.txt"
+h_recoCmdModeFile="$h_workDir/mode"
 
 # Hemera command list.
-h_commandMap="$h_workDir/command.map"
+h_commandMap="$h_workDir/commandMap"
 
 # inputMonitor/ioProcessor.
-h_inputList="$h_logDir/inputList.txt"
+h_inputList="$h_logDir/inputList"
 
 # processInput
 h_speechRunningLockFile="$h_workDir/runningSpeech.lck"
 h_speechRunningPIDFile="$h_pidDir/runningSpeech.pid"
-h_speechToPlayList="$h_workDir/speechToPlay.txt"
+h_speechToPlayList="$h_workDir/speechToPlay"
 
 # Defines the log file if not already done.
 if [ -z "$h_logFile" ]; then

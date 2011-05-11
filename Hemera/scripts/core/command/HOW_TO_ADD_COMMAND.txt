@@ -12,7 +12,7 @@ Command script files must NOT be executable (they must NOT be launched directly)
 You can use following variables:
 $_inputPath: the path of the input to manage
 $inputString: a string presentation of the input (useful for message)
-$hemeraMode: the Hemera mode
+$recoCmdMode: the Hemera mode
 $potentialCommand: the recognized command (1 word)
 $wordsCount: the count of recognized words, including $potentialCommand (allowing to ensure command arguments has been specified)
 

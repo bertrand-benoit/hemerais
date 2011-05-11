@@ -24,10 +24,10 @@
 # This script must NOT be directly called.
 
 ## General constants
-## Hemera modes.
-HEMERA_MODE_NORMAL_I18N="normal"
-HEMERA_MODE_SECURITY_I18N="security"
-HEMERA_MODE_PARROT_I18N="parrot"
+## Hemera recognized commands modes.
+H_RECO_CMD_MODE_NORMAL_I18N="normal"
+H_RECO_CMD_MODE_SECURITY_I18N="security"
+H_RECO_CMD_MODE_PARROT_I18N="parrot"
 
 ## Commands.
 # Internationalized command patterns.

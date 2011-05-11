@@ -109,7 +109,7 @@ cleanNotManagedInput
 
 # Initializes Hemera mode.
 # N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
-initHemeraMode || exit $ERROR_ENVIRONMENT
+initRecoCmdMode || exit $ERROR_ENVIRONMENT
 
 # Defines main log file.
 mainLogFile="$h_logFile"

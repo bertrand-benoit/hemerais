@@ -1,6 +1,13 @@
 VERSION 0.2.0
 =============
 
+2011-05-11  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * fixed confusion between two different notions of 'hemera mode' (introducing :recognized commands mode)
+
+ * hemera.sh: 
+   - with "status" action, information are given even if the recognized commands mode file does not exist
+
 2011-05-10  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * important scripts structure update for better methodology and plug-ins development:

@@ -70,8 +70,8 @@ function waitForMode() {
     [ $_remainingTime -eq 0 ] && break
 
     # Checks if the awaited mode is reached.
-    hemeraMode=$( getHemeraMode ) || exit $ERROR_ENVIRONMENT
-    [ "$hemeraMode" = $_mode ] && break
+    recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
+    [ "$recoCmdMode" = "$_mode" ] && break
 
     sleep 1
     let _remainingTime--
@@ -112,7 +112,7 @@ function test2() {
   writeMessage "Test 2: starting mode tests"
   writeMessage "Test 2: activating parrot mode"
   echo "mode perroquet" > "$h_newInputDir/recognitionResult_test1.txt"
-  waitForMode "$HEMERA_MODE_PARROT"
+  waitForMode "$H_RECO_CMD_MODE_PARROT"
 
   writeMessage "Test 2: must repeat '$STRING1'"
   echo "$STRING1" > "$h_newInputDir/recognitionResult_test2.txt"
@@ -139,7 +139,7 @@ function test2() {
 function test3() {
   writeMessage "Test 2: activating normal mode"
   echo "mode normal" > "$h_newInputDir/recognitionResult_test9.txt"
-  waitForMode "$HEMERA_MODE_NORMAL"
+  waitForMode "$H_RECO_CMD_MODE_NORMAL"
 
   writeMessage "Test 2: inform about what must happen ($STRING8)"
   "$speechScript" -t "$STRING8" -o "$h_newInputDir/speech_test10.wav"
@@ -172,7 +172,7 @@ writeMessage "Test system will start some daemons"
 # Initializes Hemera mode.
 # N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
 # N.B.: starts inputMonitor BEFORE this initialization for environment to be created.
-initHemeraMode || exit $ERROR_ENVIRONMENT
+initRecoCmdMode || exit $ERROR_ENVIRONMENT
 initializeCommandMap || exit $ERROR_ENVIRONMENT
 
 # We want all information about input management.
