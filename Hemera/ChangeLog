@@ -3,10 +3,14 @@ VERSION 0.2.0
 
 2011-05-11  Bertrand Benoit <projettwk@users.sourceforge.net>
 
+ * implemented Hemera uptime functions
+ 
  * fixed confusion between two different notions of 'hemera mode' (introducing :recognized commands mode)
 
  * hemera.sh: 
    - with "status" action, information are given even if the recognized commands mode file does not exist
+   
+   - improved shown information (including uptime)
    
  * ensured everything is stopped when Tests are interrupted
 

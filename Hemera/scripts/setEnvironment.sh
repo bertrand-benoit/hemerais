@@ -87,7 +87,10 @@ updateStructure "$h_pidDir"
 ## Defines some other global variables.
 h_fileDate=$(date +"%s")
 
-# Hemera mode.
+# Hemera start time.
+h_startTime="$h_workDir/starttime"
+
+# Hemera recognized commands mode.
 h_recoCmdModeFile="$h_workDir/mode"
 
 # Hemera command list.

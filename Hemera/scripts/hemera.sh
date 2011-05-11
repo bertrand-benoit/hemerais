@@ -62,6 +62,7 @@ function usage() {
 # usage: initialization
 function initialization() {
   initializeCommandMap
+  initializeStartTime
 }
 
 #########################
@@ -96,13 +97,17 @@ if [ "$hemeraMode" = "local" ]; then
     ;;
 
     status)
+      # TODO: Informs about uptime.
+      uptime=$( getUptime )
+      writeMessage "Hemera uptime: $uptime"
+      
       # Informs about current Hemera mode.
-      writeMessage "Current Hemera mode is '$hemeraMode'"
+      writeMessage "Hemera mode: $hemeraMode"
 
       # Informs about recognized commands mode.
       if [ -f "$h_recoCmdModeFile" ]; then
         recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
-        writeMessage "Current recognized commands mode is '$recoCmdMode'"
+        writeMessage "Recognized commands mode: $recoCmdMode"
       fi
 
       # Prepares to inform about all daemons status.
@@ -123,7 +128,7 @@ if [ "$hemeraMode" = "local" ]; then
 
   # Initializes.
   [ "$action" = "start" ] && ! initialization && exit $ERROR_ENVIRONMENT
-
+exit 0
   # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
