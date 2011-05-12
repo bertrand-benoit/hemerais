@@ -1,35 +1,207 @@
-# Héméra transcript file.
-# While creating models, lines beginning with #, empty lines
+# Héméra transcript file.
+# While creating models, lines beginning with #, empty lines
 #  and lines containing only space and/or tabulations will be ignored.
+# All punctuations will be removed, and any letters will be translated to lower case.
 
-# some basic sentences
+# Modus operandi:
+#  - define "big" chapters
+#  - define categories for each chapter
+#  - for each category, separate parts with comment
+#  - for each part:
+#    - define a first list of terms/sentences corresponding to command to recognize
+#    - define a second list of terms/sentences corresponding to what you may wait in return -> it will improve the corpus
+
+## General
+# usual tests
+tests
+ceci est un test
+test de reconnaissance vocale
+
+# some common sentences
 bonjour Héméra
-comment vas tu ?
-quel temps fait il ?
-Ceci est un test
+j'ai vu que tu avais mangé tout le chocolat !
+tu penses vraiment que tu vas t'en tirer ainsi ?
+à force de regarder la télé, tu vas avoir mal aux yeux
+tu as vu ce bel oiseau qui s'envole ?
 
-# mode definition
+# well-known sentences
+je pense donc je suis
+
+# day, month, year
+aujourd'hui
+hier
+demain
+voici les jours de la semaine
+lundi
+mardi
+mercredi
+jeudi
+vendredi
+samedi
+dimanche
+week-end
+fin de la semaine
+voici les mois de l'année
+janvier
+février
+mars
+avril
+mai
+juin
+juillet
+août
+septembre
+octobre
+novembre
+décembre
+
+# numbers
+
+
+# first/last names
+Bertrand
+Stéphanie
+Kevin
+Louane
+Delphine
+Gryffyn
+Danaé
+Mac Fly
+Georgette
+
+
+
+# mode definition - commands
 mode normal
 mode perroquet       
-mode securité
+mode sécurité
+more rédaction
 
-# basic commands
+# mode definition - return
+Mode activé
+Activation du mode normal
+Activation du mode rédaction
+Activation du mode perroquet
+
+## Day tasks
+# basic - commands
 liste des tâches
-lecture musique
-lecture livre
+lire les tâches
+
+# basic - return
+Vous avez dix tâches
+Vous avez quinze tâches
+Vous n'avez aucune tâche en attente
+
+# auto diagnosis - commands
+identification
+identifie toi
+donner configuration
+
+# auto diagnosis - return
+Les modules coeurs suivants sont démarrés
+Anomalie d'un module coeur détecté
+Héméra est démarrée depuis
+Voici la liste des plug-ins disponibles
+
+# time - commands
+donner l'heure
+donne l'heure
+
+# time - return
+il est vingt et une heure neuve dix neux minutes
+de bon matin
+le soir a commencé
+le nuit va bientôt tomber
+
+# search - commands
+rechercher la vérité absolue
+recherche intelligence artificielle
+
+# search - return
+recherche en cours
+ce terme permet de définir
+ceci explique particulièrement bien cela
+il était une fois
+
+# e-mails (count, read, sent ...) - commands
+donner le nombre d'e-mails
+donner le nombre de courriels
+lire e-mails
+lire e-mails suivant
+envoyer e-mail
+envoyer courriel
+
+# e-mails (count, read, sent ...) - return
+vous n'avez aucun e-mail
+aucun courriel dans votre boite aux lettres
+vous avez quatre cent quatre vingt douze messages
+
+# weather - commands
+donner le temps
+donne le temps
+
+# weather - return
+il y a de la pluie toute la journée
+il fera beau temps
+un grand soleil pour aujourd'hui
+le temps sera couvert
+
+# calendar/meeting alert - commands
+lire les rendez-vous
+ajouter un rendez-vous
+donner le jour
+donner l'année
+
+# calendar/meeting alert - return
+nous sommes le douze mai deux mil onze
+vous avez trois rendez-vous
+
+
+# news (count, read ...) - commands
+
+# multimedia - general
 pause
 reprendre
 poursuivre
 stop
 arrêt
 
-# search commands
-recherche intelligence artificielle
+# audio - multimedia (play, pause, continue, stop) - commands
+lecture musique
 
-# domotics
+# video - multimedia (play, pause, continue, stop) - commands
+
+# online book
+lecture livre
+
+# applications/OS/games updates alert - commands
+# virus/firewall alert - commands
+# people contact search (phone number, address ...) - commands
+# arithmetic computations - commands
+# advanced computations (incomes taxes ...) - commands
+# document speech writing - commands
+# phone messages (count, read) - commands
+
+## House (domotics)
+# alarm status - commands
+# doors and windows status - commands
 ouvrir porte
 ouvrir fenêtre
 fermer porte
 fermer fenêtre
+
+# light on/off - commands
 allumer lumière
 éteindre lumière
+
+# music on/off - commands
+# thermal status/update - commands
+# TV - commands
+
+## Car
+# house surveillance - commands
+
+# GPS - commands
+
+# mobile phone (messages count, messages read, call ...) - commands

@@ -47,12 +47,12 @@ mkdir -p "$buildDir"
 lmFileTmp="$buildDir/lm.arpa.tmp"
 lmFileTmpSorted="$lmFileTmp.sorted"
 lmFileTmpSortedDummy="$lmFileTmp.sorted.dummy"
-lmFile="data/hemera.DMP.utf8"
+lmFile="data/hemera.dmp.utf8"
 
 lexicalWordList="$buildDir/wordsList.tmp"
 lexicalWordPhonesTmp="$buildDir/wordsPhones.tmp"
 lexicalWordPhones="$buildDir/wordsPhones.tmp.utf8"
-lexicalWordDic="data/hemera_dic.utf8"
+lexicalWordDic="data/hemera_dict.utf8"
 
 #########################
 ## FUNCTIONS
@@ -67,7 +67,7 @@ function manageModelCopyToMainProject() {
     echo -e "\nYou can use the --copy option for this script to automagically copy successfully created models to hemera main project (which must be in the same root directory), in corresponding sub-directories."
   else
     # Ensures Hemera main project is available.
-    hemeraMainDir=$( dirname "$currentDir" )"/hemera"
+    hemeraMainDir=$( dirname "$currentDir" )"/Hemera"
     [ ! -d "$hemeraMainDir" ] && echo -e "Unable to find hemera main project ($hemeraMainDir)" && return 1
 
     # Ensures the destination file does not already exist.
@@ -84,12 +84,15 @@ function manageModelCopyToMainProject() {
 # sphinx3_lm_convert needs relative path, so moves to the current directory.
 cd "$currentDir"
 
-# Ensures transcript source file is available, and prepares the transcript file for work.
+# Ensures transcript source file is available, and prepares the transcript file for work:
+#  - removes comments
+#  - removes punctuations
+#  - lower all letters
 transcriptSource="data/hemeraTranscript.txt"
 transcript="build/hemeraTranscript.txt.cleaned"
 echo -ne "Preparing source transcript file ($transcript) ... "
 [ ! -f "$transcriptSource" ] && echo -e "$transcriptSource not FOUND" && exit 1
-! $( cat "$transcriptSource" |grep -v "^#" | grep -v "^[ \t]*$" > "$transcript" ) && echo -e "error" && exit 1
+! $( cat "$transcriptSource" |grep -v "^#" | grep -v "^[ \t]*$" |sed -e 's/[[:punct:]]//g;' |tr "[:upper:]" "[:lower:]" > "$transcript" ) && echo -e "error" && exit 1
 echo "done"
 
 echo -e "\n***** Language model *****"
