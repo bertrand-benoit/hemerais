@@ -5,10 +5,21 @@ short term:
  - deploy automatically webmodule when launching setup
 
  - new plug-ins to add:
-  - give -> time, weather, e-mails count
-  - read -> todo list, e-mails, meetings
+  - search -> virus, game/OS updates, GPS
+  - give -> time, weather, e-mails count, news count, heating temperature, contact information, resources, uptime, state (light, alarm ...)
+  - schedule -> light, radio, TV recording
+  - read -> todo list, e-mails, meetings, news, music, video
+  - [de]activate -> TV channel, radio channel, heating, alarm, firewall, antivirus
+  - increment -> heating temperature, TV/radio volume
+  - decrement -> heating temperature, TV/radio volume
+  - check/test -> virus base, alarm
+  - open/close -> door, windows
+  - show -> camera N
 
- - new mode: "writing" (e-mails ...)
+ - implement a selector system -> will be used for e-mails, news, music, video ...
+ - implement an Hemera question system -> for instance for incomes taxe (Héméra should ask additional information)
+
+ - new mode: "writing" (e-mails, doc ...)
 
 
 middle term:
