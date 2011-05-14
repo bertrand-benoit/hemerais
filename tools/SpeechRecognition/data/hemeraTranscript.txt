@@ -100,12 +100,16 @@ identifie toi
 donner configuration
 donner ressources utilisées
 donner la durée de fonctionnent
+relancer le module de synthèse vocale
+relancer totalement Héméra
+relancer le module de sonde thermique
 
 # auto diagnosis - return
 Les modules coeurs suivants sont démarrés
 Anomalie d'un module coeur détecté
 Héméra est démarrée depuis
 Voici la liste des plug-ins disponibles
+Module réinitialisé
 
 
 # time - commands
