@@ -1,0 +1,22 @@
+About
+-----
+Simple Hemera speech recognition tools allowing to create models.
+Currently it only supports French language.
+
+Full documentation
+------------------
+You should prefer online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page
+
+Quick Start
+-----------
+You need following tools:
+ - srilm: language modeling toolkit (See http://www.speech.sri.com/projects/srilm)
+ - lia_phon: phonetization tool (French) from LIA labs (See http://lia.univ-avignon.fr/fileadmin/documents/Users/Intranet/chercheurs/bechet/download_fred.html)
+ - sphinx3: speech recognition toolkit (See http://cmusphinx.sourceforge.net)
+
+You must install them under the bin/ sub-directory of this project, or create symbolic link to root directory of each installation.
+The createModels.sh script will check for these tools availability.
+
+Installation
+------------
+See online documentation: http://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Speech_Recognition_Models_Creation

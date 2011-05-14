@@ -1,0 +1,386 @@
+# Héméra transcript file.
+# While creating models, lines beginning with #, empty lines
+#  and lines containing only space and/or tabulations will be ignored.
+# All punctuations will be removed, and any letters will be translated to lower case.
+
+# Modus operandi:
+#  - define "big" chapters
+#  - define categories for each chapter
+#  - for each category, separate parts with comment
+#  - for each part:
+#    - define a first list of terms/sentences corresponding to command to recognize
+#    - define a second list of terms/sentences corresponding to what you may wait in return -> it will improve the corpus
+
+## General
+# usual tests
+tests
+ceci est un test
+test de reconnaissance vocale
+
+# some common sentences
+bonjour Héméra
+j'ai vu que tu avais mangé tout le chocolat !
+tu penses vraiment que tu vas t'en tirer ainsi ?
+à force de regarder la télé, tu vas avoir mal aux yeux
+tu as vu ce bel oiseau qui s'envole ?
+
+# well-known sentences
+je pense donc je suis
+
+# day, month, year
+aujourd'hui
+hier
+demain
+voici les jours de la semaine
+lundi
+mardi
+mercredi
+jeudi
+vendredi
+samedi
+dimanche
+week-end
+fin de la semaine
+voici les mois de l'année
+janvier
+février
+mars
+avril
+mai
+juin
+juillet
+août
+septembre
+octobre
+novembre
+décembre
+
+# numbers
+
+
+# first/last names
+Bertrand
+Stéphanie
+Kevin
+Louane
+Delphine
+Gryffyn
+Danaé
+Mac Fly
+Georgette
+
+
+
+# mode definition - commands
+mode normal
+mode perroquet       
+mode sécurité
+more rédaction
+
+# mode definition - return
+Mode activé
+Activation du mode normal
+Activation du mode rédaction
+Activation du mode perroquet
+
+## Day tasks
+# basic - commands
+liste des tâches
+lire les tâches
+
+# basic - return
+Vous avez dix tâches
+Vous avez quinze tâches
+Vous n'avez aucune tâche en attente
+
+
+# auto diagnosis - commands
+identification
+identifie toi
+donner configuration
+donner ressources utilisées
+donner la durée de fonctionnent
+
+# auto diagnosis - return
+Les modules coeurs suivants sont démarrés
+Anomalie d'un module coeur détecté
+Héméra est démarrée depuis
+Voici la liste des plug-ins disponibles
+
+
+# time - commands
+donner l'heure
+donne l'heure
+donner l'heure avec le fuseau
+
+# time - return
+il est vingt et une heure neuve dix neux minutes
+de bon matin
+le soir a commencé
+le nuit va bientôt tomber
+
+
+# search - commands
+rechercher la vérité absolue
+recherche intelligence artificielle
+
+# search - return
+recherche en cours
+ce terme permet de définir
+ceci explique particulièrement bien cela
+il était une fois
+
+
+# e-mails (count, read, sent ...) - commands
+donner le nombre d'e-mails
+donner le nombre de courriels
+lire e-mails
+lire e-mails suivant
+envoyer e-mail
+envoyer courriel
+lire e-mail précédent
+
+# e-mails (count, read, sent ...) - return
+vous n'avez aucun e-mail
+aucun courriel dans votre boite aux lettres
+vous avez quatre cent quatre vingt douze messages
+
+
+# weather - commands
+donner le temps
+donne le temps
+donner le temps de ce week-end
+donner le temps de la fin de semaine
+donner le prochain jour où il y aura de la pluie
+
+# weather - return
+il y a de la pluie toute la journée
+il fera beau temps
+un grand soleil pour aujourd'hui
+le temps sera couvert
+
+
+# calendar/meeting alert - commands
+lire les rendez-vous
+ajouter un rendez-vous
+donner le jour
+donner l'année
+donner le prochain anniversaire
+donner l'heure de la prochaine réunion
+
+# calendar/meeting alert - return
+nous sommes le douze mai deux mil onze
+vous avez trois rendez-vous
+votre réunion a lieu à dix heure trente
+
+# news (count, read ...) - commands
+donner le nombre de nouvelles
+lire la prochaine nouvelle
+lire la prochaine nouvelle de la catégorie
+lire l'annonce dont le titre est
+
+# news (count, read ...) - return
+il n'y a aucune nouvelle
+il y a cinq nouveaux articles
+
+
+# multimedia - general
+pause
+reprendre
+poursuivre
+stop
+arrêt
+
+
+# audio - multimedia (play, pause, continue, stop) - commands
+lecture musique
+lire album de Mariah Carey
+
+
+# video - multimedia (play, pause, continue, stop) - commands
+lecture vidéo
+lire la vidéo de la dernière réunion
+
+# online book - commands
+lecture livre
+
+# online book - return
+Début de la lecture du livre
+
+
+# applications/OS/games updates alert - commands
+chercher mise à jour de jeux
+chercher mise à jour du système
+
+# applications/OS/games updates alert - return
+une nouvelle mise à jour a été trouvée
+cent quatre vingt dix paquets à mettre à jour
+
+
+# virus/firewall alert - commands
+activer le parefeu
+ajouter la règle suivante
+rechercher les virus
+tester la base de virus
+donner les informations de la dernière menace
+
+# virus/firewall alert - return
+recherche de virus en cours
+aucun virus détecté
+il n'existe aucune règle de parefeu
+
+
+# people contact search/call (phone number, address ...) - commands
+donner le numéro de téléphone de Kevin
+donner l'adresse de Claudine
+appeler l'oncle Ernest
+
+# people contact search (phone number, address ...) - return
+voici le numéro de téléphone de Georgette
+Yves habite le neuf rue Kennedy à Toul
+appel en cours
+
+
+# arithmetic computations - commands
+calculer cinquante plus douze
+calculer vingt moins trois
+calculer cent divisé par seize
+calculer treize fois mil
+
+# arithmetic computations - return
+division par zéro impossible
+le résultat est de
+
+
+# advanced computations (incomes taxes ...) - commands
+calculer les impôts sur le revenu
+calculer la taxe foncière
+
+# advanced computations (incomes taxes ...) - return
+vos impôts s'élèvent à
+vous n'avez rien à payer
+données insuffisantes
+
+
+# document speech writing - commands
+# Cf. mode rédaction
+
+# phone messages (count, read) - commands
+donner les messages du téléphone
+lire les messages
+donner le nombre de messages
+
+# phone messages (count, read) - commands
+vous n'avez aucun message
+votre répondeur est vide
+lecture du premier message
+lecture du troisième message
+
+## House (domotics)
+# alarm status - commands
+activer l'alarme
+désactiver l'alarme
+tester l'alarme
+donner l'état de l'alarme
+
+# alarm status - return
+alarme arrêtée
+alarme mise en marche
+alarme active
+
+
+# doors and windows status - commands
+ouvrir porte
+ouvrir fenêtre
+fermer porte
+fermer fenêtre
+tester l'état de toutes les portes
+donner les fenêtres ouvertes
+
+# doors and windows status - return
+porte fermée
+fenêtre ouverte
+la fenêtre de la chambre de Kevin est grande ouverte
+la porte du grenier est mal fermée
+
+
+# light on/off - commands
+allumer lumière
+éteindre lumière
+programmer l'allumage des lumières à sept heure du matin
+
+# light on/off - return
+lumière éteinte
+lumière allumée
+
+
+# music on/off - commands
+# See multimedia part.
+
+
+# thermal status/update - commands
+donner la température de la pièce
+activer le chauffage
+augmenter la température à dix huit degrés
+baisser la température à seize degré
+diminuer la température à quatorze degré
+
+# thermal status/update - return
+il fait vingt trois degrés
+le chauffage est déjà activé
+augmentation de la température terminée
+
+
+# TV - commands
+allumer la télévision
+allumer la télé
+éteindre la télé
+activer la chaine cinq
+augmenter le volume de la télévision
+diminuer le volume de la télévision
+programmer l'enregistrement de l'émission
+donner la liste des programmes de ce soir
+
+# TV - return
+chaîne activée
+télévision allumée
+télévision éteinte
+volume augmenté
+
+# Radio - commands
+allumer la radio
+activer la radio Europe un
+augmenter le volume de la radio
+dimninuer le volume de la radio
+
+# Radio - return
+activation de la radio énergie
+volume diminué
+
+## Car
+# house surveillance - commands
+# Cf. alarm
+fermer toutes les portes
+montrer caméra 2
+
+# house surveillance - return
+toutes les portes sont fermées
+toutes les lumières sont éteintes
+la caméra est hors ligne
+
+# GPS - commands
+rechercher le plus cours trajet vers la mairie de Oissel
+rechercher un trajet alternatif
+
+# GPS - return
+destination inconnue
+le trajet proposé, est d'une distance de deux cent kilomètre, avec une consommation de carburant de neuf litres
+
+
+# mobile phone (messages count, messages read, call ...) - commands
+activer le kit mains libres
+envoyer le texto suivant
+
+# mobile phone (messages count, messages read, call ...) - return
+votre texto a bien été envoyé
+activation du kit mains libres
