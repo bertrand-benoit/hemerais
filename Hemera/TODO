@@ -6,6 +6,7 @@ short term:
 
  - new plug-ins to add:
   - search -> virus, game/OS updates, GPS
+  - relaunch/reboot -> core module, the whole Hemera, heating thermal sensor
   - give -> time, weather, e-mails count, news count, heating temperature, contact information, resources, uptime, state (light, alarm ...)
   - schedule -> light, radio, TV recording
   - read -> todo list, e-mails, meetings, news, music, video

@@ -10,7 +10,7 @@ See LICENSE or COPYING file.
 Quick Start
 -----------
  - to get speech samples
-svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/Samples [HEMERA_ROOT_PATH]/HemeraSamples
+svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/Samples HemeraSamples
 
 Help
 ------------------
