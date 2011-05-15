@@ -58,54 +58,56 @@ function checkConfiguration() {
   return 0
 }
 
-# usage: prepareAudioSource <source wav file> <destination raw file>
+# usage: prepareAudioSource <source wav file> <destination raw file> <convert>
+# convert to raw file: 0=disabled, 1=enabled
 function prepareAudioSource() {
-  local wavFile="$1"
-  local rawFile="$2"
-  local mfcFile="$rawFile".mfc
+  local _wavFile="$1" _rawFile="$2" _convert="$3"
+
+  # Defines feature file path, according to convert.
+  local _mfcFile="$_wavFile".mfc
+  [ $_convert -eq 1 ] && _mfcFile="$_rawFile".mfc
 
   # Checks if destination mfc file alreazdy exists, force is NOT set.
-  if [[ -f "$mfcFile" ]] && [[ $force -eq 0 ]]; then
-    writeMessage "Found feature sound file '$mfcFile' (use -F to recreate)."
+  if [[ -f "$_mfcFile" ]] && [[ $force -eq 0 ]]; then
+    writeMessage "Found feature sound file '$_mfcFile' (use -F to recreate)."
   else
     # Modus operandi
-    #  1- converts the wav file to signed 16-bit little endian raw file
-    writeMessage "Converting sound file $wavFile ... " 0
+    local output="$_wavFile"
+    if [ $_convert -eq 1 ]; then
+      #  1- converts the wav file to signed 16-bit little endian raw file
+      writeMessage "Converting sound file $_wavFile ... " 0
 
-    # Defines input and output.
-    input="$wavFile"
-    output="$rawFile"
+      # Defines input and output.
+      input="$_wavFile"
+      output="$_rawFile"
 
-    ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
-    echo "done"
+      ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
+      echo "done"
+    fi
 
     #  2- computes the corresponding feature file
-    writeMessage "Creating feature sound file for $rawFile ... " 0
-    ! "$currentDir/computeFeatureFile.sh" -f "$rawFile" >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
+    writeMessage "Creating feature sound file for $input ... " 0
+    ! "$currentDir/computeFeatureFile.sh" -f "$output" >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
     echo "done"
   fi
   return 0
 }
 
-# usage: prepareSoundFileList <source sound list file> <control list file>
+# usage: prepareSoundFileList <source sound list file> <control list file> <convert>
+# convert: 0=disabled, 1=enabled
 function prepareSoundFileList() {
-  local _sourceSoundListFile="$1"
-  local _controlFile="$2"
+  local _sourceSoundListFile="$1" _controlFile="$2" _convert="$3"
 
   # For each sound file of the specified list.
   rm -f "$_controlFile"
   for soundFileRaw in $( cat "$_sourceSoundListFile" |sed -e 's/[ \t]/£/g;' ); do
     soundFile=$( echo "$soundFileRaw" |sed 's/£/ /g;' )
-    soundFileExtension=${soundFile/*./}
 
-    if [[ "$soundFileExtension" == "wav" ]]; then
-      rawSoundFile="$soundFile".raw
-      ! prepareAudioSource "$soundFile" "$rawSoundFile" && continue
-    else
-      rawSoundFile="$soundFile"
-    fi
+    rawSoundFile="$soundFile".raw
+    ! prepareAudioSource "$soundFile" "$rawSoundFile" "$_convert" && continue
 
-    echo "$rawSoundFile" >> "$_controlFile"
+    # Adds the sound file path to the control list, according to the convert toggle.
+    [ $_convert -eq 1 ] && echo "$rawSoundFile" >> "$_controlFile" || echo "$soundFile" >> "$_controlFile"
   done
 }
 

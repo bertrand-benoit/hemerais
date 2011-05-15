@@ -1,6 +1,13 @@
 VERSION 0.2.0
 =============
 
+2011-05-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * SpeechRecognition.sh
+   - improved path management ensuring it is absolute paths (whatever the used option)
+   
+   - added new option allowing to activate source sound file convert in raw (by default it is now disabled) 
+
 2011-05-11  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * implemented Hemera uptime functions

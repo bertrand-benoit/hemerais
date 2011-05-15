@@ -56,12 +56,13 @@ soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) |
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-Fvh]"
+  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-CFvh]"
   echo -e "<sound file>\tthe sound file to decode"
   echo -e "<list file>\tthe file containing the list of sound files to decode (must only contain ABSOLUTE paths)"
   echo -e "<s. files dir>\tthe directory containing sound files to decode"
   echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
   echo -e "<result file>\tpath to result file"
+  echo -e "-C\t\tactivate sound conversion from wav to raw (only needed if source has NOT a 16 kHz rate)"
   echo -e "-F\t\tforce [re]creation of intermediate files"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
@@ -121,9 +122,10 @@ SOURCE_MODE_DIR=3
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
 force=0
-# N.B.: -Z is an hidden option allowing to analyze specified log file;
+convert=0
+# N.B.: -Z is an hidden option allowing to analyze specified log file;
 #  it must be used for internal purposes only.
-while getopts "f:l:d:Z:P:R:Fvh" opt
+while getopts "f:l:d:Z:P:R:CFvh" opt
 do
  case "$opt" in
         f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
@@ -131,6 +133,7 @@ do
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
         P)      speechFilePattern="$OPTARG";;
         R)      resultFile="$OPTARG";;
+        C)      convert=1;;
         F)      force=1;;
         v)      verbose=1;;
         Z)      logToAnalyze="$OPTARG";;
@@ -183,7 +186,7 @@ esac
 
 # Prepares the destination sound file list.
 preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
-prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" || exit $ERROR_SR_PREPARE
+prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" $convert || exit $ERROR_SR_PREPARE
 
 # Launches the speech recognition on the list.
 manageSpeechRecognition "$preparedSoundFileList" "$resultFile"
