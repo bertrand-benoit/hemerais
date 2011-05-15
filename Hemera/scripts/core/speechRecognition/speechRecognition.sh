@@ -58,7 +58,7 @@ soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) |
 function usage() {
   echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-Fvh]"
   echo -e "<sound file>\tthe sound file to decode"
-  echo -e "<list file>\tthe file containing the list of sound files to decode"
+  echo -e "<list file>\tthe file containing the list of sound files to decode (must only contain ABSOLUTE paths)"
   echo -e "<s. files dir>\tthe directory containing sound files to decode"
   echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
   echo -e "<result file>\tpath to result file"
@@ -67,6 +67,22 @@ function usage() {
   echo -e "-h\t\tshow this usage"
   echo -e "\nYou must use one of the following option: -f, -l or -d."
   exit $ERROR_USAGE
+}
+
+# usage: isAbsolutePath <path>
+function isAbsolutePath() {
+  [[ "$1" =~ "^\/.*$" ]]
+}
+
+# usage: getAbsolutePath <path>
+function getAbsolutePath() {
+  local _path="$1"
+
+  # Checks if it is already an absolute path.
+  isAbsolutePath "$_path" && echo "$_path" && return 0
+
+  # Prefixes with current directory.
+  echo "$PWD/$_path"
 }
 
 # usage: markLogFileEnd
@@ -137,25 +153,33 @@ checkConfiguration || exit $ERROR_CHECK_CONFIG
 
 #########################
 ## INSTRUCTIONS
-# Moves to root because all files are regarded as relative to it.
-cd /
-
-# According to the mode, create a sound file list.
+# According to the mode, create a sound file list.
 sourceSoundFileList="$h_workDir/$h_fileDate-sourceSoundFileList.txt"
 rm -f "$sourceSoundFileList"
 case "$mode" in
   $SOURCE_MODE_SOUND_FILE)
-    echo "$path" > "$sourceSoundFileList";;
+    # Adds path (ensuring it is an absolute one) to the list.
+    getAbsolutePath "$path" > "$sourceSoundFileList";;
   $SOURCE_MODE_LIST_FILE)
-    cat "$path" > "$sourceSoundFileList";;
+    # Removes each path of the list which is NOT absolute.
+    for sFilePathRaw in $( cat "$path" |sed -e 's/[ \t]/€/g;' ); do
+      sFilePath=$( echo "$sFilePathRaw" |sed 's/€/ /g;' )
+
+      ! isAbsolutePath "$sFilePath" && warning "Ignoring $sFilePath because it is NOT an absolute path." && continue
+      echo "$sFilePath" >> "$sourceSoundFileList"
+    done;;
   $SOURCE_MODE_DIR)
+    # Creates the list of ABSOLUTE paths to the list.
     rm -f "$sourceSoundFileList"
-    for rawFileRaw in $( find "$path" -type f -name "$speechFilePattern" |sed -e 's/[ \t]/£/g;' ); do
+    for rawFileRaw in $( find $( getAbsolutePath "$path" ) -type f -name "$speechFilePattern" |sed -e 's/[ \t]/£/g;' ); do
       rawFile=$( echo "$rawFileRaw" |sed 's/£/ /g;' )
       echo "$rawFile" >> "$sourceSoundFileList"
     done;;
   [?])  usage;;
 esac
+
+# Ensures there is at least one file to manage.
+[ ! -f "$sourceSoundFileList" ] && errorMessage "There is no sound file to manage." $ERROR_BAD_CLI
 
 # Prepares the destination sound file list.
 preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
