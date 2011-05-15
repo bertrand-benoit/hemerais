@@ -128,7 +128,7 @@ if [ "$hemeraMode" = "local" ]; then
 
   # Initializes.
   [ "$action" = "start" ] && ! initialization && exit $ERROR_ENVIRONMENT
-exit 0
+
   # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
