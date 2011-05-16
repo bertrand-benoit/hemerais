@@ -7,29 +7,34 @@
 #########################
 ## CONFIGURATION
 currentDir=$( dirname "$( which $0 )" )
-binDir="$currentDir/bin"
+
+# Ensures Hemera third-party project is available.
+hemeraTPDir=$( dirname "$currentDir" )"/HemeraThirdParty"
+[ ! -d "$hemeraTPDir" ] && echo -e "Unable to find third-party project '$hemeraTPDir'. You must install it before using this tool" && exit 1
+
+binDir="$hemeraTPDir/_fromSource"
 
 # Checks if the --copy option has been given.
 [ $# -ge 1 ] && [ "$1" = "--copy" ] && copyModel=1 || copyModel=0
 
 # Ensures various tools are installed.
 echo -ne "Checking SRILM availability ... "
-srilmBinDir=$( ls -1d $binDir/srilm*/bin*/i686* 2>&1 )
+srilmBinDir=$( ls -1d "$binDir"/srilm*/bin*/i686* 2>&1 )
 [ $? -ne 0 ] && echo -e "unable to find compiled directory corresponding to pattern: $binDir/srilm*/bin*/i686*" && exit 1
 echo "found $srilmBinDir"
 
 echo -ne "Checking lia_phon availability ... "
-liaPhonDir=$( ls -1d $binDir/lia_phon* 2>&1 )
+liaPhonDir=$( ls -1d "$binDir"/lia_phon* 2>&1 )
 [ $? -ne 0 ] && echo -e "unable to find directory corresponding to pattern: $binDir/lia_phon*" && exit 1
 echo "found $liaPhonDir"
 
 echo -ne "Checking sphinxbase availability ... "
-sphinxBaseDir=$( ls -1d $binDir/sphinxbase* 2>&1 )
+sphinxBaseDir=$( ls -1d "$binDir"/sphinxbase* 2>&1 )
 [ $? -ne 0 ] && echo -e "unable to find directory corresponding to pattern: $binDir/sphinxbase*" && exit 1
 echo "found $sphinxBaseDir"
 
 echo -ne "Checking Sphinx3 availability ... "
-sphinx3Dir=$( ls -1d $binDir/sphinx3* 2>&1 )
+sphinx3Dir=$( ls -1d "$binDir"/sphinx3* 2>&1 )
 [ $? -ne 0 ] && echo -e "unable to find directory corresponding to pattern: $binDir/sphinx3*" && exit 1
 echo "found $sphinx3Dir"
 
@@ -66,12 +71,8 @@ function manageModelCopyToMainProject() {
     # Informs about the option (at the end instead of the beginning otherwise the user may not see the information).
     echo -e "\nYou can use the --copy option for this script to automagically copy successfully created models to hemera main project (which must be in the same root directory), in corresponding sub-directories."
   else
-    # Ensures Hemera main project is available.
-    hemeraMainDir=$( dirname "$currentDir" )"/Hemera"
-    [ ! -d "$hemeraMainDir" ] && echo -e "Unable to find hemera main project ($hemeraMainDir)" && return 1
-
     # Ensures the destination file does not already exist.
-    destinationFilePath="$hemeraMainDir/$_destinationFile/"$( basename "$_sourceFile" )
+    destinationFilePath="$hemeraTPDir/$_destinationFile/"$( basename "$_sourceFile" )
     echo -ne "Manging copy of model $_sourceFile ... "
     [ -f "$destinationFilePath" ] && echo -ne "creating backup of existing model ... " && mv -f "$destinationFilePath" "$destinationFilePath".bak
     echo -ne "copying ... " && cp -f "$_sourceFile" "$destinationFilePath" && echo "done (as $destinationFilePath)" && return 0
@@ -109,7 +110,7 @@ echo -e "\nConverting to DMP format ($lmFile)"
 "$sphinx3Dir/src/programs/sphinx3_lm_convert" -i "$lmFileTmpSortedDummy" -ienc utf8 -o "$lmFile" -oenc utf8 || exit 1
 
 echo -e "\n-> Successfully created language model: $lmFile"
-manageModelCopyToMainProject "$lmFile" "thirdParty/speechRecognition/data/models/language"
+manageModelCopyToMainProject "$lmFile" "speechRecognition/data/models/language"
 
 
 echo -e "\n***** Linguistic model *****"
@@ -127,4 +128,4 @@ echo -e "Creating words dic for sphinx3 ($lexicalWordDic)"
 $( "$currentDir"/convertToSphinx3Format.pl "$lexicalWordPhones" |sort -u > "$lexicalWordDic" ) || exit 1
 
 echo -e "\n-> Successfully created lexical model: $lexicalWordDic"
-manageModelCopyToMainProject "$lexicalWordDic" "thirdParty/speechRecognition/data/models/lexical"
+manageModelCopyToMainProject "$lexicalWordDic" "speechRecognition/data/models/lexical"
