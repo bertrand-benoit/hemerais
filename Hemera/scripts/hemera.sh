@@ -97,7 +97,11 @@ if [ "$hemeraMode" = "local" ]; then
     ;;
 
     status)
-      # TODO: Informs about uptime.
+      # Informs about version.
+      version=$( getVersion )
+      writeMessage "Hemera version: $version"
+
+      # Informs about uptime.
       uptime=$( getUptime )
       writeMessage "Hemera uptime: $uptime"
       

@@ -24,6 +24,9 @@
 # This script must NOT be directly called.
 
 ## General constants
+# Hemera version.
+H_VERSION="0.2b1"
+
 # Hemera modes.
 H_RECO_CMD_MODE_NORMAL="normal"
 H_RECO_CMD_MODE_SECURITY="security"

@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-05-16  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented Hemera version system (giving precise information if source code version)
+
 2011-05-15  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * SpeechRecognition.sh
