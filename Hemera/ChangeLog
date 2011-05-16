@@ -5,6 +5,8 @@ VERSION 0.2.0
 
  * implemented Hemera version system (giving precise information if source code version)
 
+ * important third-party structure update, extracting in a new dedicated project
+
 2011-05-15  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * SpeechRecognition.sh

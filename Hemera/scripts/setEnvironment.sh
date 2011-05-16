@@ -62,7 +62,7 @@ H_SUPPORTED_RECO_CMD_MODES_I18N=( "$H_RECO_CMD_MODE_NORMAL_I18N" "$H_RECO_CMD_MO
 # Defines some global variables about directories.
 h_daemonDir="$installDir/scripts/daemon"
 h_coreDir="$installDir/scripts/core"
-h_logDir=$( getConfigPath "hemera.run.log" ) || exit $ERROR_CONFIG_PATH
+h_logDir=$( getConfigPath "hemera.run.log" "$installDir" ) || exit $ERROR_CONFIG_PATH
 updateStructure "$h_logDir"
 
 # Structure:
@@ -70,7 +70,7 @@ updateStructure "$h_logDir"
 #  queue/input/cur    input under processing
 #  queue/input/err    input with unknown type or error occurs while processing
 #  queue/input/done   input managed
-queueDir=$( getConfigPath "hemera.run.queue" ) || exit $ERROR_CONFIG_PATH
+queueDir=$( getConfigPath "hemera.run.queue" "$installDir" ) || exit $ERROR_CONFIG_PATH
 inputDir="$queueDir/input"
 h_newInputDir="$inputDir/new"
 h_curInputDir="$inputDir/cur"
@@ -84,7 +84,7 @@ updateStructure "$h_doneInputDir"
 # Structure:
 #  tmp/work   temporary files
 #  tmp/pid    PID files
-tmpDir=$( getConfigPath "hemera.run.temp" ) || exit $ERROR_CONFIG_PATH
+tmpDir=$( getConfigPath "hemera.run.temp" "$installDir" ) || exit $ERROR_CONFIG_PATH
 h_workDir="$tmpDir/work"
 h_pidDir="$tmpDir/pid"
 updateStructure "$h_workDir"
