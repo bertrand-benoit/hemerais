@@ -30,14 +30,19 @@
 [ -z "$installDir" ] && echo -e "This script must NOT be directly called. installDir variable not defined" >&2 && exit 1
 source "$installDir/scripts/utilities.sh"
 
+# Ensures environment is OK.
 checkEnvironment || $ERROR_ENVIRONMENT
+
+# Defines Third-party directory, and ensures it is available.
+h_tpDir="$installDir/thirdParty"
+[ ! -d "$h_tpDir" ] && errorMessage "$h_tpDir NOT found. You must get Third Party project. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera" $ERROR_ENVIRONMENT
 
 # Updates configuration.
 h_libDir="$installDir/lib"
 
 # Defines configuration file, and ensures the system has been configured.
 h_configurationFile="$installDir/config/hemera.conf"
-[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)." $ERROR_BAD_CLI
+[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must configure the system (See $h_configurationFile.sample)." $ERROR_ENVIRONMENT
 
 # Updates environment path if needed.
 additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit $ERROR_CONFIG_VARIOUS
@@ -56,6 +61,7 @@ H_SUPPORTED_RECO_CMD_MODES_I18N=( "$H_RECO_CMD_MODE_NORMAL_I18N" "$H_RECO_CMD_MO
 
 # Defines some global variables about directories.
 h_daemonDir="$installDir/scripts/daemon"
+h_coreDir="$installDir/scripts/core"
 h_logDir=$( getConfigPath "hemera.run.log" ) || exit $ERROR_CONFIG_PATH
 updateStructure "$h_logDir"
 

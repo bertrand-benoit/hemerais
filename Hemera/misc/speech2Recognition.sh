@@ -64,9 +64,8 @@ done
 
 #########################
 ## INSTRUCTIONS
-coreDir="$installDir/scripts/core"
-speechDir="$coreDir/speech"
-speechRecognitionDir="$coreDir/speechRecognition"
+speechDir="$h_coreDir/speech"
+speechRecognitionDir="$h_coreDir/speechRecognition"
 additionalOptions=""
 [ $verbose -eq 1 ] && additionalOptions="-v"
 

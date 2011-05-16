@@ -30,7 +30,7 @@ sphinx3DecoderBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONF
 sphinx3DecoderOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 # Data configuration.
-dataDir="$installDir/thirdParty/speechRecognition/data"
+dataDir="$h_tpDir/speechRecognition/data"
 
 lexicalModelWords="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.words" ) || exit $ERROR_CONFIG_VARIOUS
 lexicalModelFillers="$dataDir/models/lexical/"$( getConfigValue "$CONFIG_KEY.sphinx3.lexicalModel.fillers" ) || exit $ERROR_CONFIG_VARIOUS

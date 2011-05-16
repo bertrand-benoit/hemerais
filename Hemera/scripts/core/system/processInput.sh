@@ -32,9 +32,9 @@ category="processInput"
 source "$installDir/scripts/setEnvironment.sh"
 
 # Defines path to various scripts.
-speechRecognitionScript="$installDir/scripts/core/speechRecognition/speechRecognition.sh"
-speechScript="$installDir/scripts/core/speech/speech.sh"
-commandScriptDir="$installDir/scripts/core/command"
+speechRecognitionScript="$h_coreDir/speechRecognition/speechRecognition.sh"
+speechScript="$h_coreDir/speech/speech.sh"
+commandScriptDir="$h_coreDir/command"
 manageSoundScript="$currentDir/manageSound.sh"
 
 #########################

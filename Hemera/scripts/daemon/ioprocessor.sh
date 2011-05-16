@@ -45,7 +45,7 @@ ioprocessorBin="$0"
 pidFile="$h_pidDir/ioProcessor.pid"
 
 # Defines path to various scripts.
-processInputScript="$installDir/scripts/core/system/processInput.sh"
+processInputScript="$h_coreDir/system/processInput.sh"
 
 #########################
 ## Command line management
