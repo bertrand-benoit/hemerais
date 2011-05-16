@@ -37,7 +37,7 @@ else
 fi
 
 profileFile="/etc/profile.d/hemera.sh"
-h_configurationFile="$installDir/config/hemera.conf"
+h_configurationFile="${HOME/%\//}/.hemera/hemera.conf"
 
 #########################
 ## FUNCTIONS
@@ -90,7 +90,7 @@ End-of-Message
 
   echo "created."
 
-  writeMessage "Hemera main binaries/scripts will be globally available in PATH after next reboot, or immediately if you source $profileFile in your shell."
+  writeMessage "Hemera main binaries/scripts will be globally available in PATH after next reboot, or immediately if you 'source $profileFile' in your shell."
 fi
 
 # Checks if Hemera has been configured.

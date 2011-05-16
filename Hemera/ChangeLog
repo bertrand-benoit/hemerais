@@ -7,6 +7,8 @@ VERSION 0.2.0
 
  * important third-party structure update, extracting in a new dedicated project
 
+ * configuration file is now lookup in $HOME/.hemera allowing any user to have specific configuration (and easier Hemera update)
+
 2011-05-15  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * SpeechRecognition.sh
