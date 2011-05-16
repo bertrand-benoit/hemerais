@@ -34,7 +34,7 @@ source "$installDir/scripts/utilities.sh"
 checkEnvironment || $ERROR_ENVIRONMENT
 
 # Defines Third-party directory, and ensures it is available.
-h_tpDir="$installDir/thirdParty"
+h_tpDir="$installDir/../HemeraThirdParty"
 [ ! -d "$h_tpDir" ] && errorMessage "$h_tpDir NOT found. You must get Third Party project. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera" $ERROR_ENVIRONMENT
 
 # Updates configuration.
