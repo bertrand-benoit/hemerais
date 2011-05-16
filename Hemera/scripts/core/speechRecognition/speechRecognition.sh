@@ -70,11 +70,6 @@ function usage() {
   exit $ERROR_USAGE
 }
 
-# usage: isAbsolutePath <path>
-function isAbsolutePath() {
-  [[ "$1" =~ "^\/.*$" ]]
-}
-
 # usage: getAbsolutePath <path>
 function getAbsolutePath() {
   local _path="$1"
