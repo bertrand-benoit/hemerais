@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>HemeraTests</name>
+	<name>HemeraThirdParty</name>
 	<comment></comment>
 	<projects>
-		<project>Hemera</project>
 	</projects>
 	<buildSpec>
 	</buildSpec>

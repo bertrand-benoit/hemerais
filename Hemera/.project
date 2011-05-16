@@ -3,6 +3,7 @@
 	<name>Hemera</name>
 	<comment></comment>
 	<projects>
+		<project>HemeraThirdParty</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
