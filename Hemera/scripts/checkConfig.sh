@@ -25,25 +25,13 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
+checkConfAndQuit=1
 category="check"
 source "$installDir/scripts/setEnvironment.sh"
 
-showError=0
-
 #########################
 ## INSTRUCTIONS
-# Checks all path defined in configuration file.
-for pathKey in $( grep -re "^[^#][a-zA-Z.]*[.]path=" "$h_configurationFile" |sed -e 's/^\([^=]*\)=.*/\1/' ); do
-  writeMessage "Checking '$pathKey' ... " 0
-  pathValue=$( getConfigPath "$pathKey" )
-  [ $? -ne 0 ] && echo "failed" && continue
-
-  echo -ne "existence ... "
-  ! checkBin "$pathValue" && echo -e "$pathValue \E[31mNOT found\E[0m" && continue
-  echo "OK"
-done
-
-# Checks locale files.
+## Checks locale files.
 writeMessage "Checking locale files (BEGIN)"
 refLocaleFile="$installDir/locale/hemera-i18n.fr"
 refLocaleFilePurified="$h_workDir/checkConfig_$( basename "$refLocaleFile" ).purified"
@@ -53,10 +41,10 @@ for localeFile in $( find "$installDir/locale" -maxdepth 1 -type f -regextype po
   localFileName=$( basename "$localeFile" )
   localFilePurified="$h_workDir/checkConfig_$localFileName.purified"
 
-  # Extracts i18n elements.
+  # Extracts i18n elements.
   [[ "$localeFile" != "$refLocaleFile" ]] && extractI18Nelement "$localeFile" "$localFilePurified"
 
-  # Checks each definition.
+  # Checks each definition.
   for i18nElementRaw in $( grep -re "^[ \t]*[^#]" "$localeFile" |sed -e 's/[ \t]/€/g;' ); do
     i18nElement=$( echo "$i18nElementRaw" |sed -e 's/€/ /g;' )
 
@@ -74,7 +62,7 @@ for localeFile in $( find "$installDir/locale" -maxdepth 1 -type f -regextype po
     fi
   done
 
-  # Checks if it is the reference locale file in which case there is nothing more to do.
+  # Checks if it is the reference locale file in which case there is nothing more to do.
   [[ "$localeFile" == "$refLocaleFile" ]] && continue
 
   # Ensures there is the same i18n elements of the reference locale file.
@@ -88,11 +76,27 @@ for localeFile in $( find "$installDir/locale" -maxdepth 1 -type f -regextype po
 done
 writeMessage "Checking locale files (END)"
 
-# Checks environment configuration.
+## Checks environment configuration.
 manageJavaHome || exit $ERROR_ENVIRONMENT
 manageAntHome || exit $ERROR_ENVIRONMENT
 
-tomcatActivation=$( getConfigValue "hemera.run.activation.tomcat" ) || exit $ERROR_CONFIG_VARIOUS
+checkAndSetConfig "hemera.run.activation.tomcat" "$CONFIG_TYPE_OPTION"
+tomcatActivation="$h_lastConfig"
 if [ "$tomcatActivation" = "localhost" ]; then
   manageTomcatHome || exit $ERROR_ENVIRONMENT
 fi
+
+## Requests configuration check to Hemera main script.
+"$installDir/scripts/hemera.sh" -X
+
+## Requests configuration check to each daemon and core module.
+for scriptRaw in $( find "$h_daemonDir" -maxdepth 1 -type f -perm /u+x ! -name "*~" |sort |sed -e 's/[ \t]/£/g;' ); do
+  script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
+  "$script" -X
+done
+
+## Requests configuration check to core module/system scripts.
+for scriptRaw in $( find "$h_coreDir" -maxdepth 2 -type f -perm /u+x ! -name "*~" |sort |sed -e 's/[ \t]/£/g;' ); do
+  script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
+  "$script" -X
+done

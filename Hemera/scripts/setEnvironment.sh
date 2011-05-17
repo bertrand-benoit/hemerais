@@ -47,13 +47,14 @@ h_configurationFile="$configDir/hemera.conf"
 [ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must create it to configure the system (See $installDir/config/hemera.conf.sample)." $ERROR_ENVIRONMENT
 
 # Updates environment path if needed.
-additionalBinPath=$( getConfigValue "hemera.path.bin" ) || exit $ERROR_CONFIG_VARIOUS
-additionalLibPath=$( getConfigValue "hemera.path.lib" ) || exit $ERROR_CONFIG_VARIOUS
-[ ! -z "$additionalBinPath" ] && export PATH=$additionalBinPath:$PATH
-[ ! -z "$additionalLibPath" ] && export LD_LIBRARY_PATH=$additionalLibPath:$LD_LIBRARY_PATH
+checkAndSetConfig "hemera.path.bin" "$CONFIG_TYPE_OPTION"
+[ ! -z "$h_lastConfig" ] && export PATH=$h_lastConfig:$PATH
+checkAndSetConfig "hemera.path.lib" "$CONFIG_TYPE_OPTION"
+[ ! -z "$h_lastConfig" ] && export LD_LIBRARY_PATH=$h_lastConfig:$LD_LIBRARY_PATH
 
 # Hemera Locale.
-h_locale=$( getConfigValue "hemera.locale" ) || exit $ERROR_CONFIG_VARIOUS
+checkAndSetConfig "hemera.locale" "$CONFIG_TYPE_OPTION"    
+h_locale="$h_lastConfig"
 h_i18nFile="$installDir/locale/hemera-i18n.$h_locale"
 [ ! -f "$h_i18nFile" ] && errorMessage "$h_i18nFile NOT found. You must configure the locale (See $h_configurationFile.sample)." $ERROR_BAD_CLI
 source "$h_i18nFile"
@@ -115,5 +116,6 @@ h_speechToPlayList="$h_workDir/speechToPlay"
 # Defines the log file if not already done.
 if [ -z "$h_logFile" ]; then
   export h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
-  writeMessage "LogFile: $h_logFile"
+  # Doesn't inform in 'checkConfigAndQuit' mode.
+  [ $checkConfAndQuit -eq 0 ] && writeMessage "LogFile: $h_logFile"
 fi

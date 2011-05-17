@@ -34,34 +34,18 @@ source "$installDir/scripts/setEnvironment.sh"
 CONFIG_KEY="hemera.core.speech"
 SUPPORTED_MODE="espeak espeak+mbrola"
 
-# Gets the mode, and ensures it is a supported one.
-moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode" $ERROR_MODE
-
-# "Not yet implemented" message to help adaptation with potential futur other speech tools.
-[[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]] && errorMessage "Not yet implemented mode: $moduleMode" $ERROR_MODE
-
-# Default.
-DEFAULT_LANGUAGE=$( getConfigValue "$CONFIG_KEY.espeak.language" ) || exit $ERROR_CONFIG_VARIOUS
-
-# Gets functions specific to mode.
-source "$currentDir/speech_$moduleMode"
-
-# sound player configuration
-soundPlayerBin=$( getConfigPath "$CONFIG_KEY.soundPlayer.path" ) || exit $ERROR_CONFIG_PATH
-soundPlayerOptions=$( getConfigValue "$CONFIG_KEY.soundPlayer.options" ) || exit $ERROR_CONFIG_VARIOUS
-
 #########################
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-t <text>|-u <url>|-f <file>|-d <terms> -i] [-o <output speech file>] [-l language] [-hv]"
+  echo -e "Usage: $0 [-t <text>|-u <url>|-f <file>|-d <terms> -i] [-o <output speech file>] [-l language] [-hvX]"
   echo -e "<text>\ttext/sentences to speech"
   echo -e "<url>\turl of page content to read"
   echo -e "<file>\tfile to read"
   echo -e "<terms>\tterms to define (using Wikipedia)"
   echo -e "-i\tinteractive mode (generate and play speech file of each written line - CTRL+D to stop)"
   echo -e "-l\tuse another language (Default: $DEFAULT_LANGUAGE)"
+  echo -e "-X\tcheck configuration and quit"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
 
@@ -119,10 +103,10 @@ MODE_INTERACTIVE=10
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-language="$DEFAULT_LANGUAGE"
-while getopts "t:u:f:d:io:l:vh" opt
+while getopts "Xt:u:f:d:io:l:vh" opt
 do
  case "$opt" in
+        X)      checkConfAndQuit=1;;
         t)      mode=$MODE_TEXT;text="$OPTARG";;
         u)      mode=$MODE_URL;url="$OPTARG";;
         f)      mode=$MODE_FILE;filePath="$OPTARG";;
@@ -135,10 +119,50 @@ do
  esac
 done
 
-# Checks binaries availability (checks sound player only if speech output is NOT defined).
-[ -z "$speechOutput" ] && ! checkBin "$soundPlayerBin" && exit $ERROR_CHECK_BIN
-checkConfiguration || exit $ERROR_CHECK_CONFIG
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
+moduleMode="$h_lastConfig"
+# Ensures configured mode is supported, and then it is implemented.
+if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  _message="Unsupported mode: $moduleMode. Update your configuration."
+  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message"
+  warning "$_message"
+else
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # "Not yet implemented" message to help adaptation with potential futur mode.
+  if [[ "$moduleMode" != "espeak" ]] && [[ "$moduleMode" != "espeak+mbrola" ]]; then
+    _message="Not yet implemented mode: $moduleMode"
+    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    warning "$_message"
+  fi
+fi
 
+checkAndSetConfig "$CONFIG_KEY.espeak.language" "$CONFIG_TYPE_OPTION"
+DEFAULT_LANGUAGE="$h_lastConfig"
+[ -z "$language" ] && language="$DEFAULT_LANGUAGE"
+
+# Checks sound player only if no output has been specified.
+if [ -z "$speechOutput" ]; then
+  checkAndSetConfig "$CONFIG_KEY.soundPlayer.path" "$CONFIG_TYPE_BIN"
+  soundPlayerBin="$h_lastConfig"
+  checkAndSetConfig "$CONFIG_KEY.soundPlayer.options" "$CONFIG_TYPE_OPTION"
+  soundPlayerOptions="$h_lastConfig"
+fi
+
+# Gets functions specific to mode.
+# N.B.: specific configuration will be checked asap the script is sourced.
+specModScript="$currentDir/speech_$moduleMode"
+if [ -f "$specModScript" ]; then
+  [ $checkConfAndQuit -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
+  source "$specModScript"
+elif [ $checkConfAndQuit -eq 0 ]; then
+  errorMessage "Unable to find the core module sub-script '$specModScript'" $ERROR_MODE
+fi
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 # Ensures mode is defined.
 [ -z "$mode" ] && usage
 

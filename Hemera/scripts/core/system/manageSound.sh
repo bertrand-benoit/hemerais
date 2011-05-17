@@ -31,20 +31,17 @@ installDir="$currentDir/../../../"
 category="manageSound"
 source "$installDir/scripts/setEnvironment.sh"
 
-# sound player configuration
-soundPlayerBin=$( getConfigPath "hemera.core.speech.soundPlayer.path" ) || exit $ERROR_CONFIG_PATH
-soundPlayerOptions=$( getConfigValue "hemera.core.speech.soundPlayer.options" ) || exit $ERROR_CONFIG_VARIOUS
-
 #########################
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 -p <pid file> [-f <sound file>] [-P|-C|-S] [-hv]"
+  echo -e "Usage: $0 -p <pid file> [-f <sound file>] [-P|-C|-S] [-hvX]"
   echo -e "<pid file>\tpid file (needed for pause/continue/Stop action)"
   echo -e "<sound file>\tsound file to play"
   echo -e "-P\t\tpause sound played by process corresponding to specified pid file"
   echo -e "-C\t\tcontinue paused sound player process corresponding to specified pid file"
   echo -e "-S\t\tstop played/paused sound player process corresponding to specified pid file"
+  echo -e "-X\tcheck configuration and quit"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
   echo -e "\nEither sound file or one of the pause/continue/stop action must be specified."
@@ -57,9 +54,10 @@ function usage() {
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "PCSp:f:vh" opt
+while getopts "PCSp:f:vhX" opt
 do
  case "$opt" in
+        X)      checkConfAndQuit=1;;
         p)      pidFile="$OPTARG";;
         f)      action="play";soundFile="$OPTARG";;
         P)      action="pause";;
@@ -70,15 +68,20 @@ do
  esac
 done
 
-# Checks command line options.
+## Configuration check.
+checkAndSetConfig "hemera.core.speech.soundPlayer.path" "$CONFIG_TYPE_BIN"
+soundPlayerBin="$h_lastConfig"
+checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
+soundPlayerOptions="$h_lastConfig"
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 [ -z "$action" ] && usage
 [ "$action" = "play" ] && [ ! -f "$soundFile" ] && errorMessage "Sound file '$soundFile' must exist" $ERROR_BAD_CLI
 
 [ -z "$pidFile" ] && usage
 [ "$action" != "play" ] && [ ! -s "$pidFile" ] && errorMessage "PID file '$pidFile' must exist and NOT be empty" $ERROR_BAD_CLI
-
-# Checks tools.
-checkBin "$soundPlayerBin" || exit $ERROR_CHECK_BIN
 
 #########################
 ## INSTRUCTIONS

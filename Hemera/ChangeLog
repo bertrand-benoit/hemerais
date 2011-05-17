@@ -1,6 +1,12 @@
 VERSION 0.2.0
 =============
 
+2011-05-17  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved greatly configuration check system (any daemon, core module and system scripts can perform auto-diagnosis)
+
+ * checkConfig.sh: request any daemon, core module and system scripts to perform a full configuration check
+
 2011-05-16  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * implemented Hemera version system (giving precise information if source code version)

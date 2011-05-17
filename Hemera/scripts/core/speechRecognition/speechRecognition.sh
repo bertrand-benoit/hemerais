@@ -36,32 +36,19 @@ CONFIG_KEY="hemera.core.speechRecognition"
 SUPPORTED_MODE="sphinx3"
 DEFAULT_SPEECH_FILE_PATTEN="*.wav"
 
-# Gets the mode, and ensures it is a supported one.
-moduleMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$moduleMode" || errorMessage "Unsupported mode: $moduleMode" $ERROR_MODE
-
-# "Not yet implemented" message to help adaptation with potential futur other speechRecognition tools.
-[[ "$moduleMode" != "sphinx3" ]] && errorMessage "Not yet implemented mode: $moduleMode" $ERROR_MODE
-
-# Gets functions specific to mode.
-source "$currentDir/speechRecognition_$moduleMode"
-
 LOG_FILE_END="SPEECH_RECOGNITION_COMPLETED"
-
-# Tool configuration.
-soundConverterBin=$( getConfigPath "$CONFIG_KEY.soundConverter.path" ) || exit $ERROR_CONFIG_PATH
-soundConverterOptions=$( getConfigValue "$CONFIG_KEY.soundConverter.options" ) || exit $ERROR_CONFIG_VARIOUS
 
 #########################
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-CFvh]"
+  echo -e "Usage: $0 [-f <sound file>|-l <list file>|-d <sound files dir>] [-P <pattern>] [-R <result file>] [-FTvhX]"
   echo -e "<sound file>\tthe sound file to decode"
   echo -e "<list file>\tthe file containing the list of sound files to decode (must only contain ABSOLUTE paths)"
   echo -e "<s. files dir>\tthe directory containing sound files to decode"
   echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
   echo -e "<result file>\tpath to result file"
+  echo -e "-X\t\tcheck configuration and quit"
   echo -e "-C\t\tactivate sound conversion from wav to raw (only needed if source has NOT a 16 kHz rate)"
   echo -e "-F\t\tforce [re]creation of intermediate files"
   echo -e "-v\t\tactivate the verbose mode"
@@ -120,9 +107,10 @@ force=0
 convert=0
 # N.B.: -Z is an hidden option allowing to analyze specified log file;
 #  it must be used for internal purposes only.
-while getopts "f:l:d:Z:P:R:CFvh" opt
+while getopts "f:l:d:Z:P:R:CFvhX" opt
 do
  case "$opt" in
+        X)      checkConfAndQuit=1;;
         f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
         l)      mode=$SOURCE_MODE_LIST_FILE; path="$OPTARG";;
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
@@ -136,13 +124,47 @@ do
  esac
 done
 
-# Checks if special mode or analyzing log file.
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
+moduleMode="$h_lastConfig"
+# Ensures configured mode is supported, and then it is implemented.
+if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  _message="Unsupported mode: $moduleMode. Update your configuration."
+  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message"
+  warning "$_message"
+else
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # "Not yet implemented" message to help adaptation with potential futur mode.
+  if [[ "$moduleMode" != "sphinx3" ]]; then
+    _message="Not yet implemented mode: $moduleMode"
+    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    warning "$_message"
+  fi
+fi
+
+checkAndSetConfig "$CONFIG_KEY.soundConverter.path" "$CONFIG_TYPE_BIN"
+soundConverterBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.soundConverter.options" "$CONFIG_TYPE_OPTION"
+soundConverterOptions="$h_lastConfig"
+
+# Gets functions specific to mode.
+# N.B.: specific configuration will be checked asap the script is sourced.
+specModScript="$currentDir/speechRecognition_$moduleMode"
+if [ -f "$specModScript" ]; then
+  [ $checkConfAndQuit -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
+  source "$specModScript"
+elif [ $checkConfAndQuit -eq 0 ]; then
+  errorMessage "Unable to find the core module sub-script '$specModScript'" $ERROR_MODE
+fi
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
+# Checks if special mode or analyzing log file.
 if [ ! -z "$logToAnalyze" ]; then
   analyzeLog && exit 0 || exit $ERROR_SR_ANALYZE
 fi
-
-checkBin "$soundConverterBin" || exit $ERROR_CHECK_BIN
-checkConfiguration || exit $ERROR_CHECK_CONFIG
 
 [ -z "$mode" ] && usage
 [ -z "$path" ] && usage

@@ -25,15 +25,11 @@
 
 [ "$moduleMode" != "espeak" ] && exit $ERROR_MODE
 
-# espeak configuration
-espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
-espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
-
-# usage: checkConfiguration
-function checkConfiguration() {
-  checkBin "$espeakBin" || return 1
-  return 0
-}
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
+espeakBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
+espeakOptions="$h_lastConfig"
 
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {

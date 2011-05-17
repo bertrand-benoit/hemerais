@@ -33,16 +33,13 @@ source "$installDir/scripts/setEnvironment.sh"
 
 CONFIG_KEY="hemera.core.speechRecognition"
 
-# Tool configuration.
-soundFeatureCreatorBin=$( getConfigPath "$CONFIG_KEY.soundFeatureCreator.path" ) || exit $ERROR_CONFIG_PATH
-soundFeatureCreatorOptions=$( getConfigValue "$CONFIG_KEY.soundFeatureCreator.options" ) || exit $ERROR_CONFIG_VARIOUS
-
 #########################
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 -f <sound file> [-vh]"
+  echo -e "Usage: $0 -X||-f <sound file> [-vh]"
   echo -e "<file>\tthe sound file to manage"
+  echo -e "-X\tcheck configuration and quit"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
 
@@ -54,15 +51,25 @@ function usage() {
 ## Command line management
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "f:vh" opt
+while getopts "Xf:vh" opt
 do
  case "$opt" in
+        X)      checkConfAndQuit=1;;
         f)      soundFile="$OPTARG";;
         v)      verbose=1;;
         h|[?]) usage;;
  esac
 done
 
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.path" "$CONFIG_TYPE_BIN"
+soundFeatureCreatorBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.options" "$CONFIG_TYPE_OPTION"
+soundFeatureCreatorOptions="$h_lastConfig"
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 [ -z "$soundFile" ] && usage
 [ ! -f "$soundFile" ] && errorMessage "$soundFile not found." $ERROR_BAD_CLI
 

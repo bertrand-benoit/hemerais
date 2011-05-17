@@ -41,9 +41,10 @@ manageSoundScript="$currentDir/manageSound.sh"
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 -i <input name> [-S <input string>] [-hv]"
+  echo -e "Usage: $0 -i <input name> [-S <input string>] [-hvX]"
   echo -e "<input name>\tthe name of the input to process (relative to the new input directory)"
   echo -e "<input string>\tthe string presentation to use in message"
+  echo -e "-X\tcheck configuration and quit"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
 
@@ -227,9 +228,10 @@ function manageSpeech() {
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "i:S:vh" opt
+while getopts "i:S:vhX" opt
 do
  case "$opt" in
+        X)      checkConfAndQuit=1;;
         i)      inputName="$OPTARG";;
         S)      inputString="$OPTARG";;
         v)      verbose=1;;
@@ -237,6 +239,11 @@ do
  esac
 done
 
+## Configuration check.
+# Nothing specific to check.
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 [ -z "$inputName" ] && usage
 [ -z "$inputString" ] && inputString="undefinedInput"
 

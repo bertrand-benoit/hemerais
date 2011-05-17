@@ -27,6 +27,11 @@
 # Hemera version.
 H_VERSION="0.2b1"
 
+# Configuration element types.
+CONFIG_TYPE_OPTION=1
+CONFIG_TYPE_BIN=2
+CONFIG_TYPE_DATA=3
+
 # Hemera modes.
 H_RECO_CMD_MODE_NORMAL="normal"
 H_RECO_CMD_MODE_SECURITY="security"

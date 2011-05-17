@@ -25,26 +25,18 @@
 
 [ "$moduleMode" != "espeak+mbrola" ] && exit $ERROR_MODE
 
-# espeak configuration
-espeakBin=$( getConfigPath "$CONFIG_KEY.tool.path" ) || exit $ERROR_CONFIG_PATH
-espeakOptions=$( getConfigValue "$CONFIG_KEY.tool.options" ) || exit $ERROR_CONFIG_VARIOUS
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
+espeakBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
+espeakOptions="$h_lastConfig"
 
-# mbrola configuration
-mbrolaBin=$( getConfigPath "$CONFIG_KEY.mbrola.path" ) || exit $ERROR_CONFIG_PATH
-# Language must be coherent with hemera.core.speech.espeak.language configuration.
-dataDir="$h_tpDir/speech/data"
-mbrolaLanguageFile="$dataDir/language/"$( getConfigValue "$CONFIG_KEY.mbrola.language" ) || exit $ERROR_CONFIG_VARIOUS
+checkAndSetConfig "$CONFIG_KEY.mbrola.path" "$CONFIG_TYPE_BIN"
+mbrolaBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.mbrola.language" "$CONFIG_TYPE_DATA" "$h_tpDir/speech/data/language"
+mbrolaLanguageFile="$h_lastConfig"
 
-# usage: checkConfiguration
-function checkConfiguration() {
-  checkBin "$espeakBin" || return 1
-  checkBin "$mbrolaBin" || return 1
-  checkDataFile "$mbrolaLanguageFile" || return 1
-
-  [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
-
-  return 0
-}
+[ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
 
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {

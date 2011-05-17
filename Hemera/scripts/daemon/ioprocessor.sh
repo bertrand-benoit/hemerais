@@ -35,10 +35,6 @@ CONFIG_KEY="hemera.core.iomanager.ioProcessorMonitor"
 daemonName="input/output processor"
 
 # tool configuration
-monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit $ERROR_CONFIG_PATH
-monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit $ERROR_CONFIG_VARIOUS
-
-# tool configuration
 ioprocessorBin="$0"
 
 # Defines the PID file.
@@ -54,9 +50,10 @@ processInputScript="$h_coreDir/system/processInput.sh"
 # N.B.: the -R (for run) option must be only internally used.
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "STKDRvh" opt
+while getopts "XSTKDRvh" opt
 do
  case "$opt" in
+        X) checkConfAndQuit=1;;
         S)
           # Removes potential speech running lock file, and speech to play list.
           rm -f "$h_speechRunningLockFile" "$h_speechToPlayList"
@@ -66,11 +63,7 @@ do
         ;;
         T)      action="status";;
         K)      action="stop";;
-        D)
-          action="daemon"
-          # Launches this script as daemon, used the -R option for core to run.
-          options="$DAEMON_SPECIAL_RUN_ACTION"
-        ;;
+        D)      action="daemon";;
         R)      action="run";;
 
         v)      verbose=1;;
@@ -78,15 +71,25 @@ do
  esac
 done
 
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.path" "$CONFIG_TYPE_BIN"
+monitorBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
+monitorOptions="$h_lastConfig"
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 # Ensures action is defined.
 [ -z "$action" ] && daemonUsage "$daemonName"
 
-# Checks tools.
-checkBin "$ioprocessorBin" || exit $ERROR_CHECK_BIN
-checkBin "$monitorBin" || exit $ERROR_CHECK_BIN
-
 #########################
 ## INSTRUCTIONS
+
+if [ "$action" = "daemon" ]; then
+  # Launches this script as daemon, used the -R option for core to run.
+  options="$DAEMON_SPECIAL_RUN_ACTION"
+fi
 
 # Manages all action.
 manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" "$outputFile" "$options"

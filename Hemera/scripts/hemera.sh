@@ -31,27 +31,15 @@ source "$installDir/scripts/setEnvironment.sh"
 CONFIG_KEY="hemera.run"
 SUPPORTED_MODE="local client server"
 
-# Gets the mode, and ensures it is a supported one.
-hemeraMode=$( getConfigValue "$CONFIG_KEY.mode" ) || exit $ERROR_CONFIG_VARIOUS
-checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode" || errorMessage "Unsupported mode: $hemeraMode" $ERROR_MODE
-
-# "Not yet implemented" message to help adaptation with potential futur other speech tools.
-[[ "$hemeraMode" != "local" ]] && errorMessage "Not yet implemented mode: $hemeraMode" $ERROR_MODE
-
-# Gets activation information.
-inputMonitorActivation=$( getConfigValue "$CONFIG_KEY.activation.inputMonitor" ) || exit $ERROR_CONFIG_VARIOUS
-ioProcessorActivation=$( getConfigValue "$CONFIG_KEY.activation.ioProcessor" ) || exit $ERROR_CONFIG_VARIOUS
-soundRecorderActivation=$( getConfigValue "$CONFIG_KEY.activation.soundRecorder" ) || exit $ERROR_CONFIG_VARIOUS
-tomcatActivation=$( getConfigValue "$CONFIG_KEY.activation.tomcat" ) || exit $ERROR_CONFIG_VARIOUS
-
 #########################
 ## FUNCTIONS
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 -S||-T||-K [-hv]"
+  echo -e "Usage: $0 -S||-T||-K [-hvX]"
   echo -e "-S\tstart Hemera components (like daemons) according to configuration"
   echo -e "-T\tstatus Hemera components (like daemons) according to configuration"
   echo -e "-K\tstop Hemera components (like daemons) according to configuration"
+  echo -e "-X\tcheck configuration and quit"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
   echo -e "\nYou must either start, status or stop Hemera components."
@@ -69,10 +57,11 @@ function initialization() {
 ## Command line management
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "STKvh" opt
+while getopts "STKvhX" opt
 do
  case "$opt" in
-        S) 	action="start";;
+        X)      checkConfAndQuit=1;;
+        S)      action="start";;
         T)      action="status";;
         K)      action="stop";;
         v)      verbose=1;;
@@ -80,6 +69,37 @@ do
  esac
 done
 
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
+hemeraMode="$h_lastConfig"
+# Ensures configured mode is supported, and then it is implemented.
+if ! checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode"; then
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  _message="Unsupported mode: $hemeraMode. Update your configuration."
+  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message"
+  warning "$_message"
+else
+  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # "Not yet implemented" message to help adaptation with potential futur mode.
+  if [[ "$hemeraMode" != "local" ]]; then
+    _message="Not yet implemented mode: $hemeraMode"
+    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    warning "$_message"
+  fi
+fi
+
+checkAndSetConfig "$CONFIG_KEY.activation.inputMonitor" "$CONFIG_TYPE_OPTION"
+inputMonitorActivation="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.activation.ioProcessor" "$CONFIG_TYPE_OPTION"
+ioProcessorActivation="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.activation.soundRecorder" "$CONFIG_TYPE_OPTION"
+soundRecorderActivation="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.activation.tomcat" "$CONFIG_TYPE_OPTION"
+tomcatActivation="$h_lastConfig"
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 # Ensures action is defined.
 [ -z "$action" ] && usage
 

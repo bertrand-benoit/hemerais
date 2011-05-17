@@ -34,10 +34,6 @@ source "$installDir/scripts/setEnvironment.sh"
 CONFIG_KEY="hemera.core.iomanager.inputMonitor"
 daemonName="input monitor"
 
-# tool configuration
-monitorBin=$( getConfigPath "$CONFIG_KEY.path" ) || exit $ERROR_CONFIG_PATH
-monitorOptions=$( getConfigValue "$CONFIG_KEY.options" ) || exit $ERROR_CONFIG_VARIOUS
-
 # Defines the PID file.
 pidFile="$h_pidDir/inputMonitor.pid"
 
@@ -47,9 +43,10 @@ pidFile="$h_pidDir/inputMonitor.pid"
 # N.B.: the -D option must be only internally used.
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "DSTKvh" opt
+while getopts "XDSTKvh" opt
 do
  case "$opt" in
+        X) checkConfAndQuit=1;;
         S)
           action="start"
 
@@ -61,24 +58,31 @@ do
         ;;
         T)      action="status";;
         K)      action="stop";;
-        D)
-          action="daemon"
-          input="$h_newInputDir/"
-          options=$( eval echo "$monitorOptions" )
-        ;;
+        D)      action="daemon";;
         v)      verbose=1;;
         h|[?])  daemonUsage "$daemonName" ;;
  esac
 done
 
+## Configuration check.
+checkAndSetConfig "$CONFIG_KEY.path" "$CONFIG_TYPE_BIN"
+monitorBin="$h_lastConfig"
+checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
+monitorOptions="$h_lastConfig"
+
+[ $checkConfAndQuit -eq 1 ] && exit 0
+
+## Command line arguments check.
 # Ensures action is defined.
 [ -z "$action" ] && daemonUsage "$daemonName"
 
-# Checks tools.
-checkBin "$monitorBin" || exit $ERROR_CHECK_BIN
-
 #########################
 ## INSTRUCTIONS
+
+if [ "$action" = "daemon" ]; then
+  input="$h_newInputDir/"
+  options=$( eval echo "$monitorOptions" )
+fi
 
 # Manages daemon.
 manageDaemon "$action" "$daemonName" "$pidFile" "$monitorBin" "$newLogFile" "$outputFile" "$options"
