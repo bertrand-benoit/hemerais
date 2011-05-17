@@ -128,11 +128,11 @@ cleanAllNewInput
 # Resets input list file.
 rm -f "$h_inputList" && touch "$h_inputList"
 # Starts ioProcessor.
-verbose=1 "$scripstDir/daemon/ioprocessor.sh" -S
+verbose=1 "$h_daemonDir/ioprocessor.sh" -S
 # Launches input generation and check.
 launchInputGenerationAndCheck "simu"
 # Stops ioProcessor.
-"$scripstDir/daemon/ioprocessor.sh" -K
+"$h_daemonDir/ioprocessor.sh" -K
 
 ## Test 2
 # Stress IOProcessor, WITH inputMonitor.
@@ -144,10 +144,10 @@ cleanAllNewInput
 
 # Starts inputMonitor, and ioprocessor.
 verbose=1
-"$scripstDir/daemon/inputMonitor.sh" -S
-"$scripstDir/daemon/ioprocessor.sh" -S
+"$h_daemonDir/inputMonitor.sh" -S
+"$h_daemonDir/ioprocessor.sh" -S
 # Launches input generation and check.
 launchInputGenerationAndCheck
 # Stops inputMonitor, and ioprocessor.
-"$scripstDir/daemon/ioprocessor.sh" -K
-"$scripstDir/daemon/inputMonitor.sh" -K
+"$h_daemonDir/ioprocessor.sh" -K
+"$h_daemonDir/inputMonitor.sh" -K

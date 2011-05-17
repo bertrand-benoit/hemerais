@@ -49,7 +49,7 @@ source "$installDir/scripts/setEnvironment.sh"
 writeMessage "LogFile: $h_logFile"
 
 # Defines some additionals variables.
-speechScript="$scripstDir/core/speech/speech.sh"
+speechScript="$h_coreDir/speech/speech.sh"
 
 STRING1="Ceci est un test."
 STRING2="Perroquet, perroquet, perroquet."
@@ -170,7 +170,7 @@ writeMessage "Test system will ensure Hemera is not running"
 # Starts inputMonitor.
 category="IOProcessorTests"
 writeMessage "Test system will start some daemons"
-"$scripstDir/daemon/inputMonitor.sh" -S
+"$h_daemonDir/inputMonitor.sh" -S
 
 # Initializes Hemera mode.
 # N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
@@ -183,7 +183,7 @@ initializeCommandMap || exit $ERROR_ENVIRONMENT
 export noconsole=0
 
 # Starts IO processor.
-"$scripstDir/daemon/ioprocessor.sh" -S
+"$h_daemonDir/ioprocessor.sh" -S
 
 # Waits a little, everything is well started.
 sleep 2
@@ -198,5 +198,5 @@ test2
 test3
 
 # Stops IO processor, and input monitor.
-"$scripstDir/daemon/ioprocessor.sh" -K
-"$scripstDir/daemon/inputMonitor.sh" -K
+"$h_daemonDir/ioprocessor.sh" -K
+"$h_daemonDir/inputMonitor.sh" -K

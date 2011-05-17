@@ -40,8 +40,8 @@ scripstDir="$installDir/scripts"
 category="IOProcessorTests"
 source "$installDir/scripts/setEnvironment.sh"
 
-speechScript="$scripstDir/core/speech/speech.sh"
-manageSoundScript="$scripstDir/core/system/manageSound.sh"
+speechScript="$h_coreDir/speech/speech.sh"
+manageSoundScript="$h_coreDir/system/manageSound.sh"
 
 speechSoundFile="/tmp/ia.wav"
 speechSoundPIDFile="/tmp/ia.pid"
