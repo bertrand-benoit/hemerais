@@ -8,7 +8,7 @@
 # - general data
 # - (according to the mode) additional specific information, like secondary/additional tools and data
 
-## Path can be absolute, relative to [HEMERA_ROOT_PATH]/HemeraThirdParty
+## Path can be absolute, relative to [HEMERA_TP_PATH]
 #   or "simple" if corresponding tool is available from PATH environment variable.
 
 ## Special variables which will be replaced (when needed):
@@ -18,14 +18,17 @@
 
 ### General.
 ############
-# Binaries path to add to PATH environment variable.
-# You may prefer defining some general path root there, and define only "simple" path
-#  for other tools.
-hemera.path.bin=""
+# Binary directory paths to add to PATH environment variable.
+# You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
+# You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin-XX directory).
+# For each path you add there, you can specify "simple" name of corresponding tool in other configuration element.
+hemera.path.bin="_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs"
 
-# Libraries path to add to LD_LIBRARY_PATH environment variable.
-# It is needed if you compile some third-party tools without installing them to OS.
-hemera.path.lib=""
+# Library directory paths to add to LD_LIBRARY_PATH environment variable.
+# You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
+# You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin directory).
+# You MUST specify library directory paths of tool you have compiled (e.g. sphinxbase)
+hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs"
 
 # Language of Internationalized Hemera strings.
 # N.B.: a file named hemera-i18n.<hemera.locale> must exist in locale/ sub-directory.
@@ -64,7 +67,7 @@ hemera.run.activation.soundRecorder=localhost
 
 # Defines if Hemera start/stop system must start/stop Tomcat.
 # It works only for local installation of Tomcat, in which case a directory (or symbolic link)
-#  named 'tomcat' must exists in [HEMERA_ROOT_PATH]/HemeraThirdParty/webServices/bin/.
+#  named 'tomcat' must exists in [HEMERA_TP_PATH]/webServices/bin/.
 # The system will look for bin/startup.sh and bin/shutdown.sh Tomcat script (provided by
 #  binary version of Tomcat).
 # Any value different of "localhost" will disable the automatic management of Tomcat.
@@ -140,7 +143,7 @@ hemera.core.speech.espeak.language="mb/mb-fr4"
 ## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
 # Path to mbrola tool.
 hemera.core.speech.mbrola.path="speech/bin/mbrola"
-# Language definition - relative to [HEMERA_ROOT_PATH]/HemeraThirdParty/speech/data/language
+# Language definition - relative to [HEMERA_TP_PATH]/speech/data/language
 hemera.core.speech.mbrola.language="fr4"
 
 
@@ -165,16 +168,16 @@ hemera.core.speechRecognition.soundConverter.path="sox"
 hemera.core.speechRecognition.soundConverter.options="$input -s -r 16000 -c 1 $output"
 
 # The sound feature file creator (path and options).
-hemera.core.speechRecognition.soundFeatureCreator.path="speechRecognition/bin/wave2feat"
+hemera.core.speechRecognition.soundFeatureCreator.path="wave2feat"
 hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output -raw yes -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
 
 ## Speech recognition core module - sphinx3 (ignored if mode is not sphinx3).
-# Lexical model (words and fillers) - relative to [HEMERA_ROOT_PATH]/HemeraThirdParty/speechRecognition/data/models/lexical
+# Lexical model (words and fillers) - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/lexical
 hemera.core.speechRecognition.sphinx3.lexicalModel.words="lium/words_dict.utf8"
 hemera.core.speechRecognition.sphinx3.lexicalModel.fillers="lium/fillers_dict.utf8"
-# Language model - relative to [HEMERA_ROOT_PATH]/HemeraThirdParty/speechRecognition/data/models/language
+# Language model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/language
 hemera.core.speechRecognition.sphinx3.languageModel="lium/3g/trigram_LM.DMP.utf8"
-# Acoustic model - relative to [HEMERA_ROOT_PATH]/HemeraThirdParty/speechRecognition/data/models/acoustic
+# Acoustic model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/acoustic
 hemera.core.speechRecognition.sphinx3.acousticModel.definition="lium/architecture/F0.5500.mdef"
 hemera.core.speechRecognition.sphinx3.acousticModel.means="lium/parameters/F0/means"
 hemera.core.speechRecognition.sphinx3.acousticModel.variances="lium/parameters/F0/variances"

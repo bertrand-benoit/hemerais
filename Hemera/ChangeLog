@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-05-18  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented powerful path management for PATH and LD_LIBRARY_PATH update (including support of '*' wilcard) 
+ 
 2011-05-17  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * improved greatly configuration check system (any daemon, core module and system scripts can perform auto-diagnosis)

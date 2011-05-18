@@ -43,14 +43,22 @@ h_libDir="$installDir/lib"
 # Defines configuration file, and ensures the system has been configured.
 configDir="${HOME/%\//}/.hemera"
 updateStructure "$configDir"
+h_configurationFileSample="$installDir/config/hemera.conf.sample"
 h_configurationFile="$configDir/hemera.conf"
-[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must create it to configure the system (See $installDir/config/hemera.conf.sample)." $ERROR_ENVIRONMENT
+[ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must create it to configure the system (See $h_configurationFileSample)." $ERROR_ENVIRONMENT
 
 # Updates environment path if needed.
 checkAndSetConfig "hemera.path.bin" "$CONFIG_TYPE_OPTION"
-[ ! -z "$h_lastConfig" ] && export PATH=$h_lastConfig:$PATH
+if [ ! -z "$h_lastConfig" ]; then
+  formattedPaths=$( checkAndFormatPath "$h_lastConfig" )
+  export PATH=$formattedPaths:$PATH
+fi
+
 checkAndSetConfig "hemera.path.lib" "$CONFIG_TYPE_OPTION"
-[ ! -z "$h_lastConfig" ] && export LD_LIBRARY_PATH=$h_lastConfig:$LD_LIBRARY_PATH
+if [ ! -z "$h_lastConfig" ]; then
+  formattedPaths=$( checkAndFormatPath "$h_lastConfig" )
+  export LD_LIBRARY_PATH=$formattedPaths:$LD_LIBRARY_PATH
+fi
 
 # Hemera Locale.
 checkAndSetConfig "hemera.locale" "$CONFIG_TYPE_OPTION"    
