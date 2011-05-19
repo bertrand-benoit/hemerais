@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-05-19  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * updateConfig.sh: implemented a script allowing to create a configuration file from a source (default: sample) and a destination one (default: user configuration file)
+
 2011-05-18  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * implemented powerful path management for PATH and LD_LIBRARY_PATH update (including support of '*' wilcard) 
