@@ -28,7 +28,7 @@ hemera.path.bin="_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs"
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
 # You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin directory).
 # You MUST specify library directory paths of tool you have compiled (e.g. sphinxbase)
-hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs"
+hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs:_fromSource/sphinxbase/src/libsphinxad/.libs:_fromSource/sphinx3/src/programs/.libs:_fromSource/sphinx3/src/libs3decoder/.libs"
 
 # Language of Internationalized Hemera strings.
 # N.B.: a file named hemera-i18n.<hemera.locale> must exist in locale/ sub-directory.
@@ -169,7 +169,7 @@ hemera.core.speechRecognition.soundConverter.options="$input -s -r 16000 -c 1 $o
 
 # The sound feature file creator (path and options).
 hemera.core.speechRecognition.soundFeatureCreator.path="wave2feat"
-hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output -raw yes -srate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
+hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output -raw yes -samprate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
 
 ## Speech recognition core module - sphinx3 (ignored if mode is not sphinx3).
 # Lexical model (words and fillers) - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/lexical
