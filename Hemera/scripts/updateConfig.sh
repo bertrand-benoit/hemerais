@@ -76,8 +76,11 @@ writeMessage "Checking change ... " 0
 tmpDstFile="$dstConfFile.new."$( date +'%s' )
 rm -f "$tmpDstFile"
 keyChangeCount=0
-for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;' ); do
+for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;s/^$/EmptY/g;' ); do
   line=$( echo "$lineRaw" |sed -e 's/€/ /g;' )
+
+  # Manages empty line.
+  [[ "$line" == "EmptY" ]] && echo "" >> "$tmpDstFile" && continue
 
   # Checks if it is a comment, and appends it to temporary destination file if it is the case.
   [ $( echo "$line" |grep -re "^[ \t]*#" |wc -l ) -eq 1 ] && echo "$line" >> "$tmpDstFile" && continue
