@@ -1,6 +1,13 @@
 VERSION 0.2.0
 =============
 
+2011-05-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * setupHemera.sh: 
+   - implemented a new way to update PATH only creating/using user files so there is no more need to have privileges
+   
+   - added usage and messages
+
 2011-05-19  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * updateConfig.sh: implemented a script allowing to create a configuration file from a source (default: sample) and a destination one (default: user configuration file)
