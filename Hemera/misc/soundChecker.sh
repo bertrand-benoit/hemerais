@@ -78,7 +78,7 @@ rm -f "$pidFile"
 
 # Manages daemon.
 outputFile="$h_logFile.soundRecorder"
-writeMessage "Starting sound recorder daemon ... "
+writeMessage "Starting sound recorder ... "
 ( manageDaemon "daemon" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "$options" ) &
 
 # Ensures everything is stopped in same time of this script.
