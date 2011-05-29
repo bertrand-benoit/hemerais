@@ -32,6 +32,7 @@ category="setup"
 userSysfile="${HOME/%\//}/.hemera/hemera.sys"
 h_configurationFile="${HOME/%\//}/.hemera/hemera.conf"
 userBashfile="${HOME/%\//}/.bashrc"
+mkdir -p "${HOME/%\//}/.hemera"
 
 #########################
 ## FUNCTIONS
