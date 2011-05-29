@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-05-29  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * added check on OS locale (must use UTF-8 charmaps, and it must be installed) 
+
 2011-05-28  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * soundChecker.sh: implemented this new miscellaneous script allowing to test sound recording, and sound playing 

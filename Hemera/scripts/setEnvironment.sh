@@ -32,6 +32,7 @@ source "$installDir/scripts/utilities.sh"
 
 # Ensures environment is OK.
 checkEnvironment || $ERROR_ENVIRONMENT
+checkLocale || $ERROR_ENVIRONMENT
 
 # Defines Third-party directory, and ensures it is available.
 h_tpDir="$installDir/../HemeraThirdParty"
