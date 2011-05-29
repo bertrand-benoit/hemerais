@@ -108,8 +108,6 @@ function createSysFile() {
 cat > "$_sysFile" << End-of-Message
 # Installation directory.
 installDir="$installDir"
-# Localization and encoding.
-LANG="${LANG:-en_US.UTF-8}"
 End-of-Message
 
     echo "created/updated"
