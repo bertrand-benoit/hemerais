@@ -1,6 +1,14 @@
 VERSION 0.2.0
 =============
 
+2011-06-02  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * updated system to take care of offline documentation if any
+
+2011-06-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implemented a method to generate an offline version of the Hemera documentation (called Hemera Book) 
+  
 2011-05-29  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * added check on OS locale (must use UTF-8 charmaps, and it must be installed) 

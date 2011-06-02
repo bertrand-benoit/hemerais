@@ -31,6 +31,9 @@ SPACE_COUNT=25
 DESCRIPTION_LINE_LIMIT=22
 MUST_NOT_BE_CALLED_LIMIT=25
 
+# Gets offline documentation path if any.
+offlineDocPath=$( getOfflineDocPath )
+
 #########################
 ## FUNCTIONS
 # usage: showScriptDescription <dir relative path>
@@ -57,13 +60,12 @@ function showScriptDescription() {
 #########################
 ## INSTRUCTIONS
 echo -e "Hemera - Intelligent System - Help"
-echo -e "Online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page"
-echo -e "Quick Start: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Hemera_Quick_Start"
-echo -e "Troubleshooting: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Troubleshooting"
-echo -e "Help Forum: https://sourceforge.net/projects/hemerais/forums/forum/1202771"
-echo -e "Configuration file: config/hemera.conf"
-echo -e "Check your configuration: scripts/checkConfig.sh"
-echo -e "See README and INSTALL files."
+[ ! -z "$offlineDocPath" ] && echo -e "Offline documentation:\t$offlineDocPath"
+echo -e "Online documentation:\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page"
+echo -e "Quick Start:\t\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Hemera_Quick_Start"
+echo -e "Troubleshooting:\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Troubleshooting"
+echo -e "Help Forum:\t\thttps://sourceforge.net/projects/hemerais/forums/forum/1202771"
+echo -e "Check your config.:\tscripts/checkConfig.sh"
 echo -e "In case of problem with a command, check the generated log which contains lots of information."
 echo -e "\nAvailable tools"
 
