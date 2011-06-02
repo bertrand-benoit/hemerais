@@ -1,9 +1,8 @@
 short term:
  - create rich enough linguistic and language models
- - configuration comparator/merger
  - added ant task to ensure web module is not already deployed
  - deploy automatically webmodule when launching setup
-
+ 
  - new plug-ins to add:
   - search -> virus, game/OS updates, GPS
   - relaunch/reboot -> core module, the whole Hemera, heating thermal sensor

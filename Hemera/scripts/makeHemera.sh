@@ -47,7 +47,7 @@ target="${1:-all}"
 # Special management for "clean" target.
 if [ "$target" = "clean" ]; then
   # Ensures Hemera is not running (checking PID file).
-  [ $( find "$h_pidDir" -type f |wc -l ) -gt 0 ] && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
+  isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
 fi
 
 if [ "$target" != "webModule" ]; then
