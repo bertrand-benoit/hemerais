@@ -1,0 +1,45 @@
+Noteworthy changes in version 0.2.0 (not yet released)
+------------------------------------------------
+
+ * various great infrastructure updates for better flexibility and evolvability
+
+ * easy plug-ins system to add recognized commands
+
+ * internationalized web module giving lots of information (static and real-time)
+
+ * new configuration auto-diagnosis system (optimal check)
+
+ * new miscellaneous tools helping to configure Hemera (e.g. microphone)
+
+ * offline version of Hemera Book
+
+ * improved compatibility with Debian-like GNU/Linux
+
+
+Noteworthy abilities/functionalities in version 0.1.0 (2011-04-08)
+------------------------------------------------
+
+ * highly configurable
+
+ * robust (lots of check are performed)
+
+ * internationalization ability
+
+ * independent input/output system allowing independent module development
+
+ * speech synthesis
+
+ * speech recognition
+
+ * interpretation of recognized commands
+  - General
+    + mode: update the recognized command mode among
+    + normal: default mode
+    + parrot: parrot mode -> only the 'mode' command will be executed, the others will be repeated
+    + security: no effect yet
+    + say: repeat recognized words (like in parrot mode)
+    + stop: stop current answer/definition read
+    + pause: stop temporary current answer/definition read
+    + continue: continue temporary paused answer/definition read
+  - Day tasks
+    + search: search definition on Wikipedia and read
