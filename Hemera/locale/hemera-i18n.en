@@ -24,6 +24,9 @@
 # This script must NOT be directly called.
 
 ## General constants
+NOT_RECOGNIZED_COMMAND_I18N="Command not recognized !"
+NOT_FOUND_COMMAND_I18N="Command not found : \$notFoundCommand"
+
 ## Hemera recognized commands modes.
 H_RECO_CMD_MODE_NORMAL_I18N="normal"
 H_RECO_CMD_MODE_SECURITY_I18N="security"
@@ -39,26 +42,32 @@ H_RECO_CMD_MODE_PARROT_I18N="parrot"
 # Several patterns can be specified for the same command, they must be space separated.
 # e.g. for the command SAY, let's say we want "say" and something beginning by "rep" (like repeat), the format will so be:
 # ( "say" "rep.*" )
-MODE_CMD_PATTERN_I18N=( "mode" )
-SAY_CMD_PATTERN_I18N=( "say" "repeat" )
-SEARCH_CMD_PATTERN_I18N=( "search" )
-PAUSE_CMD_PATTERN_I18N=( "pause" "wait" )
-CONTINUE_CMD_PATTERN_I18N=( "continue" )
-STOP_CMD_PATTERN_I18N=( "stop" )
 
-# Information following successfull command recognition.
-MODE_CMD_UPDATE_I18N="Activated mode"
-
-# Command recognition error or bad use.
 # Sometimes, variables are specified in strings, they will be replaced by corresponding value; in this case (and ONLY this one)
 #  all following characters must be escaped: $'
+
+# General - 'mode' command.
+MODE_CMD_PATTERN_I18N=( "mode" )
+MODE_CMD_UPDATE_I18N="Activated mode"
 MODE_CMD_BAD_USE_I18N="Mode command requires only one argument"
 MODE_CMD_BAD_MODE_I18N="Mode \$badMode is not supported. Allowed modes are: \$supportedMode"
+
+# General - 'say' command.
+SAY_CMD_PATTERN_I18N=( "say" "repeat" )
 SAY_CMD_BAD_USE_I18N="Say command requires at least one argument"
-SEARCH_CMD_BAD_USE_I18N="Search command requires at least one argument"
+
+# General - 'pause' command.
+PAUSE_CMD_PATTERN_I18N=( "pause" "wait" )
 PAUSE_CMD_BAD_USE_I18N="Pause command doesn't require argument"
+
+# General - 'continue' command.
+CONTINUE_CMD_PATTERN_I18N=( "continue" )
 CONTINUE_CMD_BAD_USE_I18N="Continue command does not require argument"
+
+# General - 'stop' command.
+STOP_CMD_PATTERN_I18N=( "stop" )
 STOP_CMD_BAD_USE_I18N="Stop command does not require argument"
 
-NOT_RECOGNIZED_COMMAND_I18N="Command not recognized !"
-NOT_FOUND_COMMAND_I18N="Command not found : \$notFoundCommand"
+# Day task - 'search' command.
+SEARCH_CMD_PATTERN_I18N=( "search" )
+SEARCH_CMD_BAD_USE_I18N="Search command requires at least one argument"
