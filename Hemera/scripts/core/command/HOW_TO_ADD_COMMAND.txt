@@ -2,7 +2,7 @@
 To add a new command:
  - create a new script NOT executable in this directory (see 'say' command script as sample)
  - define the keyword of your command in comment, just after the Description, taking care of syntax
- - update [HEMERA_ROOT_PATH]/Hemera/locale/hemera-i18n.xx files to
+ - update [HEMERA_ROOT_PATH]/Hemera/i18n/hemera-i18n.xx files to
    - add XXX_PATTERN_I18N, XXX corresponding to your keyword
    - add any internationalized message you need
  - implement your command in your new script file

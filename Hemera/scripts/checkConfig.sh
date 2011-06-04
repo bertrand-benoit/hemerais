@@ -31,50 +31,50 @@ source "$installDir/scripts/setEnvironment.sh"
 
 #########################
 ## INSTRUCTIONS
-## Checks locale files.
-writeMessage "Checking locale files (BEGIN)"
-refLocaleFile="$installDir/locale/hemera-i18n.fr"
-refLocaleFilePurified="$h_workDir/checkConfig_$( basename "$refLocaleFile" ).purified"
-extractI18Nelement "$refLocaleFile" "$refLocaleFilePurified"
-cat "$refLocaleFilePurified" |sed -e 's/=.*$//g;' > "$refLocaleFilePurified.keys"
-for localeFile in $( find "$installDir/locale" -maxdepth 1 -type f -regextype posix-extended -regex ".*\/hemera-i18n[.][^~]*" ); do
-  localFileName=$( basename "$localeFile" )
-  localFilePurified="$h_workDir/checkConfig_$localFileName.purified"
+## Checks i18n files.
+writeMessage "Checking internationalization files (BEGIN)"
+refI18nFile="$installDir/i18n/hemera-i18n.fr"
+refI18nFilePurified="$h_workDir/checkConfig_$( basename "$refI18nFile" ).purified"
+extractI18Nelement "$refI18nFile" "$refI18nFilePurified"
+cat "$refI18nFilePurified" |sed -e 's/=.*$//g;' > "$refI18nFilePurified.keys"
+for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-extended -regex ".*\/hemera-i18n[.][^~]*" ); do
+  i18nFileName=$( basename "$i18nFile" )
+  i18nFilePurified="$h_workDir/checkConfig_$i18nFileName.purified"
 
   # Extracts i18n elements.
-  [[ "$localeFile" != "$refLocaleFile" ]] && extractI18Nelement "$localeFile" "$localFilePurified"
+  [[ "$i18nFile" != "$refI18nFile" ]] && extractI18Nelement "$i18nFile" "$i18nFilePurified"
 
   # Checks each definition.
-  for i18nElementRaw in $( grep -re "^[ \t]*[^#]" "$localeFile" |sed -e 's/[ \t]/€/g;' ); do
+  for i18nElementRaw in $( grep -re "^[ \t]*[^#]" "$i18nFile" |sed -e 's/[ \t]/€/g;' ); do
     i18nElement=$( echo "$i18nElementRaw" |sed -e 's/€/ /g;' )
 
     # Checks if there is a variable into this definition.
     if [ $( echo "$i18nElement" |grep -E "[$]" |wc -l ) -gt 0 ]; then
       # Ensures special characters are escaped.
       if [ $( echo "$i18nElement" |grep -E "[^\\]['$]" |wc -l ) -gt 0 ]; then
-        warning "($localFileName) some characters should be escaped in: $i18nElement"
+        warning "($i18nFileName) some characters should be escaped in: $i18nElement"
       fi
     else
       # Ensures there is NO escaped characters.
       if [ $( echo "$i18nElement" |grep -E "\\\\" |wc -l ) -gt 0 ]; then
-        warning "($localFileName) some characters should NOT be escaped in: $i18nElement"
+        warning "($i18nFileName) some characters should NOT be escaped in: $i18nElement"
       fi
     fi
   done
 
-  # Checks if it is the reference locale file in which case there is nothing more to do.
-  [[ "$localeFile" == "$refLocaleFile" ]] && continue
+  # Checks if it is the reference i18n file in which case there is nothing more to do.
+  [[ "$i18nFile" == "$refI18nFile" ]] && continue
 
-  # Ensures there is the same i18n elements of the reference locale file.
-  cat "$localFilePurified" |sed -e 's/=.*$//g;' > "$localFilePurified.keys"
-  diff "$refLocaleFilePurified.keys" "$localFilePurified.keys" > "$localFilePurified.keys.diff"
-  missingI18NElements=$( grep -re "^<" "$localFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
-  [ ! -z "$missingI18NElements" ] &&  warning "($localFileName) missing following i18n definition: $missingI18NElements"
+  # Ensures there is the same i18n elements of the reference file.
+  cat "$i18nFilePurified" |sed -e 's/=.*$//g;' > "$i18nFilePurified.keys"
+  diff "$refI18nFilePurified.keys" "$i18nFilePurified.keys" > "$i18nFilePurified.keys.diff"
+  missingI18NElements=$( grep -re "^<" "$i18nFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
+  [ ! -z "$missingI18NElements" ] &&  warning "($i18nFileName) missing following i18n definition: $missingI18NElements"
 
-  unknownI18NElements=$( grep -re "^>" "$localFilePurified.keys.diff" |sed -e 's/>/,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
-  [ ! -z "$unknownI18NElements" ] &&  warning "($localFileName) following i18n definition are unknown: $unknownI18NElements"
+  unknownI18NElements=$( grep -re "^>" "$i18nFilePurified.keys.diff" |sed -e 's/>/,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
+  [ ! -z "$unknownI18NElements" ] &&  warning "($i18nFileName) following i18n definition are unknown: $unknownI18NElements"
 done
-writeMessage "Checking locale files (END)"
+writeMessage "Checking internationalization files (END)"
 
 ## Checks environment configuration.
 manageJavaHome || exit $ERROR_ENVIRONMENT

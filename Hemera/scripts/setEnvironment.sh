@@ -32,7 +32,7 @@ source "$installDir/scripts/utilities.sh"
 
 # Ensures environment is OK.
 checkEnvironment || $ERROR_ENVIRONMENT
-checkLocale || $ERROR_ENVIRONMENT
+checkOSLocale || $ERROR_ENVIRONMENT
 
 # Defines Third-party directory, and ensures it is available.
 h_tpDir="$installDir/../HemeraThirdParty"
@@ -61,11 +61,11 @@ if [ ! -z "$h_lastConfig" ]; then
   export LD_LIBRARY_PATH=$formattedPaths:$LD_LIBRARY_PATH
 fi
 
-# Hemera Locale.
-checkAndSetConfig "hemera.locale" "$CONFIG_TYPE_OPTION"    
-h_locale="$h_lastConfig"
-h_i18nFile="$installDir/locale/hemera-i18n.$h_locale"
-[ ! -f "$h_i18nFile" ] && errorMessage "$h_i18nFile NOT found. You must configure the locale (See $h_configurationFile.sample)." $ERROR_BAD_CLI
+# Hemera language.
+checkAndSetConfig "hemera.language" "$CONFIG_TYPE_OPTION"    
+h_language="$h_lastConfig"
+h_i18nFile="$installDir/i18n/hemera-i18n.$h_language"
+[ ! -f "$h_i18nFile" ] && errorMessage "$h_i18nFile NOT found. You must configure the language (See $h_configurationFile.sample)." $ERROR_BAD_CLI
 source "$h_i18nFile"
 
 # Updates some internationalized constants.

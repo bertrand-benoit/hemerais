@@ -14,6 +14,7 @@
 ## Special variables which will be replaced (when needed):
 # $input: input of the tool
 # $output: output of the tool
+# $language: configured Hemera language
 
 
 ### General.
@@ -31,8 +32,8 @@ hemera.path.bin="_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_
 hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs:_fromSource/sphinxbase/src/libsphinxad/.libs:_fromSource/sphinx3/src/programs/.libs:_fromSource/sphinx3/src/libs3decoder/.libs:_fromSource/sox/src/.libs"
 
 # Language of Internationalized Hemera strings.
-# N.B.: a file named hemera-i18n.<hemera.locale> must exist in locale/ sub-directory.
-hemera.locale="fr"
+# N.B.: a file named hemera-i18n.<hemera.language> must exist in i18n/ sub-directory.
+hemera.language="fr"
 
 # The Hemera log verbose level among 0=no verbose, 3=highly verbose.
 hemera.log.verbose=0
