@@ -118,7 +118,7 @@ if [ "$hemeraMode" = "local" ]; then
 
     status)
       # Informs about version.
-      version=$( getVersion )
+      version=$( getDetailedVersion )
       writeMessage "Hemera version: $version"
 
       # Informs about uptime.
