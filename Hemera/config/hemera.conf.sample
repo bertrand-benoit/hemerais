@@ -129,9 +129,10 @@ hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
 # The sound player (path and options).
 # e.g.: play/sox or aplay
 hemera.core.speech.soundPlayer.path="play"
-# e.g.: for play: -q -r16000
-#       for aplay: -q -r16000 -fS16
-hemera.core.speech.soundPlayer.options="-q -r16000"
+# IMPORTANT: the sample rate must be the same of the model used with speech tool.
+# e.g.: for play: -q -r22050
+#       for aplay: -q -r22050 -fS16
+hemera.core.speech.soundPlayer.options="-q -r22050"
 
 ## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
 # Default language.
@@ -141,8 +142,9 @@ hemera.core.speech.soundPlayer.options="-q -r16000"
 hemera.core.speech.espeak.language="mb/mb-fr4"
 
 ## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
-# Path to mbrola tool.
+# mbrola tool (path and options).
 hemera.core.speech.mbrola.path="speech/bin/mbrola"
+hemera.core.speech.mbrola.options="-v 0.9"
 # Language definition - relative to [HEMERA_TP_PATH]/speech/data/language
 hemera.core.speech.mbrola.language="fr4"
 
@@ -159,11 +161,13 @@ hemera.core.speechRecognition.tool.path="sphinx3_decode"
 hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -upperf 6800 -silprob 0.01 -fillprob 0.02"
 
 # The speech sound (continuous) recorder (path and options).
-# Important: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
+# IMPORTANT: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
 hemera.core.speechRecognition.soundRecorder.path="rec"
-hemera.core.speechRecognition.soundRecorder.options="-q -r 16000 -c 1 -t wav $input silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
+hemera.core.speechRecognition.soundRecorder.options="-q -r 22050 -c 1 -t wav $input silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
 
 # The sound converted (path and options).
+# IMPORTANT: the sample rate must be compatible with the feature file creator
+#  (for instance wave2feat supports only 8kHz and 16kHz).
 hemera.core.speechRecognition.soundConverter.path="sox"
 hemera.core.speechRecognition.soundConverter.options="$input -s -r 16000 -c 1 $output"
 
@@ -175,8 +179,10 @@ hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output 
 # Lexical model (words and fillers) - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/lexical
 hemera.core.speechRecognition.sphinx3.lexicalModel.words="lium/words_dict.utf8"
 hemera.core.speechRecognition.sphinx3.lexicalModel.fillers="lium/fillers_dict.utf8"
+
 # Language model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/language
 hemera.core.speechRecognition.sphinx3.languageModel="lium/3g/trigram_LM.DMP.utf8"
+
 # Acoustic model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/acoustic
 hemera.core.speechRecognition.sphinx3.acousticModel.definition="lium/architecture/F0.5500.mdef"
 hemera.core.speechRecognition.sphinx3.acousticModel.means="lium/parameters/F0/means"
