@@ -49,7 +49,7 @@ function usage() {
   echo -e "<pattern>\tthe speech sound file pattern (Default: $DEFAULT_SPEECH_FILE_PATTEN)"
   echo -e "<result file>\tpath to result file"
   echo -e "-X\t\tcheck configuration and quit"
-  echo -e "-C\t\tactivate sound conversion from wav to raw (only needed if source has NOT a 16 kHz rate)"
+  echo -e "-C\t\tdisable sound conversion from wav to raw (useless if source has already a 16 kHz sample rate)"
   echo -e "-F\t\tforce [re]creation of intermediate files"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
@@ -104,7 +104,7 @@ SOURCE_MODE_DIR=3
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
 force=0
-convert=0
+convert=1
 # N.B.: -Z is an hidden option allowing to analyze specified log file;
 #  it must be used for internal purposes only.
 while getopts "f:l:d:Z:P:R:CFvhX" opt
@@ -116,7 +116,7 @@ do
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
         P)      speechFilePattern="$OPTARG";;
         R)      resultFile="$OPTARG";;
-        C)      convert=1;;
+        C)      convert=0;;
         F)      force=1;;
         v)      verbose=1;;
         Z)      logToAnalyze="$OPTARG";;
