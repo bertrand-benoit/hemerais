@@ -1,6 +1,16 @@
 VERSION 0.2.0
 =============
 
+2011-06-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * speech.sh: improved greatly definition search system (added configuration elements, and improved post processing)
+
+2011-06-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * renamed locale/ sub-directory to i18n for better legibility
+ 
+ * renamed hemera.locale configuration element to hemera.language for better legibility
+
 2011-06-02  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * updated system to take care of offline documentation if any

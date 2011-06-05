@@ -123,9 +123,9 @@ hemera.core.speech.mode="espeak+mbrola"
 hemera.core.speech.tool.path="espeak"
 # espeak options samples:
 # with espeak mode: -s 130 --stdout
-# with espeak+mbrola mode: -p 45 -s 150 -zqx [--pho]
+# with espeak+mbrola mode: -p 45 -s 125 -zqx [--pho]
 # N.B.: in recent version of espeak, the --pho option must be used to output in mbrola format
-hemera.core.speech.tool.options="-p 45 -s 150 -zqx"
+hemera.core.speech.tool.options="-p 45 -s 125 -zqx"
 
 # The sound player (path and options).
 # e.g.: play/sox or aplay
@@ -194,7 +194,14 @@ hemera.core.speechRecognition.sphinx3.acousticModel.transitionMatrices="lium/par
 
 ### Recognized commands
 #######################
+# HTML to text converter (path).
+hemera.core.command.general.htmlConverter.path="html2text"
+
+# File splitter (path).
+hemera.core.command.general.fileSplitter.path="csplit"
+
 # The search URL.
-# e.g.: for wikipedia: http://$h_language.wikipedia.org/wiki/$input
-#       for wikipedia mobile: http://$h_language.mobile.wikipedia.org/transcode.php?go=$input
+# IMPORTANT: corresponding URL contents is then parsed, if you use a no default link
+#  it is needed to contact Hemera team to update parsing system.
+# e.g.: for wikipedia mobile: http://$h_language.mobile.wikipedia.org/transcode.php?go=$input
 hemera.core.command.search.url="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"

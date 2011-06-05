@@ -61,15 +61,6 @@ function startInteractiveMode() {
   done
 }
 
-# usage: getURLContents <url> <destination file>
-function getURLContents() {
-  info "Getting contents of URL '$1'"
-  ! wget --user-agent="Mozilla/Firefox 3.6" -q "$1" -O "$2" && writeMessage "Error while getting contents of URL '$1'" && return 1
-  info "Got contents of URL '$1' with success"
-  return 0
-}
-
-
 # usage: readURLContents
 function readURLContents() {
   urlContentsFile="$h_workDir/$h_fileDate-urlContents.tmp"
@@ -78,14 +69,44 @@ function readURLContents() {
   speechFileContents "$urlContentsFile"
 }
 
+# usage: parseHTML <source URL> <source file> <destination file>
+function parseHTML() {
+  local _srcURL="$1" _srcfile="$2" _destFile="$3"
+  local _txtFile="$_destFile.tmp"
+
+  # Converts HTML to text.
+  "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 || errorMessage "Unable to convert HTML of file '$_srcfile'" $ERROR_EXTERNAL_TOOL
+
+  # Additional parsing according to search URL.
+  if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
+    # Extracts contents part (will be in file numbered 1).
+    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/-2" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
+
+    # Final parsing:
+    #  - removes line containing only element in brackets
+    #  - replaces all "_" by space
+    #  - adds a space at the end of each line, and then removes line break
+    #  - removes words in bracket, taking care of potential "bug" like "[roue] s,"
+    #  - replaces some remaining html code (e.g. &quot;)
+    cat "$_destFile"1 \
+      |sed -e 's/^[[].*[]]$//g;s/\([^-]\)$/\1 /g;s/^[ \t]*D[ée]finition[ \t]*$//g;' |tr -d '\n' \
+      |sed -e 's/[[]\([^]]*\)[]][ ]s\([[:punct:]]\)/\1s\2/g;s/[[]\([^]]*\)[]]/\1/g;' \
+      |sed -e 's/&quot;/"/g;s/_/ /g;' \
+    > "$_destFile"
+  else
+    warning "There is currently no additional parsing for source URL '$_srcURL' (result may not be good). Contact Hemera team to implement it."
+    mv -f "$_txtFile" "$_destFile" 
+  fi
+}
+
 # usage: readDefinition
 function readDefinition() {
   urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
   input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
   getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
-  sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"
+  parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt"
 
-  speechFileContents "$urlContentsFile"
+  speechFileContents "$urlContentsFile.txt"
 }
 
 # usage: readFileContents
@@ -150,6 +171,10 @@ if [ -z "$speechOutput" ]; then
   soundPlayerOptions="$h_lastConfig"
 fi
 
+checkAndSetConfig "hemera.core.command.general.htmlConverter.path" "$CONFIG_TYPE_BIN"
+htmlConverter="$h_lastConfig"
+checkAndSetConfig "hemera.core.command.general.fileSplitter.path" "$CONFIG_TYPE_BIN"
+fileSplitter="$h_lastConfig"
 checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
 searchURL="$h_lastConfig"
 
