@@ -14,7 +14,7 @@
 ## Special variables which will be replaced (when needed):
 # $input: input of the tool
 # $output: output of the tool
-# $language: configured Hemera language
+# $h_language: Hemera language (defined by hemera.language)
 
 
 ### General.
@@ -190,3 +190,11 @@ hemera.core.speechRecognition.sphinx3.acousticModel.means="lium/parameters/F0/me
 hemera.core.speechRecognition.sphinx3.acousticModel.variances="lium/parameters/F0/variances"
 hemera.core.speechRecognition.sphinx3.acousticModel.mixtureWeights="lium/parameters/F0/mixture_weights"
 hemera.core.speechRecognition.sphinx3.acousticModel.transitionMatrices="lium/parameters/F0/transition_matrices"
+
+
+### Recognized commands
+#######################
+# The search URL.
+# e.g.: for wikipedia: http://$h_language.wikipedia.org/wiki/$input
+#       for wikipedia mobile: http://$h_language.mobile.wikipedia.org/transcode.php?go=$input
+hemera.core.command.search.url="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"

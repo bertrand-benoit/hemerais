@@ -81,8 +81,8 @@ function readURLContents() {
 # usage: readDefinition
 function readDefinition() {
   urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
-  termAsQueryString=$( echo "$termsToDefine" |sed -e 's/[ \t]/+/g;' )
-  getURLContents "http://fr.mobile.wikipedia.org/transcode.php?go=$termAsQueryString" "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
+  input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
+  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
   sed -i 's/^.<a[^>]*>\([^<]*\)<.a>.<br..>//g;s/.*HAWHAW.*//g;' "$urlContentsFile"
 
   speechFileContents "$urlContentsFile"
@@ -149,6 +149,9 @@ if [ -z "$speechOutput" ]; then
   checkAndSetConfig "$CONFIG_KEY.soundPlayer.options" "$CONFIG_TYPE_OPTION"
   soundPlayerOptions="$h_lastConfig"
 fi
+
+checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
+searchURL="$h_lastConfig"
 
 # Gets functions specific to mode.
 # N.B.: specific configuration will be checked asap the script is sourced.
