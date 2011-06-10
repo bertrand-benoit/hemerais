@@ -24,11 +24,43 @@
 #
 # This script must NOT be directly called.
 
-# Ensures there is no argument.
-if [ $wordsCount -ne 1 ]; then
-  speechToSay "$STOP_CMD_BAD_USE_I18N" "$_inputPath"
-  notifyErrInput
-else
-  writeMessage "$inputString: STOP command detected -> stopping last paused speech, if any"
-  "$manageSoundScript" -p "$h_speechRunningPIDFile" -S && notifyDoneInput || notifyErrInput
-fi
+## Checks configuration specific to this command.
+function checkConfig() {
+  # Nothing specific to do.
+  return 0
+}
+
+## Performs a quick test of this command.
+function testCommand() {
+  # TODO: implement test
+  return 0
+}
+
+## Instructions - concrete execution of this command.
+# usage: checkCoherence <path of the whole input> <words count>
+#  <path of the whole input>: contains all the recognized input
+#  <words count>: the count of recognized words
+# return 0 if coherence if OK, >0 otherwise.
+function checkCoherence() {
+  local _inputPath="$1" _wordsCount="$2"
+
+  # Ensures there is at least one argument.
+  if [ $_wordsCount -ne 1 ]; then
+    speechToSay "$STOP_CMD_BAD_USE_I18N" "$_inputPath"
+    return 1
+  fi
+
+  # All is OK.
+  return 0
+}
+
+# usage: execute <path of the whole input> <input string presentation>
+#  <path of the whole input>: contains all the recognized input
+#  <input string presentation>: the string presentation of the input (prefix of message to show)
+# return 0 if execution if OK, >0 otherwise.
+function execute() {
+  local _inputPath="$1" _inputString="$2"
+
+  writeMessage "$_inputString: STOP command detected -> stopping last paused speech, if any"
+  "$manageSoundScript" -p "$h_speechRunningPIDFile" -S
+}

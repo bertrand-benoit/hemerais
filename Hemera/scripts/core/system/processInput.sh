@@ -53,7 +53,7 @@ function usage() {
 
 # usage: notifyProcessInput
 function notifyProcessInput() {
-  writeMessage "$inputString: managing supported input $inputName (specific log file: $h_logFile)"
+  writeMessage "$inputString: managing supported input $inputName"
   mv -f "$h_newInputDir/$inputName" "$h_curInputDir"
 }
 
@@ -61,7 +61,7 @@ function notifyProcessInput() {
 # usage: notifyDoneInput [noExit]
 # noExit: disable exist after input move.
 function notifyDoneInput() {
-  writeMessage "$inputString: successfully managed input $inputName (specific log file: $h_logFile)"
+  writeMessage "$inputString: successfully managed input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_doneInputDir"
   # N.B.: if the function does not exit, it is very important to return 0, otherwise
   #  the "ko" status of the test will be regarded by the caller, like there was an error.
@@ -71,7 +71,7 @@ function notifyDoneInput() {
 # usage: notifyErrInput [noExit]
 # noExit: disable exist after input move.
 function notifyErrInput() {
-  writeMessage "$inputString: error while managing input $inputName (specific log file: $h_logFile)"
+  writeMessage "$inputString: error while managing input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
   # N.B.: if the function does not exit, it is very important to return 0, otherwise
   #  the "ko" status of the test will be regarded by the caller, like there was an error.
@@ -127,7 +127,8 @@ function manageRecognitionResult() {
   # Manages special commands like "mode" (e.g. to allow stopping 'parrot' mode).
   if matchesOneOf "${MODE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
     source "$commandScriptDir/mode"
-    return 0
+    checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
+    execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
   fi
 
   # Checks if 'parrot' mode is activated.
@@ -147,9 +148,10 @@ function manageRecognitionResult() {
     return 0
   fi
 
-  # All is OK, launches the corresponding command script.
+  # All is OK, manages the corresponding command script.
   source "$commandScript"
-  return 0
+  checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
+  execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
 }
 
 # usage: speechToSay <text> <input path>
