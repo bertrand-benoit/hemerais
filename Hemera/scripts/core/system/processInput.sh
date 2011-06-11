@@ -57,36 +57,26 @@ function notifyProcessInput() {
   mv -f "$h_newInputDir/$inputName" "$h_curInputDir"
 }
 
-# usage: notifyDoneInputNE
-# Manages input as "done", without exiting script.
-function notifyDoneInputNE() {
+# usage: notifyDoneInput ["noExit"]
+# Manages input as "done" and then exits script, but if "noExit" is specified.
+function notifyDoneInput() {
+  local _argument="${1:-}"
+
   writeMessage "$inputString: successfully managed input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_doneInputDir"
-  return 0
+  [[ "$_argument" == "noExit" ]] && return 0 || exit 0
 }
 
-# usage: notifyDoneInput
-# Manages input as "done" and then exits script.
-function notifyDoneInput() {
-  notifyDoneInputNE
-  exit 0
-}
+# usage: notifyErrInput ["noExit"]
+# Manages input as "error" and then exits script, but if "noExit" is specified.
+function notifyErrInput() {
+  local _argument="${1:-}"
 
-# usage: notifyErrInputNE
-# Manages input as "error", without exiting script.
-function notifyErrInputNE() {
   writeMessage "$inputString: error while managing input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
-  # N.B.: it is very important to return 0, otherwise
+  # N.B.: if "noExit" is specified, it is very important to return 0, otherwise
   #  a "ko" status of the test will be regarded by the caller, like there was an error.
-  return 0
-}
-
-# usage: notifyErrInput
-# Manages input as "error" and then exits script.
-function notifyErrInput() {
-  notifyErrInputNE
-  exit $ERROR_INPUT_PROCESS
+  [[ "$_argument" == "noExit" ]] && return 0 || exit $ERROR_INPUT_PROCESS
 }
 
 # usage: extractRecognitionResultCommand <input path>
@@ -211,7 +201,7 @@ function manageSpeech() {
 
     # Manages this speech (and potential following ones).
     while [ 1 ]; do
-      "$manageSoundScript" -p "$h_speechRunningPIDFile" -f "$_inputPath" && notifyDoneInputNE || notifyErrInputNE
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -f "$_inputPath" && notifyDoneInput "noExit" || notifyErrInput "noExit"
 
        # Checks if there is more speech to play (list must exist, and it must not be empty).
        [ ! -s "$h_speechToPlayList" ] && break
