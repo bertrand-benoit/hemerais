@@ -27,12 +27,12 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 source "$installDir/scripts/utilities.sh"
 
-SPACE_COUNT=25
-DESCRIPTION_LINE_LIMIT=22
-MUST_NOT_BE_CALLED_LIMIT=25
+declare -r SPACE_COUNT=25
+declare -r DESCRIPTION_LINE_LIMIT=22
+declare -r MUST_NOT_BE_CALLED_LIMIT=25
 
 # Gets offline documentation path if any.
-offlineDocPath=$( getOfflineDocPath )
+declare -r offlineDocPath=$( getOfflineDocPath )
 
 #########################
 ## FUNCTIONS

@@ -57,25 +57,36 @@ function notifyProcessInput() {
   mv -f "$h_newInputDir/$inputName" "$h_curInputDir"
 }
 
-
-# usage: notifyDoneInput [noExit]
-# noExit: disable exist after input move.
-function notifyDoneInput() {
+# usage: notifyDoneInputNE
+# Manages input as "done", without exiting script.
+function notifyDoneInputNE() {
   writeMessage "$inputString: successfully managed input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_doneInputDir"
-  # N.B.: if the function does not exit, it is very important to return 0, otherwise
-  #  the "ko" status of the test will be regarded by the caller, like there was an error.
-  [ "$1" != "noExit" ] && exit 0 || return 0
+  return 0
 }
 
-# usage: notifyErrInput [noExit]
-# noExit: disable exist after input move.
-function notifyErrInput() {
+# usage: notifyDoneInput
+# Manages input as "done" and then exits script.
+function notifyDoneInput() {
+  notifyDoneInputNE
+  exit 0
+}
+
+# usage: notifyErrInputNE
+# Manages input as "error", without exiting script.
+function notifyErrInputNE() {
   writeMessage "$inputString: error while managing input $inputName"
   mv -f "$h_curInputDir/$inputName" "$h_errInputDir"
-  # N.B.: if the function does not exit, it is very important to return 0, otherwise
-  #  the "ko" status of the test will be regarded by the caller, like there was an error.
-  [ "$1" != "noExit" ] && exit $ERROR_INPUT_PROCESS || return 0
+  # N.B.: it is very important to return 0, otherwise
+  #  a "ko" status of the test will be regarded by the caller, like there was an error.
+  return 0
+}
+
+# usage: notifyErrInput
+# Manages input as "error" and then exits script.
+function notifyErrInput() {
+  notifyErrInputNE
+  exit $ERROR_INPUT_PROCESS
 }
 
 # usage: extractRecognitionResultCommand <input path>
@@ -198,9 +209,9 @@ function manageSpeech() {
     #  when script is exiting.
     touch "$h_speechRunningLockFile"
 
-    # Manages this speech (and potential following ones).
+    # Manages this speech (and potential following ones).
     while [ 1 ]; do
-      "$manageSoundScript" -p "$h_speechRunningPIDFile" -f "$_inputPath" && notifyDoneInput "noExit" || notifyErrInput "noExit"
+      "$manageSoundScript" -p "$h_speechRunningPIDFile" -f "$_inputPath" && notifyDoneInputNE || notifyErrInputNE
 
        # Checks if there is more speech to play (list must exist, and it must not be empty).
        [ ! -s "$h_speechToPlayList" ] && break
@@ -269,7 +280,8 @@ case "$inputType" in
 
   recordedSpeech)
     writeMessage "$inputString: launching speech recognition on $inputName"
-    h_logFile="$h_logFile" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    # N.B.: uses a specific log file to improve efficiencies while post-processing speech recognition.
+    h_logFile="$h_logFile.$inputString" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)

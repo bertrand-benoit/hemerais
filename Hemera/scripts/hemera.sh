@@ -28,8 +28,8 @@ installDir=$( dirname "$currentDir" )
 category="hemera"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.run"
-SUPPORTED_MODE="local client server"
+declare -r CONFIG_KEY="hemera.run"
+declare -r SUPPORTED_MODE="local client server"
 
 #########################
 ## FUNCTIONS
@@ -57,6 +57,7 @@ function initialization() {
 ## Command line management
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+action=""
 while getopts "STKvhX" opt
 do
  case "$opt" in
@@ -71,7 +72,7 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
-hemeraMode="$h_lastConfig"
+declare -r hemeraMode="$h_lastConfig"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode"; then
   # It is not a fatal error if in "checkConfAndQuit" mode.
@@ -89,13 +90,13 @@ else
 fi
 
 checkAndSetConfig "$CONFIG_KEY.activation.inputMonitor" "$CONFIG_TYPE_OPTION"
-inputMonitorActivation="$h_lastConfig"
+declare -r inputMonitorActivation="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.activation.ioProcessor" "$CONFIG_TYPE_OPTION"
-ioProcessorActivation="$h_lastConfig"
+declare -r ioProcessorActivation="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.activation.soundRecorder" "$CONFIG_TYPE_OPTION"
-soundRecorderActivation="$h_lastConfig"
+declare -r soundRecorderActivation="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.activation.tomcat" "$CONFIG_TYPE_OPTION"
-tomcatActivation="$h_lastConfig"
+declare -r tomcatActivation="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
@@ -118,11 +119,11 @@ if [ "$hemeraMode" = "local" ]; then
 
     status)
       # Informs about version.
-      version=$( getDetailedVersion )
+      declare -r version=$( getDetailedVersion )
       writeMessage "Hemera version: $version"
 
       # Informs about uptime.
-      uptime=$( getUptime )
+      declare -r uptime=$( getUptime )
       writeMessage "Hemera uptime: $uptime"
       
       # Informs about current Hemera mode.
@@ -130,7 +131,7 @@ if [ "$hemeraMode" = "local" ]; then
 
       # Informs about recognized commands mode.
       if [ -f "$h_recoCmdModeFile" ]; then
-        recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
+        declare -r recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
         writeMessage "Recognized commands mode: $recoCmdMode"
       fi
 
@@ -178,7 +179,7 @@ if [ "$hemeraMode" = "local" ]; then
       if [ ! -x "$tomcatBin" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else
-        writeMessage "Apache Tomcat $action ... " 0
+        writeMessageSL "Apache Tomcat $action ... "
         "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo "failed"
       fi
     fi

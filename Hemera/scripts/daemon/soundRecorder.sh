@@ -31,11 +31,11 @@ installDir=$( dirname "$( dirname "$currentDir" )" )
 category="soundRecorder"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.speechRecognition"
-daemonName="sound recorder"
+declare -r CONFIG_KEY="hemera.core.speechRecognition"
+declare -r daemonName="sound recorder"
 
 # Defines the PID file.
-pidFile="$h_pidDir/soundRecording.pid"
+declare -r pidFile="$h_pidDir/soundRecording.pid"
 
 #########################
 ## Command line management
@@ -43,6 +43,9 @@ pidFile="$h_pidDir/soundRecording.pid"
 # N.B.: the -D option must be only internally used.
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+newLogFile=""
+outputFile=""
+options=""
 while getopts "XDSTKvh" opt
 do
  case "$opt" in
@@ -51,6 +54,7 @@ do
           action="start"
           outputFile="$h_logFile.soundRecorder"
           newLogFile="$outputFile"
+          export noconsole=1
         ;;
         T)      action="status";;
         K)      action="stop";;
@@ -62,9 +66,9 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.soundRecorder.path" "$CONFIG_TYPE_BIN"
-soundRecorderBin="$h_lastConfig"
+declare -r soundRecorderBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.soundRecorder.options" "$CONFIG_TYPE_OPTION"
-soundRecorderOptions="$h_lastConfig"
+declare -r soundRecorderOptions="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
@@ -76,8 +80,8 @@ soundRecorderOptions="$h_lastConfig"
 ## INSTRUCTIONS
 
 if [ "$action" = "daemon" ]; then
-  input="$h_newInputDir/recordedSpeech_.wav"
-  options=$( eval echo "$soundRecorderOptions" )
+  declare -r input="$h_newInputDir/recordedSpeech_.wav"
+  declare -r options=$( eval echo "$soundRecorderOptions" )
 fi
 
 # Manages daemon.

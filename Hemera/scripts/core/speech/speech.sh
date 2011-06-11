@@ -31,8 +31,8 @@ installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 category="speech"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.speech"
-SUPPORTED_MODE="espeak espeak+mbrola"
+declare -r CONFIG_KEY="hemera.core.speech"
+declare -r SUPPORTED_MODE="espeak espeak+mbrola"
 
 #########################
 ## Functions
@@ -63,7 +63,7 @@ function startInteractiveMode() {
 
 # usage: readURLContents
 function readURLContents() {
-  urlContentsFile="$h_workDir/$h_fileDate-urlContents.tmp"
+  local urlContentsFile="$h_workDir/$h_fileDate-urlContents.tmp"
   getURLContents "$url" "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
 
   speechFileContents "$urlContentsFile"
@@ -80,7 +80,8 @@ function parseHTML() {
   # Additional parsing according to search URL.
   if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
     # Extracts contents part (will be in file numbered 1).
-    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/-2" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
+    # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
+    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
 
     # Final parsing:
     #  - removes line containing only element in brackets
@@ -101,7 +102,7 @@ function parseHTML() {
 
 # usage: readDefinition
 function readDefinition() {
-  urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
+  local urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
   input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
   getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
   parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt"
@@ -124,6 +125,8 @@ MODE_INTERACTIVE=10
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+language=""
+speechOutput=""
 while getopts "Xt:u:f:d:io:l:vh" opt
 do
  case "$opt" in
@@ -142,7 +145,7 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
-moduleMode="$h_lastConfig"
+declare -r moduleMode="$h_lastConfig"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
   # It is not a fatal error if in "checkConfAndQuit" mode.
@@ -160,27 +163,27 @@ else
 fi
 
 checkAndSetConfig "$CONFIG_KEY.espeak.language" "$CONFIG_TYPE_OPTION"
-DEFAULT_LANGUAGE="$h_lastConfig"
+declare -r DEFAULT_LANGUAGE="$h_lastConfig"
 [ -z "$language" ] && language="$DEFAULT_LANGUAGE"
 
 # Checks sound player only if no output has been specified.
 if [ -z "$speechOutput" ]; then
   checkAndSetConfig "$CONFIG_KEY.soundPlayer.path" "$CONFIG_TYPE_BIN"
-  soundPlayerBin="$h_lastConfig"
+  declare -r soundPlayerBin="$h_lastConfig"
   checkAndSetConfig "$CONFIG_KEY.soundPlayer.options" "$CONFIG_TYPE_OPTION"
-  soundPlayerOptions="$h_lastConfig"
+  declare -r soundPlayerOptions="$h_lastConfig"
 fi
 
 checkAndSetConfig "hemera.core.command.general.htmlConverter.path" "$CONFIG_TYPE_BIN"
-htmlConverter="$h_lastConfig"
+declare -r htmlConverter="$h_lastConfig"
 checkAndSetConfig "hemera.core.command.general.fileSplitter.path" "$CONFIG_TYPE_BIN"
-fileSplitter="$h_lastConfig"
+declare -r fileSplitter="$h_lastConfig"
 checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
-searchURL="$h_lastConfig"
+declare -r searchURL="$h_lastConfig"
 
 # Gets functions specific to mode.
 # N.B.: specific configuration will be checked asap the script is sourced.
-specModScript="$currentDir/speech_$moduleMode"
+declare -r specModScript="$currentDir/speech_$moduleMode"
 if [ -f "$specModScript" ]; then
   [ $checkConfAndQuit -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
   source "$specModScript"

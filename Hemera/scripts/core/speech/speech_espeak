@@ -27,17 +27,19 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-espeakBin="$h_lastConfig"
+declare -r espeakBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-espeakOptions="$h_lastConfig"
+declare -r espeakOptions="$h_lastConfig"
 
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {
+  local _sentence="$1" _additionalOptions="${2:-}"
+
   # Modus operandi:
   #  - uses espeak to generate speech sound
   #  - uses finally the speech sound player
-  info "System will play speech '$1', using only espeak"
-  "$espeakBin" -v "$language" $espeakOptions $2 "$1" |"$soundPlayerBin" $soundPlayerOptions
+  info "System will play speech '$_sentence', using only espeak"
+  "$espeakBin" -v "$language" $espeakOptions $_additionalOptions "$_sentence" |"$soundPlayerBin" $soundPlayerOptions
 }
 
 # Usage: speechFileContents <file path>

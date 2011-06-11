@@ -27,29 +27,31 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-espeakBin="$h_lastConfig"
+declare -r espeakBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-espeakOptions="$h_lastConfig"
+declare -r espeakOptions="$h_lastConfig"
 
 checkAndSetConfig "$CONFIG_KEY.mbrola.path" "$CONFIG_TYPE_BIN"
-mbrolaBin="$h_lastConfig"
+declare -r mbrolaBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.mbrola.options" "$CONFIG_TYPE_OPTION"
-mbrolaOptions="$h_lastConfig"
+declare -r mbrolaOptions="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.mbrola.language" "$CONFIG_TYPE_DATA" "$h_tpDir/speech/data/language"
-mbrolaLanguageFile="$h_lastConfig"
+declare -r mbrolaLanguageFile="$h_lastConfig"
 
 [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
 
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {
+  local _sentence="$1" _additionalOptions="${2:-}"
+
   # Modus operandi:
   #  - uses espeak to produce "phoneme mnemonics"
   #  - prefixes each line beginning with a space character (not supported by mbrola) by a ';'; as a comment
   #  - uses mbrola to generate speech sound
   #  - uses finally the speech sound player
-  info "System will play speech '$1', using espeak, and mbrola speechOutput=$speechOutput"
+  info "System will play speech '$_sentence', using espeak, and mbrola speechOutput=$speechOutput"
   [ "$speechOutput" = "-" ] && speechTmpFile="$h_workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
-  "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $2 "$1" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
+  "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $_additionalOptions "$_sentence" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
   if [ "$speechOutput" = "-" ]; then
     info "Generated temporary speech file: $speechTmpFile"
     "$soundPlayerBin" $soundPlayerOptions "$speechTmpFile"

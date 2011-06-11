@@ -27,29 +27,29 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-sphinx3DecoderBin="$h_lastConfig"
+declare -r sphinx3DecoderBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-sphinx3DecoderOptions="$h_lastConfig"
+declare -r sphinx3DecoderOptions="$h_lastConfig"
 
-dataDir="$h_tpDir/speechRecognition/data"
+declare -r dataDir="$h_tpDir/speechRecognition/data"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.lexicalModel.words" "$CONFIG_TYPE_DATA" "$dataDir/models/lexical"
-lexicalModelWords="$h_lastConfig"
+declare -r lexicalModelWords="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.lexicalModel.fillers" "$CONFIG_TYPE_DATA" "$dataDir/models/lexical"
-lexicalModelFillers="$h_lastConfig"
+declare -r lexicalModelFillers="$h_lastConfig"
 
 checkAndSetConfig "$CONFIG_KEY.sphinx3.languageModel" "$CONFIG_TYPE_DATA" "$dataDir/models/language"
-languageModel="$h_lastConfig"
+declare -r languageModel="$h_lastConfig"
 
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.definition" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-acousticModelDefinition="$h_lastConfig"
+declare -r acousticModelDefinition="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.means" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-acousticModelMeans="$h_lastConfig"
+declare -r acousticModelMeans="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.variances" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-acousticModelVariances="$h_lastConfig"
+declare -r acousticModelVariances="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.mixtureWeights" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-acousticModelMixtureWeights="$h_lastConfig"
+declare -r acousticModelMixtureWeights="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.transitionMatrices" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-acousticModelTransitionMatrices="$h_lastConfig"
+declare -r acousticModelTransitionMatrices="$h_lastConfig"
 
 # usage: prepareAudioSource <source wav file> <destination raw file> <convert>
 # convert to raw file: 0=disabled, 1=enabled
@@ -68,20 +68,20 @@ function prepareAudioSource() {
     local output="$_wavFile"
     if [ $_convert -eq 1 ]; then
       #  1- converts the wav file to signed 16-bit little endian raw file
-      writeMessage "Converting sound file $_wavFile ... " 0
+      writeMessageSL "Converting sound file $_wavFile ... "
 
       # Defines input and output.
-      input="$_wavFile"
-      output="$_rawFile"
+      declare -r input="$_wavFile"
+      declare -r output="$_rawFile"
 
       ! "$soundConverterBin" $( eval echo $soundConverterOptions ) >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
-      echo "done"
+      echo "done"|tee -a "$h_logFile"
     fi
 
     #  2- computes the corresponding feature file
-    writeMessage "Creating feature sound file for $input ... " 0
+    writeMessageSL "Creating feature sound file for $input ... "
     ! "$currentDir/computeFeatureFile.sh" -f "$output" >> "$h_logFile" 2>&1 && echo -e "error" >&2 && return 1
-    echo "done"
+    echo "done"|tee -a "$h_logFile"
   fi
   return 0
 }

@@ -66,21 +66,24 @@ STRING8="Je ne suis plus censée répéter ce que l'on me dit"
 
 # usage: waitForMode <mode> <timeout>
 function waitForMode() {
-  local _mode="$1" _remainingTime=${2:-60}
-  writeMessage "Waiting until mode is changed to $_mode (timeout: $_remainingTime seconds)"
+  local _mode="$1" _remainingTime=${2:-10}
+  writeMessage "Waiting until recognized command mode is changed to '$_mode' (timeout: $_remainingTime seconds)"
   while [ 1 ]; do
     # Checks if there is remaining time.
     [ $_remainingTime -eq 0 ] && break
 
     # Checks if the awaited mode is reached.
-    recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
+    recoCmdMode=$( getRecoCmdMode ) || return $ERROR_ENVIRONMENT
     [ "$recoCmdMode" = "$_mode" ] && break
 
     sleep 1
     let _remainingTime--
   done
-}
 
+  # Checks if the awaited mode is reached.
+  recoCmdMode=$( getRecoCmdMode ) || return $ERROR_ENVIRONMENT
+  [[ "$recoCmdMode" != "$_mode" ]] && errorMessage "Recognized command mode is broken"
+}
 
 # usage: test1
 # Search/Pause/Continue/Stop tests.
@@ -112,8 +115,8 @@ function test1() {
 # usage: test2
 # mode tests.
 function test2() {
-  writeMessage "Test 2: starting mode tests"
-  writeMessage "Test 2: activating parrot mode"
+  writeMessage "Test 2: starting recognized command mode tests"
+  writeMessage "Test 2: activating parrot recognized command mode"
   echo "mode perroquet" > "$h_newInputDir/recognitionResult_test1.txt"
   waitForMode "$H_RECO_CMD_MODE_PARROT"
 
@@ -134,7 +137,8 @@ function test2() {
   echo "$STRING4" > "$h_newInputDir/recognitionResult_test6.txt"
   echo "$STRING5" > "$h_newInputDir/recognitionResult_test7.txt"
   echo "$STRING6" > "$h_newInputDir/recognitionResult_test8.txt"
-  sleep 3
+  
+  waitUntilAllInputManaged
 }
 
 # usage: test3

@@ -1,8 +1,11 @@
 short term:
- - create rich enough linguistic and language models
  - added ant task to ensure web module is not already deployed
  - deploy automatically webmodule when launching setup
+ - install Hemera service if requested
  - extract management of hemera.core.command.search.url from speech to corresponding search command
+
+ - replace all call to "expr" or "bc" ...
+ - replace all "xxx|grep |wc -l"  by "xxx|grep -c"
 
  - new plug-ins to add:
   - search -> virus, game/OS updates, GPS
@@ -24,6 +27,7 @@ short term:
 
 
 middle term:
+ - create rich enough linguistic and language models
  - implement Web Services allowing to use various Hemera pieces as client/server, and to get lots of real-time information
 
  - adapt LIUM acoustic models

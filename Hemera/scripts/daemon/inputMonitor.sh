@@ -31,11 +31,11 @@ installDir=$( dirname "$( dirname "$currentDir" )" )
 category="inputMonitor"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.iomanager.inputMonitor"
-daemonName="input monitor"
+declare -r CONFIG_KEY="hemera.core.iomanager.inputMonitor"
+declare -r daemonName="input monitor"
 
 # Defines the PID file.
-pidFile="$h_pidDir/inputMonitor.pid"
+declare -r pidFile="$h_pidDir/inputMonitor.pid"
 
 #########################
 ## Command line management
@@ -43,6 +43,9 @@ pidFile="$h_pidDir/inputMonitor.pid"
 # N.B.: the -D option must be only internally used.
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+newLogFile=""
+outputFile=""
+options=""
 while getopts "XDSTKvh" opt
 do
  case "$opt" in
@@ -66,9 +69,9 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.path" "$CONFIG_TYPE_BIN"
-monitorBin="$h_lastConfig"
+declare -r monitorBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
-monitorOptions="$h_lastConfig"
+declare -r monitorOptions="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
@@ -80,8 +83,8 @@ monitorOptions="$h_lastConfig"
 ## INSTRUCTIONS
 
 if [ "$action" = "daemon" ]; then
-  input="$h_newInputDir/"
-  options=$( eval echo "$monitorOptions" )
+  declare -r input="$h_newInputDir/"
+  declare -r options=$( eval echo "$monitorOptions" )
 fi
 
 # Manages daemon.

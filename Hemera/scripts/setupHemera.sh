@@ -88,7 +88,7 @@ function checkSysFile() {
   # Ensures it is the same.
   [[ "$installDir" == "$confInstallDir" ]] && return 0
 
-  writeMessage "Configured install directory '$confInstallDir' is NOT the same of this setup '$installDir', do you want to update ? [y/n] " 0
+  writeMessageSL "Configured install directory '$confInstallDir' is NOT the same of this setup '$installDir', do you want to update ? [y/n] "
   read -n 1 answer
   echo ""
   [[ "$answer" != "y" ]]
@@ -100,7 +100,7 @@ function createSysFile() {
   local _sysFile="$1"
 
   # Writes the sysconfig file.
-  writeMessage "Managing System configuration file '$_sysFile' ... " 0
+  writeMessageSL "Managing System configuration file '$_sysFile' ... "
   if [ ! -w "$( dirname "$_sysFile" )" ]; then
     echo "FAILED"
     warnPermission
@@ -131,7 +131,7 @@ function checkUserBashrc() {
 function updateUserBashrc() {
   local _userFile="$1"
 
-  writeMessage "Managing user bashrc file '$_userFile' ... " 0
+  writeMessageSL "Managing user bashrc file '$_userFile' ... "
   if [ ! -w "$( dirname "$_userFile" )" ]; then
     echo "FAILED"
     warnPermission

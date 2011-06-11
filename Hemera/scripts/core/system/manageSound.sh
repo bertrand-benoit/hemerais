@@ -31,6 +31,8 @@ installDir="$currentDir/../../../"
 category="manageSound"
 source "$installDir/scripts/setEnvironment.sh"
 
+runningProcessPID=""
+
 #########################
 ## Functions
 # usage: usage
@@ -70,9 +72,9 @@ done
 
 ## Configuration check.
 checkAndSetConfig "hemera.core.speech.soundPlayer.path" "$CONFIG_TYPE_BIN"
-soundPlayerBin="$h_lastConfig"
+declare -r soundPlayerBin="$h_lastConfig"
 checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
-soundPlayerOptions="$h_lastConfig"
+declare -r soundPlayerOptions="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 

@@ -28,21 +28,21 @@ installDir=$( dirname "$currentDir" )
 category="make"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="environment"
-buildAntFile="$installDir/engineering/hemeraBuild.xml"
+declare -r CONFIG_KEY="environment"
+declare -r buildAntFile="$installDir/engineering/hemeraBuild.xml"
 
 # Gets environment configuration
 manageJavaHome || exit $ERROR_ENVIRONMENT
 manageAntHome || exit $ERROR_ENVIRONMENT
 
-ANT="$ANT_HOME/bin/ant"
+declare -r ANT="$ANT_HOME/bin/ant"
 
 #########################
 ## FUNCTIONS
 
 #########################
 ## INSTRUCTIONS
-target="${1:-all}"
+declare -r target="${1:-all}"
 
 # Special management for "clean" target.
 if [ "$target" = "clean" ]; then
@@ -51,20 +51,20 @@ if [ "$target" = "clean" ]; then
 fi
 
 if [ "$target" != "webModule" ]; then
-  writeMessage "Making Hemera target: $target ... " 0
+  writeMessageSL "Making Hemera target: $target ... "
   ! "$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
-  echo "done"
+  echo "done" |tee -a "$h_logFile"
 fi
 
 # Checks if "all" or "webModule" target has been specified, and checks if corresponding 
 #  project is available.
 [ "$target" != "all" ] && [ "$target" != "webModule" ] && exit 0
-webModuleDir="$installDir/../HemeraWebModule"
+declare -r webModuleDir="$installDir/../HemeraWebModule"
 if [ ! -d "$webModuleDir" ]; then
   [ "$target" = "webModule" ] && echo -e "Unable to find Hemera Web module ('$webModuleDir'). You must install it in the same parent directory." && exit 2
   exit 0
 fi
 
-writeMessage "Making Hemera Web module ... " 0
+writeMessageSL "Making Hemera Web module ... "
 ! "$ANT" -v -f "$webModuleDir/engineering/build.xml" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
-echo "done"
+echo "done" |tee -a "$h_logFile"

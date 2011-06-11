@@ -31,7 +31,7 @@ installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 category="featureFileManagement"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.speechRecognition"
+declare -r CONFIG_KEY="hemera.core.speechRecognition"
 
 #########################
 ## Functions
@@ -63,9 +63,9 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.path" "$CONFIG_TYPE_BIN"
-soundFeatureCreatorBin="$h_lastConfig"
+declare -r soundFeatureCreatorBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.options" "$CONFIG_TYPE_OPTION"
-soundFeatureCreatorOptions="$h_lastConfig"
+declare -r soundFeatureCreatorOptions="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
@@ -76,8 +76,8 @@ soundFeatureCreatorOptions="$h_lastConfig"
 #########################
 ## INSTRUCTIONS
 # Defines input and output.
-input="$soundFile"
-output="$soundFile".mfc
+declare -r input="$soundFile"
+declare -r output="$soundFile".mfc
 
 # Launches the tool, evaluating the options (variables will be replaced).
 "$soundFeatureCreatorBin" $( eval echo $soundFeatureCreatorOptions )

@@ -26,17 +26,17 @@
 #########################
 ## CONFIGURATION
 # general
-myPath="$( which "$0" )"
-currentDir=$( dirname "$myPath" )
-installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
+declare -r myPath="$( which "$0" )"
+declare -r currentDir=$( dirname "$myPath" )
+declare -r installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
 category="speechRecognition"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.speechRecognition"
-SUPPORTED_MODE="sphinx3"
-DEFAULT_SPEECH_FILE_PATTEN="*.wav"
+declare -r CONFIG_KEY="hemera.core.speechRecognition"
+declare -r SUPPORTED_MODE="sphinx3"
+declare -r DEFAULT_SPEECH_FILE_PATTEN="*.wav"
 
-LOG_FILE_END="SPEECH_RECOGNITION_COMPLETED"
+declare -r LOG_FILE_END="SPEECH_RECOGNITION_COMPLETED"
 
 #########################
 ## Functions
@@ -98,11 +98,13 @@ function manageSpeechRecognition() {
 
 #########################
 ## Command line management
-SOURCE_MODE_SOUND_FILE=1
-SOURCE_MODE_LIST_FILE=2
-SOURCE_MODE_DIR=3
+declare -r SOURCE_MODE_SOUND_FILE=1
+declare -r SOURCE_MODE_LIST_FILE=2
+declare -r SOURCE_MODE_DIR=3
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+logToAnalyze=""
+speechFilePattern=""
 force=0
 convert=1
 # N.B.: -Z is an hidden option allowing to analyze specified log file;
@@ -126,7 +128,7 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
-moduleMode="$h_lastConfig"
+declare -r moduleMode="$h_lastConfig"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
   # It is not a fatal error if in "checkConfAndQuit" mode.
@@ -144,13 +146,13 @@ else
 fi
 
 checkAndSetConfig "$CONFIG_KEY.soundConverter.path" "$CONFIG_TYPE_BIN"
-soundConverterBin="$h_lastConfig"
+declare -r soundConverterBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.soundConverter.options" "$CONFIG_TYPE_OPTION"
-soundConverterOptions="$h_lastConfig"
+declare -r soundConverterOptions="$h_lastConfig"
 
 # Gets functions specific to mode.
 # N.B.: specific configuration will be checked asap the script is sourced.
-specModScript="$currentDir/speechRecognition_$moduleMode"
+declare -r specModScript="$currentDir/speechRecognition_$moduleMode"
 if [ -f "$specModScript" ]; then
   [ $checkConfAndQuit -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
   source "$specModScript"
@@ -174,7 +176,7 @@ fi
 #########################
 ## INSTRUCTIONS
 # According to the mode, create a sound file list.
-sourceSoundFileList="$h_workDir/$h_fileDate-sourceSoundFileList.txt"
+declare -r sourceSoundFileList="$h_workDir/$h_fileDate-sourceSoundFileList.txt"
 rm -f "$sourceSoundFileList"
 case "$mode" in
   $SOURCE_MODE_SOUND_FILE)
@@ -202,7 +204,7 @@ esac
 [ ! -f "$sourceSoundFileList" ] && errorMessage "There is no sound file to manage." $ERROR_BAD_CLI
 
 # Prepares the destination sound file list.
-preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
+declare -r preparedSoundFileList="$h_workDir/$h_fileDate-preparedSoundFileList.txt"
 prepareSoundFileList "$sourceSoundFileList" "$preparedSoundFileList" $convert || exit $ERROR_SR_PREPARE
 
 # Launches the speech recognition on the list.

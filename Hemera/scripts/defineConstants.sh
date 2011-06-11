@@ -25,32 +25,35 @@
 
 ## General constants
 # Hemera version.
-H_VERSION="0.2b1"
+declare -r H_VERSION="0.2b1"
+
+# Some default values.
+declare -r H_DEFAULT_LOG="/tmp/hemera.log"
 
 # Configuration element types.
-CONFIG_TYPE_OPTION=1
-CONFIG_TYPE_BIN=2
-CONFIG_TYPE_DATA=3
+declare -r CONFIG_TYPE_OPTION=1
+declare -r CONFIG_TYPE_BIN=2
+declare -r CONFIG_TYPE_DATA=3
 
 # Hemera modes.
-H_RECO_CMD_MODE_NORMAL="normal"
-H_RECO_CMD_MODE_SECURITY="security"
-H_RECO_CMD_MODE_PARROT="parrot"
-H_SUPPORTED_RECO_CMD_MODES=( "$H_RECO_CMD_MODE_NORMAL" "$H_RECO_CMD_MODE_SECURITY" "$H_RECO_CMD_MODE_PARROT" )
+declare -r H_RECO_CMD_MODE_NORMAL="normal"
+declare -r H_RECO_CMD_MODE_SECURITY="security"
+declare -r H_RECO_CMD_MODE_PARROT="parrot"
+declare -r H_SUPPORTED_RECO_CMD_MODES=( "$H_RECO_CMD_MODE_NORMAL" "$H_RECO_CMD_MODE_SECURITY" "$H_RECO_CMD_MODE_PARROT" )
 
 # timeout (in seconds) when stopping process, before killing it.
-PROCESS_STOP_TIMEOUT=10
-DAEMON_SPECIAL_RUN_ACTION="-R"
+declare -r PROCESS_STOP_TIMEOUT=10
+declare -r DAEMON_SPECIAL_RUN_ACTION="-R"
 
 ## Error code
 # Default error message code.
-ERROR_DEFAULT=101
+declare -r ERROR_DEFAULT=101
 
 # Error code after showing usage.
-ERROR_USAGE=102
+declare -r ERROR_USAGE=102
 
 # Command line syntax not respected.
-ERROR_BAD_CLI=103
+declare -r ERROR_BAD_CLI=103
 
 # Bad/incomplete environment, like:
 #  - missing Java or Ant
@@ -58,36 +61,36 @@ ERROR_BAD_CLI=103
 #  - permission issue (e.g. while updating structure)
 #  - Hemera not built
 #  - Cleaning is requested while Hemera is running
-ERROR_ENVIRONMENT=104
+declare -r ERROR_ENVIRONMENT=104
 
 # Invalid configuration, or path definition.
-ERROR_CONFIG_VARIOUS=105
-ERROR_CONFIG_PATH=106
+declare -r ERROR_CONFIG_VARIOUS=105
+declare -r ERROR_CONFIG_PATH=106
 
 # Binary or data configured file not found.
-ERROR_CHECK_BIN=107
-ERROR_CHECK_CONFIG=108
+declare -r ERROR_CHECK_BIN=107
+declare -r ERROR_CHECK_CONFIG=108
 
 # Bad/unsupported mode.
-ERROR_MODE=109
+declare -r ERROR_MODE=109
 
 # External tool fault (like wget).
-ERROR_EXTERNAL_TOOL=110
+declare -r ERROR_EXTERNAL_TOOL=110
 
 # Error while processing input.
-ERROR_INPUT_PROCESS=111
+declare -r ERROR_INPUT_PROCESS=111
 
 # General core module error.
-ERROR_CORE_MODULE=112
+declare -r ERROR_CORE_MODULE=112
 
 # Speech Recognition core module, error while analyzing result.
-ERROR_SR_ANALYZE=113
+declare -r ERROR_SR_ANALYZE=113
 
 # Speech Recognition core module, error while preparing speech file.
-ERROR_SR_PREPARE=114
+declare -r ERROR_SR_PREPARE=114
 
 # Speech core module, error while preparing speech file.
-ERROR_SPEECH=115
+declare -r ERROR_SPEECH=115
 
 ## Core module constants.
 # Each input file name begins with a sub string giving the type of input:
@@ -95,4 +98,4 @@ ERROR_SPEECH=115
 #  recordedSpeech_: recorded speech (-> usually needs speech recognition)
 #  recognitionResult_: speech recognition result (-> according to mode, must be printed or speech)
 #  speech_: test to speech result (-> according to mode, speech recognition can be needed)
-SUPPORTED_TYPE="mode recordedSpeech recognitionResult speech"
+declare -r SUPPORTED_TYPE="mode recordedSpeech recognitionResult speech"

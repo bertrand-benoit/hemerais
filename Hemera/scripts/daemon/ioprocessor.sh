@@ -31,17 +31,17 @@ installDir=$( dirname "$( dirname "$currentDir" )" )
 category="IOProcessor"
 source "$installDir/scripts/setEnvironment.sh"
 
-CONFIG_KEY="hemera.core.iomanager.ioProcessorMonitor"
-daemonName="input/output processor"
+declare -r CONFIG_KEY="hemera.core.iomanager.ioProcessorMonitor"
+declare -r daemonName="input/output processor"
 
 # tool configuration
-ioprocessorBin="$0"
+declare -r ioprocessorBin="$0"
 
 # Defines the PID file.
-pidFile="$h_pidDir/ioProcessor.pid"
+declare -r pidFile="$h_pidDir/ioProcessor.pid"
 
 # Defines path to various scripts.
-processInputScript="$h_coreDir/system/processInput.sh"
+declare -r processInputScript="$h_coreDir/system/processInput.sh"
 
 #########################
 ## Command line management
@@ -50,6 +50,9 @@ processInputScript="$h_coreDir/system/processInput.sh"
 # N.B.: the -R (for run) option must be only internally used.
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+newLogFile=""
+outputFile=""
+options=""
 while getopts "XSTKDRvh" opt
 do
  case "$opt" in
@@ -60,6 +63,7 @@ do
           action="start"
           newLogFile="$h_logFile"
           outputFile="$newLogFile"
+          export noconsole=1
         ;;
         T)      action="status";;
         K)      action="stop";;
@@ -73,9 +77,9 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.path" "$CONFIG_TYPE_BIN"
-monitorBin="$h_lastConfig"
+declare -r monitorBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
-monitorOptions="$h_lastConfig"
+declare -r monitorOptions="$h_lastConfig"
 
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
@@ -98,8 +102,8 @@ manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" 
 [[ "$action" != "run" ]] && exit 0
 
 # Defines varibales.
-input="$h_inputList"
-options=$( eval echo "$monitorOptions" )
+declare -r input="$h_inputList"
+declare -r options=$( eval echo "$monitorOptions" )
 
 # This script IS the daemon which must perform action.
 inputIndex=1
@@ -110,10 +114,10 @@ while [ 1 ]; do
   [ $( cat $h_inputList |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
   # For each new input (from the last managed one) in list file.
-  for input in $( getLastLinesFromN "$h_inputList" "$inputIndex" ); do
-    inputName=$( basename "$input" )
+  for newInput in $( getLastLinesFromN "$h_inputList" "$inputIndex" ); do
+    inputName=$( basename "$newInput" )
     inputType=${inputName/_*/}
-    inputPath="$h_newInputDir/$input"
+    inputPath="$h_newInputDir/$newInput"
     inputString="input-"$( printf "%04d" "$inputIndex" )
 
     # Checks it is a known/supported type.

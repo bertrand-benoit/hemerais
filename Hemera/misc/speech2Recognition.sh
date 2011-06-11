@@ -81,7 +81,7 @@ iteration=1
 while [ $iteration -le $iterationCount ]; do
   speechSoundFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration.wav"
   speechRecognitionResultFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration-result.txt"
-  h_logFile="$mainLogFile-$iteration"
+  h_logFile="$mainLogFile.$iteration"
 
   category="speech2Recognition"
   writeMessage "Iteration $iteration/$iterationCount, text to speech then recognize is '$textToSpeech'"

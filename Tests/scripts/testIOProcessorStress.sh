@@ -65,19 +65,19 @@ function generateLotsOfInput() {
 function checkInputManagement() {
   local _inputCount=$1
 
-  writeMessage "Ensuring $_inputCount input has been managed ... " 0
+  writeMessageSL "Ensuring $_inputCount input has been managed ... "
   managedCount=$( cat "$h_logFile" |grep "input-" |wc -l )
-  [ $managedCount -eq $_inputCount ] && echo "ok" || echo "failed ($managedCount instead of $_inputCount)"
+  [ $managedCount -eq $_inputCount ] && echo "ok" |tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m ($managedCount instead of $_inputCount)"|tee -a "$h_logFile"
 
-  writeMessage "Ensuring index of the last input is $_inputCount ... " 0
+  writeMessageSL "Ensuring index of the last input is $_inputCount ... "
   lastManagedIndex=$( cat "$h_logFile" |grep "input-" |tail -n 1 |sed -e 's/.*input-\([0-9][0-9]*\).*$/\1/g;' )
   [ -z "$lastManagedIndex" ] && lastManagedIndex="none"
   awaitedLastIndex=$( printf "%04d" "$_inputCount" )
-  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && echo "ok" || echo "failed ($lastManagedIndex instead of $awaitedLastIndex)"
+  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && echo "ok"|tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m ($lastManagedIndex instead of $awaitedLastIndex)"|tee -a "$h_logFile"
 
-  writeMessage "Ensuring each managed input has been seen in good order ... " 0
+  writeMessageSL "Ensuring each managed input has been seen in good order ... "
   badlyManagedInput=$( cat "$h_logFile" |grep "input-" |sed -e 's/.*input-\([0-9][0-9]*\)[^0-9]*\([0-9][0-9]*\)$/\1 \2/g;' |awk '$1 != $2 {print}' )
-  [ -z "$badlyManagedInput" ] && echo "ok" || echo -e "failed (format: <ordered input index> <input name index>):\n$badlyManagedInput"
+  [ -z "$badlyManagedInput" ] && echo "ok"|tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m (format: <ordered input index> <input name index>):\n$badlyManagedInput"|tee -a "$h_logFile"
 }
 
 # usage: cleanAllNewInput
@@ -147,7 +147,7 @@ verbose=1
 "$h_daemonDir/inputMonitor.sh" -S
 "$h_daemonDir/ioprocessor.sh" -S
 # Launches input generation and check.
-launchInputGenerationAndCheck
+launchInputGenerationAndCheck "NOTsimu"
 # Stops inputMonitor, and ioprocessor.
 "$h_daemonDir/ioprocessor.sh" -K
 "$h_daemonDir/inputMonitor.sh" -K

@@ -33,8 +33,8 @@ source "$installDir/scripts/setEnvironment.sh"
 ## INSTRUCTIONS
 ## Checks i18n files.
 writeMessage "Checking internationalization files (BEGIN)"
-refI18nFile="$installDir/i18n/hemera-i18n.fr"
-refI18nFilePurified="$h_workDir/checkConfig_$( basename "$refI18nFile" ).purified"
+declare -r refI18nFile="$installDir/i18n/hemera-i18n.fr"
+declare -r refI18nFilePurified="$h_workDir/checkConfig_$( basename "$refI18nFile" ).purified"
 extractI18Nelement "$refI18nFile" "$refI18nFilePurified"
 cat "$refI18nFilePurified" |sed -e 's/=.*$//g;' > "$refI18nFilePurified.keys"
 for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-extended -regex ".*\/hemera-i18n[.][^~]*" ); do
@@ -81,7 +81,7 @@ manageJavaHome || exit $ERROR_ENVIRONMENT
 manageAntHome || exit $ERROR_ENVIRONMENT
 
 checkAndSetConfig "hemera.run.activation.tomcat" "$CONFIG_TYPE_OPTION"
-tomcatActivation="$h_lastConfig"
+declare -r tomcatActivation="$h_lastConfig"
 if [ "$tomcatActivation" = "localhost" ]; then
   manageTomcatHome || exit $ERROR_ENVIRONMENT
 fi

@@ -67,12 +67,12 @@ done
 
 # Backups existing destination if any.
 backupFile="$dstConfFile.backup."$( date +'%Y-%m-%d-%H.%M.%S' )
-writeMessage "Creating backup '$backupFile' ... " 0
-! cp "$dstConfFile" "$backupFile" && echo "FAILED" && exit 1
-echo "OK"
+writeMessageSL "Creating backup '$backupFile' ... "
+! cp "$dstConfFile" "$backupFile" && echo "FAILED"|tee -a "$h_logFile" && exit 1
+echo "OK"|tee -a "$h_logFile"
 
 # For each lines of the source config file.
-writeMessage "Checking change ... " 0
+writeMessageSL "Checking change ... "
 tmpDstFile="$dstConfFile.new."$( date +'%s' )
 rm -f "$tmpDstFile"
 keyChangeCount=0
@@ -86,7 +86,7 @@ for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;s/^$/EmptY/g;' ); do
   [ $( echo "$line" |grep -re "^[ \t]*#" |wc -l ) -eq 1 ] && echo "$line" >> "$tmpDstFile" && continue
 
   # It is a configuration element, extracts the key.
-  sourceKey=$( echo "$line" |sed -e 's/=[^=]*$//g;' )
+  sourceKey=$( echo "$line" |sed -e 's/^\([^=]*\)=.*$/\1/g;' )
 
   # Checks if configuration element already exists.
   if [ $( grep -re "^$sourceKey=" "$dstConfFile" 2>/dev/null|wc -l ) -ge 1 ]; then    
@@ -94,13 +94,13 @@ for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;s/^$/EmptY/g;' ); do
     dstValue=$( grep -re "^$sourceKey=" "$dstConfFile" 2>/dev/null|sed -e 's/^[^=]*=//;' |tail -n 1 )
     echo "$sourceKey=$dstValue" >> "$tmpDstFile"
   else
-    echo -ne "new key $sourceKey ... "
+    echo -ne "new key $sourceKey ... "|tee -a "$h_logFile"
     let keyChangeCount++    
     # Adds the line of the "source file".
     echo "$line" >> "$tmpDstFile"
   fi
 done
-echo "done"
+echo "done"|tee -a "$h_logFile"
 
 # Computes count of changed comments.
 commentChangeCount=$( diff "$dstConfFile" "$tmpDstFile" |grep -re ">[ \t]*#" |wc -l )
