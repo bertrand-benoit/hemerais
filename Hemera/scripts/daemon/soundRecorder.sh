@@ -54,7 +54,6 @@ do
           action="start"
           outputFile="$h_logFile.soundRecorder"
           newLogFile="$outputFile"
-          export noconsole=1
         ;;
         T)      action="status";;
         K)      action="stop";;

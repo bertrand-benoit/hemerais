@@ -63,7 +63,6 @@ do
           action="start"
           newLogFile="$h_logFile"
           outputFile="$newLogFile"
-          export noconsole=1
         ;;
         T)      action="status";;
         K)      action="stop";;
