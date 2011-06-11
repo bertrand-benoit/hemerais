@@ -53,7 +53,9 @@ fi
 if [ "$target" != "webModule" ]; then
   writeMessageSL "Making Hemera target: $target ... "
   ! "$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
-  echo "done" |tee -a "$h_logFile"
+
+  # Ensures the log file still exists (it won't be the case after "cleaning").
+  [ ! -f "$h_logFile" ] && echo "done" || echo "done" |tee -a "$h_logFile"
 fi
 
 # Checks if "all" or "webModule" target has been specified, and checks if corresponding 
