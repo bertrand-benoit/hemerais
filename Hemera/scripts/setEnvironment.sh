@@ -105,6 +105,9 @@ updateStructure "$h_pidDir"
 ## Defines some other global variables.
 declare -rx h_fileDate=$(date +"%s")
 
+# Hemera running log file.
+declare -rx h_runningLogFile="$h_logDir/runningHemera.log"
+
 # Hemera start time.
 declare -rx h_startTime="$h_workDir/starttime"
 
@@ -126,8 +129,18 @@ declare -rx h_speechToPlayList="$h_workDir/speechToPlay"
 if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
   # IMPORTANT: $h_logFile is NOT read-only allowing to generate specific log file for some components
   #  like speech recognition which need post-processing (like log analyzing); which will be more efficient
-  #  on little log. 
-  declare -x h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
+  #  on little log.
+
+  # Checks if the caller must continue in same log file (usually it is the case
+  #  of the main Hemera script).
+  if [ $continueLogFile -eq 1 ]; then
+    declare -x h_logFile="$h_runningLogFile"
+    messagePrefix="continue"
+  else
+    declare -x h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
+    messagePrefix="new"
+  fi
+
   # Doesn't inform in 'checkConfigAndQuit' mode.
-  [ $checkConfAndQuit -eq 0 ] && writeMessage "LogFile: $h_logFile"
+  [ $checkConfAndQuit -eq 0 ] && writeMessage "$messagePrefix LogFile: $h_logFile"
 fi

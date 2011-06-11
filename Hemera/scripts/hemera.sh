@@ -26,6 +26,8 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 category="hemera"
+# Each call to this main script must log in same logFile.
+continueLogFile=1
 source "$installDir/scripts/setEnvironment.sh"
 
 declare -r CONFIG_KEY="hemera.run"
@@ -51,6 +53,23 @@ function usage() {
 function initialization() {
   initializeCommandMap
   initializeStartTime
+}
+
+# usage: finalization
+function finalization() {
+  finalizeStartTime
+
+  # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
+  rm -f "$h_pidDir"/* >> "$h_logFile" 2>&1
+
+  # Moves the running logFile.
+  if [ -f "$h_logFile" ]; then
+    newLogName=$( basename "$h_logFile" )
+    newLogPath="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$newLogName"
+    writeMessageSL "Moving LogFile to '$newLogPath' ... "
+    # Does not log in log file because ... we have just moved it !
+    mv -f "$h_logFile" "$newLogPath" && echo "done" || echo -e "\E[31mFAILED\E[0m"
+  fi
 }
 
 #########################
@@ -151,16 +170,13 @@ if [ "$hemeraMode" = "local" ]; then
   # Adds verbose if needed.
   [ $verbose -eq 1 ] && option="-v $option"
 
-  # Initializes.
-  [ "$action" = "start" ] && ! initialization && exit $ERROR_ENVIRONMENT
+  # Initializes if not already done (e.g. if NOT isHemeraComponentStarted).
+  [ "$action" = "start" ] && ! isHemeraComponentStarted && ! initialization && exit $ERROR_ENVIRONMENT
 
   # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
   [ "$ioProcessorActivation" = "localhost" ] && "$h_daemonDir/ioprocessor.sh" $option
   [ "$soundRecorderActivation" = "localhost" ] && "$h_daemonDir/soundRecorder.sh" $option
-
-  # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
-  [ "$action" = "stop" ] && rm -f "$h_pidDir"/* >/dev/null 2>&1
 
   if [ "$tomcatActivation" = "localhost" ] && [ "$action" != "status" ]; then
     manageTomcatHome || exit $ERROR_ENVIRONMENT
@@ -180,8 +196,11 @@ if [ "$hemeraMode" = "local" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else
         writeMessageSL "Apache Tomcat $action ... "
-        "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo "failed"
+        "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo -e "\E[31mFAILED\E[0m"
       fi
     fi
   fi
+
+  # Finalizes.
+  [ "$action" = "stop" ] && ! finalization && exit $ERROR_ENVIRONMENT
 fi
