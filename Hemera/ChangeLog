@@ -1,6 +1,32 @@
 VERSION 0.2.0
 =============
 
+2011-06-12  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * all GNU/Bash scripts components: implemented new version of message management system (info, message, warning, error)
+
+ * speech.sh/search command: extracted management of search (configuration elements, URL get, HTML parsing ...) from speech.sh to search command
+
+ * speech.sh: removed -u <url> and -d <term to define> options (will be available in coming CLI command interpretation script)
+
+2011-06-11  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * command script: improved structure (each one has now "checkConfig", "testCommand", "checkCoherence" and "execution" functions)
+
+ * hemera.sh: 
+   - implemented uniq log file for running Hemera (all start/status/stop requests will be logged in same log file)
+
+   - fixed useless initialization when start is requested while Hemera is already started (startTime is no more reset)
+
+ * updateConfig.sh: fixed management of configuration element containing '=' in value.
+
+ * all GNU/Bash scripts components:
+   - improved variables management (initialization is mandatory, and read-only variables/constants are defined as that).
+
+   - implemented powerful system allowing to "dump" function call stack in case of error (excluding some well known exit status), or when a script exits with an exit status different from 0
+
+   - improved log file management (no more double messages), and fixed some incomplete log files
+
 2011-06-05  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * speech.sh: improved greatly definition search system (added configuration elements, and improved post processing)
