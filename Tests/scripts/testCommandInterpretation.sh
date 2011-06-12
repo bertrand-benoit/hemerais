@@ -37,7 +37,7 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="IOProcessorTests"
+category="TCmdInterp."
 verbose=1
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
@@ -172,7 +172,6 @@ writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/makeHemera.sh" clean
 
 # Starts inputMonitor.
-category="IOProcessorTests"
 writeMessage "Test system will start some daemons"
 "$h_daemonDir/inputMonitor.sh" -S
 

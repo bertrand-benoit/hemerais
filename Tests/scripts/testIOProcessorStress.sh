@@ -37,7 +37,7 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="IOProcessorStressTests"
+category="TioProcStress"
 source "$installDir/scripts/setEnvironment.sh"
 
 INPUT_COUNT_1=500

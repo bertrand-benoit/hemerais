@@ -37,7 +37,7 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="IOProcessorTests"
+category="TsoundManage"
 source "$installDir/scripts/setEnvironment.sh"
 
 speechScript="$h_coreDir/speech/speech.sh"
