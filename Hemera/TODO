@@ -2,7 +2,6 @@ short term:
  - added ant task to ensure web module is not already deployed
  - deploy automatically webmodule when launching setup
  - install Hemera service if requested
- - extract management of hemera.core.command.search.url from speech to corresponding search command
 
  - replace all call to "expr" or "bc" ...
  - replace all "xxx|grep |wc -l"  by "xxx|grep -c"

@@ -26,7 +26,13 @@
 
 ## Checks configuration specific to this command.
 function checkConfig() {
-  # Nothing specific to do.
+  checkAndSetConfig "hemera.core.command.general.htmlConverter.path" "$CONFIG_TYPE_BIN"
+  export htmlConverter="$h_lastConfig"
+  checkAndSetConfig "hemera.core.command.general.fileSplitter.path" "$CONFIG_TYPE_BIN"
+  export fileSplitter="$h_lastConfig"
+  checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
+  export searchURL="$h_lastConfig"
+
   return 0
 }
 
@@ -54,14 +60,59 @@ function checkCoherence() {
   return 0
 }
 
+## Instructions - concrete execution of this command.
+# usage: parseHTML <source URL> <source file> <destination file>
+function parseHTML() {
+  local _srcURL="$1" _srcfile="$2" _destFile="$3"
+  local _txtFile="$_destFile.tmp"
+
+  # Converts HTML to text.
+  "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 || errorMessage "Unable to convert HTML of file '$_srcfile'" $ERROR_EXTERNAL_TOOL
+
+  # Additional parsing according to search URL.
+  if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
+    # Extracts contents part (will be in file numbered 1).
+    # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
+    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
+
+    # Final parsing:
+    #  - removes line containing only element in brackets
+    #  - replaces all "_" by space
+    #  - adds a space at the end of each line, and then removes line break
+    #  - removes words in bracket, taking care of potential "bug" like "[roue] s,"
+    #  - replaces some remaining html code (e.g. &quot;)
+    cat "$_destFile"1 \
+      |sed -e 's/^[[].*[]]$//g;s/\([^-]\)$/\1 /g;s/^[ \t]*D[ée]finition[ \t]*$//g;' |tr -d '\n' \
+      |sed -e 's/[[]\([^]]*\)[]][ ]s\([[:punct:]]\)/\1s\2/g;s/[[]\([^]]*\)[]]/\1/g;' \
+      |sed -e 's/&quot;/"/g;s/_/ /g;' \
+    > "$_destFile"
+  else
+    warning "There is currently no additional parsing for source URL '$_srcURL' (result may not be good). Contact Hemera team to implement it."
+    mv -f "$_txtFile" "$_destFile" 
+  fi
+}
+
 # usage: execute <path of the whole input> <input string presentation>
 #  <path of the whole input>: contains all the recognized input
 #  <input string presentation>: the string presentation of the input (prefix of message to show)
 # return 0 if execution if OK, >0 otherwise.
 function execute() {
+  checkConfig || return 1
+
   local _inputPath="$1" _inputString="$2"
 
-  termToDefine=$( extractRecognitionResultArgument "$_inputPath" )
-  writeMessage "$_inputString: SEARCH command detected -> starting definition search about: $termToDefine"
-  h_logFile="$h_logFile" noconsole=1 "$speechScript" -d "$termToDefine" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
+  # Extracts the term to define.
+  termsToDefine=$( extractRecognitionResultArgument "$_inputPath" )
+  writeMessage "$_inputString: SEARCH command detected -> starting definition search about: $termsToDefine"
+
+  # Gets the corresponding URL.
+  input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
+  urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
+  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
+
+  # Parses HTML.
+  parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt"
+
+  # Uses the speech core module to read the produced file.
+  h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$urlContentsFile.txt" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }

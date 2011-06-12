@@ -38,13 +38,11 @@ declare -r SUPPORTED_MODE="espeak espeak+mbrola"
 ## Functions
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-t <text>|-u <url>|-f <file>|-d <terms> -i] [-o <output speech file>] [-l language] [-hvX]"
+  echo -e "Usage: $0 [-t <text>|-f <file>|-i] [-o <output speech file>] [-l language] [-hvX]"
   echo -e "<text>\ttext/sentences to speech"
-  echo -e "<url>\turl of page content to read"
   echo -e "<file>\tfile to read"
-  echo -e "<terms>\tterms to define (using Wikipedia)"
   echo -e "-i\tinteractive mode (generate and play speech file of each written line - CTRL+D to stop)"
-  echo -e "-l\tuse another language (Default: $DEFAULT_LANGUAGE)"
+  echo -e "-l\tuse another language"
   echo -e "-X\tcheck configuration and quit"
   echo -e "-v\tactivate the verbose mode"
   echo -e "-h\tshow this usage"
@@ -69,47 +67,6 @@ function readURLContents() {
   speechFileContents "$urlContentsFile"
 }
 
-# usage: parseHTML <source URL> <source file> <destination file>
-function parseHTML() {
-  local _srcURL="$1" _srcfile="$2" _destFile="$3"
-  local _txtFile="$_destFile.tmp"
-
-  # Converts HTML to text.
-  "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 || errorMessage "Unable to convert HTML of file '$_srcfile'" $ERROR_EXTERNAL_TOOL
-
-  # Additional parsing according to search URL.
-  if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
-    # Extracts contents part (will be in file numbered 1).
-    # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
-    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
-
-    # Final parsing:
-    #  - removes line containing only element in brackets
-    #  - replaces all "_" by space
-    #  - adds a space at the end of each line, and then removes line break
-    #  - removes words in bracket, taking care of potential "bug" like "[roue] s,"
-    #  - replaces some remaining html code (e.g. &quot;)
-    cat "$_destFile"1 \
-      |sed -e 's/^[[].*[]]$//g;s/\([^-]\)$/\1 /g;s/^[ \t]*D[ée]finition[ \t]*$//g;' |tr -d '\n' \
-      |sed -e 's/[[]\([^]]*\)[]][ ]s\([[:punct:]]\)/\1s\2/g;s/[[]\([^]]*\)[]]/\1/g;' \
-      |sed -e 's/&quot;/"/g;s/_/ /g;' \
-    > "$_destFile"
-  else
-    warning "There is currently no additional parsing for source URL '$_srcURL' (result may not be good). Contact Hemera team to implement it."
-    mv -f "$_txtFile" "$_destFile" 
-  fi
-}
-
-# usage: readDefinition
-function readDefinition() {
-  local urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
-  input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
-  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
-  parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt"
-
-  speechFileContents "$urlContentsFile.txt"
-}
-
 # usage: readFileContents
 function readFileContents() {
   speechFileContents "$filePath"
@@ -118,23 +75,19 @@ function readFileContents() {
 #########################
 ## Command line management
 MODE_TEXT=1
-MODE_URL=2
 MODE_FILE=3
-MODE_DEFINITION=4
 MODE_INTERACTIVE=10
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
 language=""
 speechOutput=""
-while getopts "Xt:u:f:d:io:l:vh" opt
+while getopts "Xt:f:io:l:vh" opt
 do
  case "$opt" in
         X)      checkConfAndQuit=1;;
         t)      mode=$MODE_TEXT;text="$OPTARG";;
-        u)      mode=$MODE_URL;url="$OPTARG";;
         f)      mode=$MODE_FILE;filePath="$OPTARG";;
-        d)      mode=$MODE_DEFINITION;termsToDefine="$OPTARG";;
         i)      mode=$MODE_INTERACTIVE;;
         l)      language="$OPTARG";;
         o)      speechOutput="$OPTARG";;
@@ -174,13 +127,6 @@ if [ -z "$speechOutput" ]; then
   declare -r soundPlayerOptions="$h_lastConfig"
 fi
 
-checkAndSetConfig "hemera.core.command.general.htmlConverter.path" "$CONFIG_TYPE_BIN"
-declare -r htmlConverter="$h_lastConfig"
-checkAndSetConfig "hemera.core.command.general.fileSplitter.path" "$CONFIG_TYPE_BIN"
-declare -r fileSplitter="$h_lastConfig"
-checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
-declare -r searchURL="$h_lastConfig"
-
 # Gets functions specific to mode.
 # N.B.: specific configuration will be checked asap the script is sourced.
 declare -r specModScript="$currentDir/speech_$moduleMode"
@@ -195,7 +141,7 @@ fi
 
 ## Command line arguments check.
 # Ensures mode is defined.
-[ -z "$mode" ] && usage
+[ -z "${mode:-}" ] && usage
 
 # Defines default speechOutput if needed.
 [ -z "$speechOutput" ] && speechOutput="-"
@@ -204,10 +150,8 @@ fi
 ## INSTRUCTIONS
 
 case "$mode" in
-  $MODE_TEXT)		speechSentence "$text";;
-  $MODE_URL) 		readURLContents;;
-  $MODE_DEFINITION) 	readDefinition;;
-  $MODE_FILE) 		readFileContents;;
-  $MODE_INTERACTIVE)	startInteractiveMode;;
-  [?])	usage;;
+  $MODE_TEXT)           speechSentence "$text";;
+  $MODE_FILE)           readFileContents;;
+  $MODE_INTERACTIVE)    startInteractiveMode;;
+  [?])  usage;;
 esac
