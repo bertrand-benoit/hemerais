@@ -29,6 +29,10 @@ declare -r H_VERSION="0.2b1"
 
 # Some default values.
 declare -r H_DEFAULT_LOG="/tmp/hemera.log"
+declare -r H_INFO=1
+declare -r H_MESSAGE=2
+declare -r H_WARNING=3
+declare -r H_ERROR=4
 
 # Configuration element types.
 declare -r CONFIG_TYPE_OPTION=1

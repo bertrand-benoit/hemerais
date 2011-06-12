@@ -29,7 +29,7 @@
 declare -r myPath="$( which "$0" )"
 declare -r currentDir=$( dirname "$myPath" )
 declare -r installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
-category="speechRecognition"
+category="speechReco"
 source "$installDir/scripts/setEnvironment.sh"
 
 declare -r CONFIG_KEY="hemera.core.speechRecognition"
