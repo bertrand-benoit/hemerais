@@ -57,20 +57,20 @@ done
 ## Configuration check.
 checkBin "inotifywait"
 checkAndSetConfig "hemera.core.speechRecognition.soundRecorder.path" "$CONFIG_TYPE_BIN"
-soundRecorderBin="$h_lastConfig"
+declare -r soundRecorderBin="$h_lastConfig"
 checkAndSetConfig "hemera.core.speechRecognition.soundRecorder.options" "$CONFIG_TYPE_OPTION"
-soundRecorderOptions="$h_lastConfig"
+declare -r soundRecorderOptions="$h_lastConfig"
 checkAndSetConfig "hemera.core.speech.soundPlayer.path" "$CONFIG_TYPE_BIN"
-soundPlayerBin="$h_lastConfig"
+declare -r soundPlayerBin="$h_lastConfig"
 checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
-soundPlayerOptions="$h_lastConfig"
+declare -r soundPlayerOptions="$h_lastConfig"
 
 #########################
 ## INSTRUCTIONS
 
 pidFile="/tmp/soundChecker.pid"
 wDir="/tmp/"$( date +'%s' )"-soundChecker"
-input="$wDir/recordedSound.wav"
+output="$wDir/recordedSound.wav"
 options=$( eval echo "$soundRecorderOptions" )
 
 mkdir -p "$wDir"
@@ -92,7 +92,9 @@ while [ 1 ]; do
   newSoundFile=$( inotifywait -q --format '%f' -e close_write "$wDir" )
 
   writeMessage "Successfully recorded '$newSoundFile', system will play it"
-  "$soundPlayerBin" $soundPlayerOptions "$wDir/$newSoundFile"
+  input="$wDir/$newSoundFile"
+  playerOptions=$( eval echo "$soundPlayerOptions" )
+  "$soundPlayerBin" $playerOptions
 
   sleep 1
 done

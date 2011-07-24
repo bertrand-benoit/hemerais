@@ -117,7 +117,9 @@ case $action in
     echo "$$" > "$pidFile"
 
     # plays the sound.
-    exec "$soundPlayerBin" $soundPlayerOptions "$soundFile"
+    input="$soundFile"
+    playerOptions=$( eval echo "$soundPlayerOptions" )    
+    exec "$soundPlayerBin" $playerOptions
   ;;
 
   pause)

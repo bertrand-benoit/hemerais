@@ -1,6 +1,14 @@
 VERSION 0.2.0
 =============
 
+2011-07-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved daemon process management (added support to rec/play/sox/lt-sox synonym)
+ 
+ * improved sound player/recorder configuration (input/output must now be specified) to support compiled source code version of sox   
+
+ * ensured LD_LIBRARY_PAH is initialized
+
 2011-06-12  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * all GNU/Bash scripts components: implemented new version of message management system (info, message, warning, error)

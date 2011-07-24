@@ -79,7 +79,7 @@ declare -r soundRecorderOptions="$h_lastConfig"
 ## INSTRUCTIONS
 
 if [ "$action" = "daemon" ]; then
-  declare -r input="$h_newInputDir/recordedSpeech_.wav"
+  declare -r output="$h_newInputDir/recordedSpeech_.wav"
   declare -r options=$( eval echo "$soundRecorderOptions" )
 fi
 

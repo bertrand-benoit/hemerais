@@ -54,7 +54,9 @@ function speechSentence() {
   "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $_additionalOptions "$_sentence" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
   if [ "$speechOutput" = "-" ]; then
     info "Generated temporary speech file: $speechTmpFile"
-    "$soundPlayerBin" $soundPlayerOptions "$speechTmpFile"
+    input="$speechTmpFile"
+    playerOptions=$( eval echo "$soundPlayerOptions" )
+    "$soundPlayerBin" $playerOptions
   else
     writeMessage "Generated speech file: $speechTmpFile"
   fi

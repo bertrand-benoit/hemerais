@@ -133,7 +133,7 @@ hemera.core.speech.soundPlayer.path="play"
 # IMPORTANT: the sample rate must be the same of the model used with speech tool.
 # e.g.: for play: -q -V1 -r22050
 #       for aplay: -q -r22050 -fS16
-hemera.core.speech.soundPlayer.options="-q -V1 -r22050"
+hemera.core.speech.soundPlayer.options="-q -V1 -r22050 $input -d"
 
 ## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
 # Default language.
@@ -164,7 +164,7 @@ hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -u
 # The speech sound (continuous) recorder (path and options).
 # IMPORTANT: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
 hemera.core.speechRecognition.soundRecorder.path="rec"
-hemera.core.speechRecognition.soundRecorder.options="-q -r 22050 -c 1 -t wav $input silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
+hemera.core.speechRecognition.soundRecorder.options="-d -q -r 22050 -c 1 -t wav $output silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
 
 # The sound converted (path and options).
 # IMPORTANT: the sample rate must be compatible with the feature file creator
