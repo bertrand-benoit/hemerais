@@ -50,7 +50,7 @@ speechSoundPIDFile="/tmp/ia.pid"
 ## INSTRUCTIONS
 rm -f "$speechSoundFile" "$speechSoundPIDFile"
 writeMessage "Generate speech sound file"
-"$speechScript" -d "Intelligence Artificielle" -o "$speechSoundFile"
+"$speechScript" -t "Ceci est un test de gestion du son avec un texte suffisamment long, afin de pouvoir le mettre en pause, le relancer, et enfin le couper définitivement. En final, l'utilisateur n'entendra pas la fin de ce texte." -o "$speechSoundFile"
 
 # Launches sound play.
 "$manageSoundScript" -p "$speechSoundPIDFile" -f "$speechSoundFile" &
