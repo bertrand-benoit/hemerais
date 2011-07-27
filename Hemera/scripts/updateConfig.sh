@@ -26,7 +26,7 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 category="configUpdater"
-source "$installDir/scripts/setEnvironment.sh"
+source "$currentDir/setEnvironment.sh"
 
 #########################
 ## FUNCTIONS

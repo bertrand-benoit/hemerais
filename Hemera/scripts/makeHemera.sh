@@ -26,7 +26,7 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 category="make"
-source "$installDir/scripts/setEnvironment.sh"
+source "$currentDir/setEnvironment.sh"
 
 declare -r CONFIG_KEY="environment"
 declare -r buildAntFile="$installDir/engineering/hemeraBuild.xml"

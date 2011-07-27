@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-source "$installDir/scripts/utilities.sh"
+source "$currentDir/utilities.sh"
 
 category="setup"
 

@@ -28,7 +28,7 @@ installDir=$( dirname "$currentDir" )
 category="hemera"
 # Each call to this main script must log in same logFile.
 continueLogFile=1
-source "$installDir/scripts/setEnvironment.sh"
+source "$currentDir/setEnvironment.sh"
 
 declare -r CONFIG_KEY="hemera.run"
 declare -r SUPPORTED_MODE="local client server"

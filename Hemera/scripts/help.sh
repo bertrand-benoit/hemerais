@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-source "$installDir/scripts/utilities.sh"
+source "$currentDir/utilities.sh"
 
 declare -r SPACE_COUNT=25
 declare -r DESCRIPTION_LINE_LIMIT=22

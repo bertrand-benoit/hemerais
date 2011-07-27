@@ -27,7 +27,7 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 checkConfAndQuit=1
 category="check"
-source "$installDir/scripts/setEnvironment.sh"
+source "$currentDir/setEnvironment.sh"
 
 #########################
 ## INSTRUCTIONS
