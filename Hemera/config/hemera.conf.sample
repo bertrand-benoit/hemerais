@@ -131,8 +131,8 @@ hemera.core.speech.tool.options="-p 45 -s 125 -zqx"
 # e.g.: play/sox or aplay
 hemera.core.speech.soundPlayer.path="play"
 # IMPORTANT: the sample rate must be the same of the model used with speech tool.
-# e.g.: for play: -q -V1 -r22050
-#       for aplay: -q -r22050 -fS16
+# e.g.: for play: -q -V1 -r22050 $input -d
+#       for aplay: -q -r22050 -fS16 $input
 hemera.core.speech.soundPlayer.options="-q -V1 -r22050 $input -d"
 
 ## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
