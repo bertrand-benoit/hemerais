@@ -186,6 +186,36 @@ VERSION 0.2.0
  * help.sh: added lots of additional information
 
 
+VERSION 0.1.1
+=============
+
+2011-07-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved path management in some extrems situation (under Debian-like GNU/Linux distribution, when user launch script without having installed GNU version of 'which')
+ 
+ * updated some elements in Hemera configuration sample
+
+2011-07-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * improved daemon process management (added support to rec/play/sox/lt-sox synonym)
+ 
+ * improved sound player/recorder configuration (input/output must now be specified) to support compiled source code version of sox   
+
+2011-05-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * soundChecker.sh: implemented this new miscellaneous script allowing to test sound recording, and sound playing 
+
+ * setupHemera.sh: 
+   - implemented a new way to update PATH only creating/using user files so there is no more need to have privileges
+   
+   - added usage and messages
+   
+2011-05-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * hemera.sh:
+   - fixed PID files removal (only done with 'stop' action)
+
+
 VERSION 0.1.0
 =============
 
