@@ -29,6 +29,11 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir="$currentDir/../../../"
 category="manageSound"
+
+# Ensures $installDir/scripts/setEnvironment.sh is reachable.
+# It may NOT be the case if user has NOT installed GNU version of which and launched scripts
+#  with particular $PWD (for instance launching setupHemera.sh being in the scripts sub directory).
+[ ! -f "$installDir/scripts/setEnvironment.sh" ] && echo -e "\E[31m\E[4mERROR\E[0m: failure in path management. Ensure you have a GNU version of 'which' tool (check Hemera documentation)." && exit 1
 source "$installDir/scripts/setEnvironment.sh"
 
 runningProcessPID=""
