@@ -26,8 +26,11 @@
 
 #########################
 ## Global variables
-# Ensures installDir is defined.
+# Ensures installDir is defined; then ensured sub directory scripts is available.
+# It may NOT be the case if user has NOT installed GNU version of which and launched scripts
+#  with particular $PWD (for instance launching setupHemera.sh being in the scripts sub directory).
 [ -z "$installDir" ] && echo -e "This script must NOT be directly called. installDir variable not defined" >&2 && exit 1
+[ ! -d "$installDir/scripts" ] && [ $( LANG=C which --version 2>&1|head -n 1 |grep -w "GNU" |wc -l ) -ne 1 ] && echo -e "\E[31m\E[4mERROR\E[0m: failure in path management; you MUST have a GNU version of 'which' tool (check Hemera documentation)." && exit 1
 source "$installDir/scripts/utilities.sh"
 
 # Ensures environment is OK.
