@@ -26,6 +26,12 @@
 ## General constants
 NOT_RECOGNIZED_COMMAND_I18N="Commande non reconnue !"
 NOT_FOUND_COMMAND_I18N="La commande suivante est incomprise : \$notFoundCommand"
+H_MONITOR_BEGIN="Démarrage de Héméra"
+H_MONITOR_END="Arrêt de Héméra"
+H_MONITOR_CMD_MODE="Mise à jour du mode de reconnaissance vocale:"
+H_MONITOR_SPEECH="Synthèse vocale:"
+H_MONITOR_SPEECH_RECO="Reconnaissance vocale"
+H_MONITOR_CMD="Commande reconnue:"
 
 ## Hemera recognized commands modes.
 H_RECO_CMD_MODE_NORMAL_I18N="normal"

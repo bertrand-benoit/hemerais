@@ -26,6 +26,12 @@
 ## General constants
 NOT_RECOGNIZED_COMMAND_I18N="Command not recognized !"
 NOT_FOUND_COMMAND_I18N="Command not found : \$notFoundCommand"
+H_MONITOR_BEGIN="Started Hemera"
+H_MONITOR_END="Stopped Hemera"
+H_MONITOR_CMD_MODE="Update speech recognition mode:"
+H_MONITOR_SPEECH="Speech:"
+H_MONITOR_SPEECH_RECO="Speech recognition"
+H_MONITOR_CMD="Recognized command:"
 
 ## Hemera recognized commands modes.
 H_RECO_CMD_MODE_NORMAL_I18N="normal"

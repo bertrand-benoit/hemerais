@@ -53,6 +53,7 @@ function usage() {
 function initialization() {
   initializeCommandMap
   initializeStartTime
+  initializeMonitor
 }
 
 # usage: finalization
@@ -70,6 +71,11 @@ function finalization() {
     # Does not log in log file because ... we have just moved it !
     mv -f "$h_logFile" "$newLogPath" && echo "done" || echo -e "\E[31mFAILED\E[0m"
   fi
+
+  finalizeMonitor
+
+  # Resets the input list.
+  rm -f "$h_inputList" && touch "$h_inputList"
 }
 
 #########################

@@ -84,29 +84,34 @@ function notifyErrInput() {
   [[ "$_argument" == "noExit" ]] && return 0 || exit $ERROR_INPUT_PROCESS
 }
 
+# usage: extractRecognitionResult <input path>
+function extractRecognitionResult() {
+  head -n 1 "$1"
+}
+
 # usage: extractRecognitionResultCommand <input path>
 function extractRecognitionResultCommand() {
   local _inputPath="$1"
-  head -n 1 "$_inputPath" |awk '{print $1}'
+  extractRecognitionResult "$_inputPath" |awk '{print $1}'
 }
 
 # usage: extractRecognitionResultArgument <input path>
 function extractRecognitionResultArgument() {
   local _inputPath="$1"
-  head -n 1 "$_inputPath" |sed -e 's/^[^ \t]*[ \t]//'
+  extractRecognitionResult "$_inputPath" |sed -e 's/^[^ \t]*[ \t]//'
 }
 
 # usage: extractRecognitionResultWordCount <input path>
 function extractRecognitionResultWordCount() {
   local _inputPath="$1"
-  head -n 1 "$_inputPath" |wc -w
+  extractRecognitionResult "$_inputPath" |wc -w
 }
 
 # usage: extractRecognitionResultArgumentN  <input path> [<argument number>]
 # If not defined, regarded argument number is 1.
 function extractRecognitionResultArgumentN() {
   local _inputPath="$1" argumentNumber=${2:-1}
-  head -n 1 "$_inputPath" |awk "{print \$$argumentNumber}"
+  extractRecognitionResult "$_inputPath" |awk "{print \$$argumentNumber}"
 }
 
 # usage: manageRecognitionResult <input path>
@@ -122,6 +127,7 @@ function manageRecognitionResult() {
 
   # Checks if there is still something recognized.
   if [ $( cat "$_inputPath" |grep -v "^$" |wc -l ) -eq 0 ]; then
+    logMonitor "/!\ $NOT_RECOGNIZED_COMMAND_I18N"
     speechToSay "$NOT_RECOGNIZED_COMMAND_I18N" "$_inputPath"
     notifyErrInput
   fi
@@ -139,6 +145,7 @@ function manageRecognitionResult() {
 
   # Checks if 'parrot' mode is activated.
   if [ "$recoCmdMode" = "$H_RECO_CMD_MODE_PARROT" ]; then
+    # TODO: log monitor
     h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
     return 0
   fi
@@ -149,12 +156,15 @@ function manageRecognitionResult() {
   # Manages case command is not found.
   if [ -z "$commandScript" ]; then
     notFoundCommand=$( cat "$_inputPath" |tr -d '\n' )
-    speechToSay "$( eval echo "$NOT_FOUND_COMMAND_I18N" )" "$_inputPath"
+    errorToSay="$( eval echo "$NOT_FOUND_COMMAND_I18N" )"
+    logMonitor "/!\ $errorToSay"
+    speechToSay "errorToSay" "$_inputPath"
     notifyErrInput
     return 0
   fi
 
   # All is OK, manages the corresponding command script.
+  logMonitor "$H_MONITOR_CMD $(extractRecognitionResult $_inputPath)"
   source "$commandScript"
   checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
   execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
@@ -162,7 +172,9 @@ function manageRecognitionResult() {
 
 # usage: speechToSay <text> <input path>
 # input path will be used to produce next input corresponding to what must be said.
+# The caller MUST manage final input move (done or error).
 function speechToSay() {
+  logMonitor "$H_MONITOR_SPEECH $(extractRecognitionResult $_inputPath)"
   h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "$1" -o "$h_newInputDir/speech_"$( basename "$2" )".wav"
 }
 
@@ -270,12 +282,14 @@ case "$inputType" in
   mode)
     requestedMode=$( head -n 1 "$curInputPath" |awk '{print $1}' )
     writeMessage "$inputString: updating mode to '$requestedMode'"
+    logMonitor "$H_MONITOR_CMD_MODE $requestedMode"
     updateRecoCmdMode "$requestedMode" && notifyDoneInput || notifyErrInput
   ;;
 
   recordedSpeech)
     writeMessage "$inputString: launching speech recognition on $inputName"
     # N.B.: uses a specific log file to improve efficiencies while post-processing speech recognition.
+    logMonitor "$H_MONITOR_SPEECH_RECO" "$inputString"
     h_logFile="$h_logFile.$inputString" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 

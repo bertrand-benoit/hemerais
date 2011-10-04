@@ -58,7 +58,7 @@ do
         S)
           action="start"
 
-          # Resets the input list.
+          # Resets the input list.
           rm -f "$h_inputList" && touch "$h_inputList"
           outputFile="$h_inputList"
           newLogFile="$h_logFile"

@@ -123,6 +123,9 @@ declare -rx h_commandMap="$h_workDir/commandMap"
 # inputMonitor/ioProcessor.
 declare -rx h_inputList="$h_logDir/inputList"
 
+# Hemera monitoring.
+declare -rx h_monitor="$h_logDir/monitor"
+
 # processInput
 declare -rx h_speechRunningLockFile="$h_workDir/runningSpeech.lck"
 declare -rx h_speechRunningPIDFile="$h_pidDir/runningSpeech.pid"
