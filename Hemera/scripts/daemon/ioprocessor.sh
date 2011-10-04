@@ -105,6 +105,9 @@ manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" 
 # Exists but if in "run" action.
 [[ "$action" != "run" ]] && exit 0
 
+# Ensures input list file exists.
+[ ! -f "$h_inputList" ] && errorMessage "Input list file does not exist yet. There is nothing to process." $ERROR_INPUT_PROCESS
+
 # Defines varibales.
 declare -r input="$h_inputList"
 declare -r options=$( eval echo "$monitorOptions" )
@@ -112,10 +115,13 @@ declare -r options=$( eval echo "$monitorOptions" )
 # This script IS the daemon which must perform action.
 inputIndex=1
 while [ 1 ]; do
+  # Ensures there is (still ?) input list file.
+  [ ! -f "$h_inputList" ] && errorMessage "There is no (more ?) input list file. Stopping $0." $ERROR_INPUT_PROCESS
+
   # Waits for another input (checking write on the input list).
   # N.B.: new input may have been created while the system was managing last ones, so checks 
   #  if the count of input in the list is lower than the count of managed input, otherwise does NOT wait.
-  [ $( cat $h_inputList |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
+  [ $( cat "$h_inputList" |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
   # For each new input (from the last managed one) in list file.
   for newInput in $( getLastLinesFromN "$h_inputList" "$inputIndex" ); do
@@ -138,7 +144,7 @@ while [ 1 ]; do
       h_logFile="$h_logFile" "$processInputScript" -i "$inputName" -S "$inputString" &
     fi
 
-    # Memorizes a new input has been managed or ignored.
+    # Memorizes a new input has been managed or ignored.
     let inputIndex++
   done
 done
