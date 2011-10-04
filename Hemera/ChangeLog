@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-10-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * checkConfig.sh: request any plugin to perform a full configuration check
+
 2011-07-27  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * improved path management in some extrems situation (under Debian-like GNU/Linux distribution, when user launch script without having installed GNU version of 'which')

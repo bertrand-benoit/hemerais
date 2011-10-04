@@ -100,3 +100,16 @@ for scriptRaw in $( find "$h_coreDir" -maxdepth 2 -type f -perm /u+x ! -name "*~
   script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
   "$script" -X
 done
+
+## Requests configuration check to any plugin.
+for scriptRaw in $( find "$h_coreDir/command" -maxdepth 1 -type f ! -name "*~" ! -iname "*.txt" |sort |sed -e 's/[ \t]/£/g;' ); do
+  script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
+
+  # Ensures it is a plugin script (checking there is a checkConfig function).
+  [ $( head -n 30 "$script" |grep -wc "checkConfig" ) -lt 1 ] && continue
+
+  # Sources corresponding plugin and calls checkConfig function.
+  category="plugin:${script/*\//}"
+  source "$script"
+  checkConfig
+done
