@@ -70,10 +70,10 @@ function parseHTML() {
   ! "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 && errorMessage "Unable to convert HTML of file '$_srcfile'" -1 && return 1
 
   # Additional parsing according to search URL.
-  if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
+  if [[ "$_srcURL" =~ ".*DISABLEDmobile.wikipedia.*" ]]; then # Temporary disabled
     # Extracts contents part (will be in file numbered 1).
     # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
-    ! "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 && errorMessage "Unable to split file '$_txtFile'" -1 && return 1
+    ! "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/******/1" "/******/0" >>"$h_logFile" 2>&1 && errorMessage "Unable to split file '$_txtFile'" -1 && return 1
 
     # Final parsing:
     #  - removes line containing only element in brackets
