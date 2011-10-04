@@ -36,7 +36,7 @@ writeMessage "Checking internationalization files (BEGIN)"
 declare -r refI18nFile="$installDir/i18n/hemera-i18n.fr"
 declare -r refI18nFilePurified="$h_workDir/checkConfig_$( basename "$refI18nFile" ).purified"
 extractI18Nelement "$refI18nFile" "$refI18nFilePurified"
-cat "$refI18nFilePurified" |sed -e 's/=.*$//g;' > "$refI18nFilePurified.keys"
+cat "$refI18nFilePurified" |sed -e 's/=.*$//g;' |sort > "$refI18nFilePurified.keys"
 for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-extended -regex ".*\/hemera-i18n[.][^~]*" ); do
   i18nFileName=$( basename "$i18nFile" )
   i18nFilePurified="$h_workDir/checkConfig_$i18nFileName.purified"
@@ -66,7 +66,7 @@ for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-
   [[ "$i18nFile" == "$refI18nFile" ]] && continue
 
   # Ensures there is the same i18n elements of the reference file.
-  cat "$i18nFilePurified" |sed -e 's/=.*$//g;' > "$i18nFilePurified.keys"
+  cat "$i18nFilePurified" |sed -e 's/=.*$//g;' |sort > "$i18nFilePurified.keys"
   diff "$refI18nFilePurified.keys" "$i18nFilePurified.keys" > "$i18nFilePurified.keys.diff"
   missingI18NElements=$( grep -re "^<" "$i18nFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
   [ ! -z "$missingI18NElements" ] &&  warning "($i18nFileName) missing following i18n definition: $missingI18NElements"
