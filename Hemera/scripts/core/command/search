@@ -67,13 +67,13 @@ function parseHTML() {
   local _txtFile="$_destFile.tmp"
 
   # Converts HTML to text.
-  "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 || errorMessage "Unable to convert HTML of file '$_srcfile'" $ERROR_EXTERNAL_TOOL
+  ! "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 && errorMessage "Unable to convert HTML of file '$_srcfile'" -1 && return 1
 
   # Additional parsing according to search URL.
   if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then
     # Extracts contents part (will be in file numbered 1).
     # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
-    "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 || errorMessage "Unable to split file '$_txtFile'" $ERROR_EXTERNAL_TOOL
+    ! "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/========/1" "/========/0" >>"$h_logFile" 2>&1 && errorMessage "Unable to split file '$_txtFile'" -1 && return 1
 
     # Final parsing:
     #  - removes line containing only element in brackets
@@ -108,10 +108,10 @@ function execute() {
   # Gets the corresponding URL.
   input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
   urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
-  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || exit $ERROR_EXTERNAL_TOOL
+  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || return $ERROR_EXTERNAL_TOOL
 
   # Parses HTML.
-  parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt"
+  parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt" || return $ERROR_EXTERNAL_TOOL
 
   # Uses the speech core module to read the produced file.
   h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$urlContentsFile.txt" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
