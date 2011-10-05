@@ -145,8 +145,7 @@ function manageRecognitionResult() {
 
   # Checks if 'parrot' mode is activated.
   if [ "$recoCmdMode" = "$H_RECO_CMD_MODE_PARROT" ]; then
-    # TODO: log monitor
-    h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$_inputPath" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav" && notifyDoneInput || notifyErrInput
+    speechToSay "$(extractRecognitionResult $_inputPath)" "$_inputPath" "$H_MONITOR_SPEECH_PARROT" && notifyDoneInput || notifyErrInput
     return 0
   fi
 
@@ -158,7 +157,7 @@ function manageRecognitionResult() {
     notFoundCommand=$( cat "$_inputPath" |tr -d '\n' )
     errorToSay="$( eval echo "$NOT_FOUND_COMMAND_I18N" )"
     logMonitor "/!\ $errorToSay"
-    speechToSay "errorToSay" "$_inputPath"
+    speechToSay "$errorToSay" "$_inputPath"
     notifyErrInput
     return 0
   fi
@@ -170,12 +169,13 @@ function manageRecognitionResult() {
   execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
 }
 
-# usage: speechToSay <text> <input path>
+# usage: speechToSay <text> <input path> [<monitor log>]
 # input path will be used to produce next input corresponding to what must be said.
 # The caller MUST manage final input move (done or error).
 function speechToSay() {
-  logMonitor "$H_MONITOR_SPEECH $(extractRecognitionResult $_inputPath)"
-  h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "$1" -o "$h_newInputDir/speech_"$( basename "$2" )".wav"
+  local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH}"
+  logMonitor "$_monitorMessage $_text"
+  h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
 
 # usage: speechListPut

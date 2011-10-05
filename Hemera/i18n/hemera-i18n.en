@@ -30,6 +30,7 @@ H_MONITOR_BEGIN="Started Hemera"
 H_MONITOR_END="Stopped Hemera"
 H_MONITOR_CMD_MODE="Update speech recognition mode:"
 H_MONITOR_SPEECH="Speech:"
+H_MONITOR_SPEECH_PARROT="Speech (parrot mode):"
 H_MONITOR_SPEECH_RECO="Speech recognition"
 H_MONITOR_CMD="Recognized command:"
 

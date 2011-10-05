@@ -30,6 +30,7 @@ H_MONITOR_BEGIN="Démarrage de Héméra"
 H_MONITOR_END="Arrêt de Héméra"
 H_MONITOR_CMD_MODE="Mise à jour du mode de reconnaissance vocale:"
 H_MONITOR_SPEECH="Synthèse vocale:"
+H_MONITOR_SPEECH_PARROT="Synthèse vocale (mode perroquet):"
 H_MONITOR_SPEECH_RECO="Reconnaissance vocale"
 H_MONITOR_CMD="Commande reconnue:"
 
