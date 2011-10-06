@@ -81,29 +81,31 @@ declare -rx h_logDir=$( getConfigPath "hemera.run.log" "$installDir" ) || exit $
 updateStructure "$h_logDir"
 
 # Structure:
-#  queue/input/new    new input
-#  queue/input/cur    input under processing
-#  queue/input/err    input with unknown type or error occurs while processing
-#  queue/input/done   input managed
+#  [queue]/new    new input
+#  [queue]/cur    input under processing
+#  [queue]/err    input with unknown type or error occurs while processing
+#  [queue]/done   input managed
 declare -rx queueDir=$( getConfigPath "hemera.run.queue" "$installDir" ) || exit $ERROR_CONFIG_PATH
-inputDir="$queueDir/input"
-declare -rx h_newInputDir="$inputDir/new"
-declare -rx h_curInputDir="$inputDir/cur"
-declare -rx h_errInputDir="$inputDir/err"
-declare -rx h_doneInputDir="$inputDir/done"
+declare -rx h_newInputDir="$queueDir/new"
+declare -rx h_curInputDir="$queueDir/cur"
+declare -rx h_errInputDir="$queueDir/err"
+declare -rx h_doneInputDir="$queueDir/done"
 updateStructure "$h_newInputDir"
 updateStructure "$h_curInputDir"
 updateStructure "$h_errInputDir"
 updateStructure "$h_doneInputDir"
 
 # Structure:
-#  tmp/work   temporary files
-#  tmp/pid    PID files
+#  [tmp]/cache  main Hemera process files
+#  [tmp]/pid    PID files
+#  [tmp]/work   temporary files
 tmpDir=$( getConfigPath "hemera.run.temp" "$installDir" ) || exit $ERROR_CONFIG_PATH
-declare -rx h_workDir="$tmpDir/work"
+declare -rx h_cacheDir="$tmpDir/cache"
 declare -rx h_pidDir="$tmpDir/pid"
-updateStructure "$h_workDir"
+declare -rx h_workDir="$tmpDir/work"
+updateStructure "$h_cacheDir"
 updateStructure "$h_pidDir"
+updateStructure "$h_workDir"
 
 ## Defines some other global variables.
 declare -rx h_fileDate=$(date +"%s")
@@ -112,24 +114,24 @@ declare -rx h_fileDate=$(date +"%s")
 declare -rx h_runningLogFile="$h_logDir/runningHemera.log"
 
 # Hemera start time.
-declare -rx h_startTime="$h_workDir/starttime"
+declare -rx h_startTime="$h_cacheDir/starttime"
 
 # Hemera recognized commands mode.
-declare -rx h_recoCmdModeFile="$h_workDir/recoCmdMode"
+declare -rx h_recoCmdModeFile="$h_cacheDir/recoCmdMode"
 
 # Hemera command list.
-declare -rx h_commandMap="$h_workDir/commandMap"
+declare -rx h_commandMap="$h_cacheDir/commandMap"
 
 # inputMonitor/ioProcessor.
-declare -rx h_inputList="$h_logDir/inputList"
+declare -rx h_inputList="$h_cacheDir/inputList"
 
 # Hemera monitoring.
-declare -rx h_monitor="$h_logDir/monitor"
+declare -rx h_monitor="$h_cacheDir/monitor"
 
 # processInput
-declare -rx h_speechRunningLockFile="$h_workDir/runningSpeech.lck"
+declare -rx h_speechRunningLockFile="$h_cacheDir/runningSpeech.lck"
 declare -rx h_speechRunningPIDFile="$h_pidDir/runningSpeech.pid"
-declare -rx h_speechToPlayList="$h_workDir/speechToPlay"
+declare -rx h_speechToPlayList="$h_cacheDir/speechToPlay"
 
 # Defines the log file if not already done (e.g. if it has the default value).
 if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
