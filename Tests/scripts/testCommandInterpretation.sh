@@ -170,16 +170,11 @@ writeMessage "Test system will ensure Hemera is not running"
 
 # Cleans everything, ensuring tests works on new "empty" structure.
 "$scripstDir/makeHemera.sh" clean
+"$scripstDir/makeHemera.sh" init
 
 # Starts inputMonitor.
 writeMessage "Test system will start some daemons"
 "$h_daemonDir/inputMonitor.sh" -S
-
-# Initializes Hemera mode.
-# N.B.: tests system must do it because the usual Hemera start system (which performs this initialization) is not used.
-# N.B.: starts inputMonitor BEFORE this initialization for environment to be created.
-initRecoCmdMode || exit $ERROR_ENVIRONMENT
-initializeCommandMap || exit $ERROR_ENVIRONMENT
 
 # We want all information about input management.
 # export verbose=1
