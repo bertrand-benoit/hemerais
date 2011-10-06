@@ -119,7 +119,7 @@ case $action in
     [ ! -z "$runningProcessPID" ] && errorMessage "There is already a running manageSound process linked to PID file '$pidFile'. Nothing more to do" $ERROR_ENVIRONMENT
 
     # Writes the PID file with the PID of this process.
-    echo "$$" > "$pidFile"
+    writePIDFile "$pidFile" "$soundPlayerBin" || return 1
 
     # plays the sound.
     input="$soundFile"
