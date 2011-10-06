@@ -177,7 +177,13 @@ if [ "$hemeraMode" = "local" ]; then
   [ $verbose -eq 1 ] && option="-v $option"
 
   # Initializes if not already done (e.g. if NOT isHemeraComponentStarted).
-  [ "$action" = "start" ] && ! isHemeraComponentStarted && ! initialization && exit $ERROR_ENVIRONMENT
+  if [ "$action" = "start" ]; then
+    # Checks all existing PID files (allowing to remove potential PID files from previous run).
+    checkAllProcessFromPIDFiles
+
+    # Performs initialization only if there is not already a running component.
+    ! isHemeraComponentStarted && ! initialization && exit $ERROR_ENVIRONMENT
+  fi
 
   # According to components activation.
   [ "$inputMonitorActivation" = "localhost" ] && "$h_daemonDir/inputMonitor.sh" $option
