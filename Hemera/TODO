@@ -3,6 +3,8 @@ short term:
  - deploy automatically webmodule when launching setup
  - install Hemera service if requested
 
+ - improved makeHemera allowing to specify several targets at once
+
  - new plug-ins to add:
   - search -> virus, game/OS updates, GPS
   - relaunch/reboot -> core module, the whole Hemera, heating thermal sensor

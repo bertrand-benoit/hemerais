@@ -44,8 +44,29 @@ declare -r ANT="$ANT_HOME/bin/ant"
 ## INSTRUCTIONS
 declare -r target="${1:-all}"
 
+# Checks if only initialization must be done -> meaning
+#  only structure preparation (useful for tests).
+if [ "$target" = "init" ]; then
+  # Checks all existing PID files (allowing to remove potential PID files from previous run).
+  checkAllProcessFromPIDFiles
+
+  # Ensures Hemera is not running (checking PID file).
+  isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before [re]init" $ERROR_ENVIRONMENT
+
+  # Environment setup has already been done when this script sourced setEnvironment.sh.
+  writeMessageSL "Making Hemera target: $target ... "
+  ! initRecoCmdMode && errorMessage "Unable to initialize recognition command mode." $ERROR_ENVIRONMENT
+  ! initializeCommandMap && errorMessage "Unable to initialize command map." $ERROR_ENVIRONMENT
+  ! cleanNotManagedInput && errorMessage "Unable to clean remaining input." $ERROR_ENVIRONMENT
+  echo "done"
+  exit 0
+fi
+
 # Special management for "clean" target.
 if [ "$target" = "clean" ]; then
+  # Checks all existing PID files (allowing to remove potential PID files from previous run).
+  checkAllProcessFromPIDFiles
+
   # Ensures Hemera is not running (checking PID file).
   isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
 fi
