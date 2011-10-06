@@ -65,7 +65,7 @@ do
  esac
 done
 
-[ -z "$text" ] && usage
+[ -z "${text:-}" ] && usage
 
 #########################
 ## INSTRUCTIONS
@@ -98,7 +98,7 @@ while [ $iteration -le $iterationCount ]; do
   "$speechRecognitionDir/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
 
   # Prepares for potential next iteration.
-  iteration=$( expr $iteration + 1 )
+  let iteration++
   textToSpeech=$( cat "$speechRecognitionResultFile" |sed -e 's/[ \t]*([^(]*)$//;' )
 done
 

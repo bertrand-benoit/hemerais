@@ -3,7 +3,6 @@ short term:
  - deploy automatically webmodule when launching setup
  - install Hemera service if requested
 
- - replace all call to "expr" or "bc" ...
  - replace all "xxx|grep |wc -l"  by "xxx|grep -c"
 
  - new plug-ins to add:
