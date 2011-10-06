@@ -51,9 +51,13 @@ function usage() {
 
 # usage: initialization
 function initialization() {
+  # Initializes needed element.
   initializeCommandMap
   initializeStartTime
   initializeMonitor
+
+  # Ensures there is NO input remaining from previous run.
+  cleanNotManagedInput
 }
 
 # usage: finalization
