@@ -124,7 +124,7 @@ function checkUserBashrc() {
   info "Found user bashrc file '$_userFile'"
 
   # Checks if there is already the instruction to update path.
-  [ $( grep "emera" "$_userFile" |grep "updatePath" |wc -l ) -ge 1 ]
+  [ $( grep "emera" "$_userFile" |grep -c "updatePath" ) -ge 1 ]
 }
 
 # usage: checkUserBashrc <file>

@@ -83,13 +83,13 @@ for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;s/^$/EmptY/g;' ); do
   [[ "$line" == "EmptY" ]] && echo "" >> "$tmpDstFile" && continue
 
   # Checks if it is a comment, and appends it to temporary destination file if it is the case.
-  [ $( echo "$line" |grep -re "^[ \t]*#" |wc -l ) -eq 1 ] && echo "$line" >> "$tmpDstFile" && continue
+  [ $( echo "$line" |grep -ce "^[ \t]*#" ) -eq 1 ] && echo "$line" >> "$tmpDstFile" && continue
 
   # It is a configuration element, extracts the key.
   sourceKey=$( echo "$line" |sed -e 's/^\([^=]*\)=.*$/\1/g;' )
 
   # Checks if configuration element already exists.
-  if [ $( grep -re "^$sourceKey=" "$dstConfFile" 2>/dev/null|wc -l ) -ge 1 ]; then    
+  if [ $( grep -cre "^$sourceKey=" "$dstConfFile" 2>/dev/null ) -ge 1 ]; then    
     # Gets value of destination.
     dstValue=$( grep -re "^$sourceKey=" "$dstConfFile" 2>/dev/null|sed -e 's/^[^=]*=//;' |tail -n 1 )
     echo "$sourceKey=$dstValue" >> "$tmpDstFile"
@@ -103,7 +103,7 @@ done
 echo "done"|tee -a "$h_logFile"
 
 # Computes count of changed comments.
-commentChangeCount=$( diff "$dstConfFile" "$tmpDstFile" |grep -re ">[ \t]*#" |wc -l )
+commentChangeCount=$( diff "$dstConfFile" "$tmpDstFile" |grep -cre ">[ \t]*#" )
 
 # Exists if there was no change.
 [ $keyChangeCount -eq 0 ] && [ $commentChangeCount -eq 0 ] && writeMessage "Nothing to update." && rm -f "$tmpDstFile" && exit 0

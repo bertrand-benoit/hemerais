@@ -45,7 +45,7 @@ function showScriptDescription() {
     script=$( echo "$scriptRaw" |sed -e 's/£/ /g;' )
 
     # Ensures it is not an internal script.
-    [ $( head -n $MUST_NOT_BE_CALLED_LIMIT "$script" |grep "must NOT be directly called" |wc -l ) -gt 0 ] && continue
+    [ $( head -n $MUST_NOT_BE_CALLED_LIMIT "$script" |grep -c "must NOT be directly called" ) -gt 0 ] && continue
 
     # Extracts the description.
     description=$( head -n $DESCRIPTION_LINE_LIMIT "$script" |grep -re "# Description:" |sed -e 's/# Description: //' )

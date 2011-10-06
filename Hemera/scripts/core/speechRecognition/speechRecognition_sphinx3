@@ -151,14 +151,14 @@ function analyzeLog() {
 
   # Performs at least one step, and as much needed until the "log file end" is reached.
   rm -f "$_tmpAnalyzeLog"
-  while [[ $_firstStep -eq 1 ]] || [[ $( grep "$LOG_FILE_END" "$logToAnalyze" 2>/dev/null|wc -l ) -eq 0 ]]; do
+  while [[ $_firstStep -eq 1 ]] || [[ $( grep -c "$LOG_FILE_END" "$logToAnalyze" 2>/dev/null ) -eq 0 ]]; do
     sleep 1
     _firstStep=0
     for managedSoundFileRaw in $( grep -re "FWDVIT" "$logToAnalyze" |sed -e 's/^FWDVIT: \([^(]*\)(\([^)]*\))/\2/g;s/[ \t]/£/g;' ); do
       managedSoundFile=$( echo "$managedSoundFileRaw" |sed -e 's/£/ /g' )
 
       # Checks if the sound file has already been managed.
-      [ $( grep "$managedSoundFile" "$_tmpAnalyzeLog" 2>/dev/null|wc -l ) -gt 0 ] && continue
+      [ $( grep -c "$managedSoundFile" "$_tmpAnalyzeLog" 2>/dev/null ) -gt 0 ] && continue
 
       # Memorizes it has been shown.
       echo "$managedSoundFile" >> "$_tmpAnalyzeLog"

@@ -49,14 +49,14 @@ for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-
     i18nElement=$( echo "$i18nElementRaw" |sed -e 's/€/ /g;' )
 
     # Checks if there is a variable into this definition.
-    if [ $( echo "$i18nElement" |grep -E "[$]" |wc -l ) -gt 0 ]; then
+    if [ $( echo "$i18nElement" |grep -cE "[$]" ) -gt 0 ]; then
       # Ensures special characters are escaped.
-      if [ $( echo "$i18nElement" |grep -E "[^\\]['$]" |wc -l ) -gt 0 ]; then
+      if [ $( echo "$i18nElement" |grep -cE "[^\\]['$]" ) -gt 0 ]; then
         warning "($i18nFileName) some characters should be escaped in: $i18nElement"
       fi
     else
       # Ensures there is NO escaped characters.
-      if [ $( echo "$i18nElement" |grep -E "\\\\" |wc -l ) -gt 0 ]; then
+      if [ $( echo "$i18nElement" |grep -cE "\\\\" ) -gt 0 ]; then
         warning "($i18nFileName) some characters should NOT be escaped in: $i18nElement"
       fi
     fi

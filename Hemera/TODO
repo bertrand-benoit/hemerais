@@ -3,8 +3,6 @@ short term:
  - deploy automatically webmodule when launching setup
  - install Hemera service if requested
 
- - replace all "xxx|grep |wc -l"  by "xxx|grep -c"
-
  - new plug-ins to add:
   - search -> virus, game/OS updates, GPS
   - relaunch/reboot -> core module, the whole Hemera, heating thermal sensor

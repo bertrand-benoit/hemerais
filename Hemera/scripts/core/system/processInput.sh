@@ -126,7 +126,7 @@ function manageRecognitionResult() {
   sed -i 's/([^)]*)$//' "$_inputPath"
 
   # Checks if there is still something recognized.
-  if [ $( cat "$_inputPath" |grep -v "^$" |wc -l ) -eq 0 ]; then
+  if [ $( cat "$_inputPath" |grep -vcre "^$" ) -eq 0 ]; then
     logMonitor "/!\ $NOT_RECOGNIZED_COMMAND_I18N"
     speechToSay "$NOT_RECOGNIZED_COMMAND_I18N" "$_inputPath"
     notifyErrInput
