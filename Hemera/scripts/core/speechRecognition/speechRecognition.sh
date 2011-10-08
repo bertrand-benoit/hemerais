@@ -173,8 +173,8 @@ if [ ! -z "$logToAnalyze" ]; then
   analyzeLog && exit 0 || exit $ERROR_SR_ANALYZE
 fi
 
-[ -z "$mode" ] && usage
-[ -z "$path" ] && usage
+[ -z "${mode:-}" ] && usage
+[ -z "${path:-}" ] && usage
 [ ! -e "$path" ] && errorMessage "$path not found." $ERROR_BAD_CLI
 [ -z "$speechFilePattern" ] && speechFilePattern="$DEFAULT_SPEECH_FILE_PATTEN"
 

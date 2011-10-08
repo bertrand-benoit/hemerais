@@ -75,7 +75,7 @@ declare -r soundFeatureCreatorOptions="$h_lastConfig"
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
 ## Command line arguments check.
-[ -z "$soundFile" ] && usage
+[ -z "${soundFile:-}" ] && usage
 [ ! -f "$soundFile" ] && errorMessage "$soundFile not found." $ERROR_BAD_CLI
 
 #########################

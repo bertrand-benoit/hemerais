@@ -264,8 +264,8 @@ done
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
 ## Command line arguments check.
-[ -z "$inputName" ] && usage
-[ -z "$inputString" ] && inputString="undefinedInput"
+[ -z "${inputName:-}" ] && usage
+[ -z "${inputString:-}" ] && inputString="undefinedInput"
 
 # Ensures the input (still) exists.
 [ ! -f "$h_newInputDir/$inputName" ] && errorMessage "$inputString: $inputName not found" $ERROR_BAD_CLI

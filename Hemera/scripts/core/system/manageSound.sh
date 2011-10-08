@@ -84,10 +84,10 @@ declare -r soundPlayerOptions="$h_lastConfig"
 [ $checkConfAndQuit -eq 1 ] && exit 0
 
 ## Command line arguments check.
-[ -z "$action" ] && usage
+[ -z "${action:-}" ] && usage
 [ "$action" = "play" ] && [ ! -f "$soundFile" ] && errorMessage "Sound file '$soundFile' must exist" $ERROR_BAD_CLI
 
-[ -z "$pidFile" ] && usage
+[ -z "${pidFile:-}" ] && usage
 [ "$action" != "play" ] && [ ! -s "$pidFile" ] && errorMessage "PID file '$pidFile' must exist and NOT be empty" $ERROR_BAD_CLI
 
 #########################
