@@ -108,7 +108,7 @@ updateStructure "$h_pidDir"
 updateStructure "$h_workDir"
 
 ## Defines some other global variables.
-declare -rx h_fileDate=$(date +"%s")
+declare -rx h_fileDate=$(date +"%s.%N")
 
 # Hemera running log file.
 declare -rx h_runningLogFile="$h_logDir/runningHemera.log"
