@@ -31,6 +31,12 @@ declare -r espeakBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
 declare -r espeakOptions="$h_lastConfig"
 
+# Ensures --pho option is specify if espeak version is >= 1.44
+espeakVersion=$( "$espeakBin" --help |grep -v "^$" |head -n 1 |sed -e 's/^[^:]*:[ ]*\([0-9.]*\)[ ].*$/\1/' )
+if $( isVersionGreater "$espeakVersion" "1.44.0" ); then
+  [ $( echo "$espeakOptions" |grep -wc "\-\-pho" ) -lt 1 ] && errorMessage "Detected version $espeakVersion of espeak which needs --pho option. You should add it to your configuration file ($CONFIG_KEY.tool.options)." $ERROR_SPEECH
+fi
+
 checkAndSetConfig "$CONFIG_KEY.mbrola.path" "$CONFIG_TYPE_BIN"
 declare -r mbrolaBin="$h_lastConfig"
 checkAndSetConfig "$CONFIG_KEY.mbrola.options" "$CONFIG_TYPE_OPTION"
