@@ -124,7 +124,8 @@ while [ 1 ]; do
   [ $( cat "$h_inputList" |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
   # For each new input (from the last managed one) in list file.
-  for newInput in $( getLastLinesFromN "$h_inputList" "$inputIndex" ); do
+  for newInputRaw in $( getLastLinesFromN "$h_inputList" "$inputIndex" |sed -e 's/[ \t]/€/g;' ); do
+    newInput=$( echo "$newInputRaw" |sed -e 's/€/ /g;' )
     inputName=$( basename "$newInput" )
     inputType=${inputName/_*/}
     inputPath="$h_newInputDir/$newInput"
