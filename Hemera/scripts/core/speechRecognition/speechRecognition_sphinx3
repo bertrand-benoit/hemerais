@@ -93,15 +93,20 @@ function prepareSoundFileList() {
 
   # For each sound file of the specified list.
   rm -f "$_controlFile"
+  atLeastOneSuccess=0
   for soundFileRaw in $( cat "$_sourceSoundListFile" |sed -e 's/[ \t]/£/g;' ); do
     soundFile=$( echo "$soundFileRaw" |sed 's/£/ /g;' )
 
     rawSoundFile="$soundFile".raw
     ! prepareAudioSource "$soundFile" "$rawSoundFile" "$_convert" && continue
-
+    atLeastOneSuccess=1
     # Adds the sound file path to the control list, according to the convert toggle.
     [ $_convert -eq 1 ] && echo "$rawSoundFile" >> "$_controlFile" || echo "$soundFile" >> "$_controlFile"
   done
+
+  # At least one audio preparation must have been successful, otherwise exists with error.
+  [ $atLeastOneSuccess -eq 0 ] && return 1
+  return 0
 }
 
 # usage: speechRecognitionFromList <control file> [<result file>]
