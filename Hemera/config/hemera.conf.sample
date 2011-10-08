@@ -162,8 +162,9 @@ hemera.core.speechRecognition.tool.path="sphinx3_decode"
 hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -upperf 6800 -silprob 0.01 -fillprob 0.02"
 
 # The speech sound (continuous) recorder (path and options).
+# IMPORTANT: you should specify 'sox' as recorder (NOT rec), because there is issue with '-d' option and compiled source code version of sox.
 # IMPORTANT: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
-hemera.core.speechRecognition.soundRecorder.path="rec"
+hemera.core.speechRecognition.soundRecorder.path="sox"
 hemera.core.speechRecognition.soundRecorder.options="-d -q -r 22050 -c 1 -t wav $output silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
 
 # The sound converted (path and options).

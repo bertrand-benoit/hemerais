@@ -2,6 +2,7 @@ short term:
  - added ant task to ensure web module is not already deployed
  - deploy automatically webmodule when launching setup
  - install Hemera service if requested
+ - test source code compiled version of sox and 'sox' as binary instead of play/rec (incompatible with '-d' option)
 
  - improved makeHemera allowing to specify several targets at once
 
