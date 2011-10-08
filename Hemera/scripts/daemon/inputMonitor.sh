@@ -81,7 +81,7 @@ declare -r monitorOptions="$h_lastConfig"
 
 ## Command line arguments check.
 # Ensures action is defined.
-[ -z "$action" ] && daemonUsage "$daemonName"
+[ -z "${action:-}" ] && daemonUsage "$daemonName"
 
 #########################
 ## INSTRUCTIONS
