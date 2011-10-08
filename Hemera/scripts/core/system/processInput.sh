@@ -290,7 +290,12 @@ case "$inputType" in
     writeMessage "$inputString: launching speech recognition on $inputName"
     # N.B.: uses a specific log file to improve efficiencies while post-processing speech recognition.
     logMonitor "$H_MONITOR_SPEECH_RECO" "$inputString"
-    h_logFile="$h_logFile.$inputString" noconsole=1 "$speechRecognitionScript" -F -f "$curInputPath" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+
+    # Creates a link to the input, in the temporary directory
+    #  (such a way raw and feature files will be created in the temporary directory instead of queue one).
+    tmpFileToManage="$h_workDir/$inputName"
+    ln -s "$curInputPath" "$tmpFileToManage"
+    h_logFile="$h_logFile.$inputString" noconsole=1 "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)
