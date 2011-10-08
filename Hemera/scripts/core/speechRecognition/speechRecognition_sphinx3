@@ -162,13 +162,13 @@ function analyzeLog() {
     for managedSoundFileRaw in $( grep -re "FWDVIT" "$logToAnalyze" |sed -e 's/^FWDVIT: \([^(]*\)(\([^)]*\))/\2/g;s/[ \t]/£/g;' ); do
       managedSoundFile=$( echo "$managedSoundFileRaw" |sed -e 's/£/ /g' )
 
-      # Checks if the sound file has already been managed.
-      [ $( grep -c "$managedSoundFile" "$_tmpAnalyzeLog" 2>/dev/null ) -gt 0 ] && continue
+      # Checks if the sound file has already been managed.
+      [ -f "$_tmpAnalyzeLog" ] && [ $( grep -c "$managedSoundFile" "$_tmpAnalyzeLog" 2>/dev/null ) -gt 0 ] && continue
 
       # Memorizes it has been shown.
       echo "$managedSoundFile" >> "$_tmpAnalyzeLog"
 
-      # Shows information.
+      # Shows information.
       writeMessage "Managed sound file '$managedSoundFile':"
       grep -re "$managedSoundFile" "$logToAnalyze" |grep -E "FWDVIT|stat.c" |grep -v "SUMMARY" |sed -e 's/^FWDVIT: \([^(]*\)(\([^)]*\))/  Result: \1/g;s/^INFO:[^:]*:.\([^(]*\)(\([^)]*\))/  Stats: \1/g;s/[]];/]\n       /g;'
     done
