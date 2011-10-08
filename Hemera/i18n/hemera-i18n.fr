@@ -26,6 +26,7 @@
 ## General constants
 NOT_RECOGNIZED_COMMAND_I18N="Commande non reconnue !"
 NOT_FOUND_COMMAND_I18N="La commande suivante est incomprise : \$notFoundCommand"
+ERROR_OCCURED_I18N="Une erreur a été détectée, vous devriez consulter le journal de l'exécution en cours"
 H_MONITOR_BEGIN="Démarrage de Héméra"
 H_MONITOR_END="Arrêt de Héméra"
 H_MONITOR_CMD_MODE="Mise à jour du mode de reconnaissance vocale:"
