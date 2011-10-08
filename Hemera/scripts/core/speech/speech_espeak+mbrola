@@ -44,14 +44,22 @@ declare -r mbrolaLanguageFile="$h_lastConfig"
 function speechSentence() {
   local _sentence="$1" _additionalOptions="${2:-}"
 
+  espeakTmpFile="$h_workDir/$h_fileDate"-"espeak.tmp"
+
   # Modus operandi:
   #  - uses espeak to produce "phoneme mnemonics"
   #  - prefixes each line beginning with a space character (not supported by mbrola) by a ';'; as a comment
   #  - uses mbrola to generate speech sound
   #  - uses finally the speech sound player
   info "System will play speech '$_sentence', using espeak, and mbrola speechOutput=$speechOutput"
-  [ "$speechOutput" = "-" ] && speechTmpFile="$h_workDir/"$(date +"%s")"-speechFile.wav" || speechTmpFile="$speechOutput"
-  "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $_additionalOptions "$_sentence" |sed -e 's/^[ ]/; /g;' |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
+  [ "$speechOutput" = "-" ] && speechTmpFile="$h_workDir/$h_fileDate"-"speechFile.wav" || speechTmpFile="$speechOutput"
+  LANG=C "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $_additionalOptions "$_sentence" > "$espeakTmpFile" 2>&1 || exit $ERROR_SPEECH
+
+  # Ensures there was no error (e.g. espeak exists with status 0 even if there was error with mbrola !).
+  [ $( grep -cEi "error|not found|no such" "$espeakTmpFile" ) -gt 0 ] && errorMessage "There was error while using espeak (See $espeakTmpFile)." $ERROR_SPEECH
+
+  # Process espeak output with mbrola.
+  sed -e 's/^[ ]/; /g;' "$espeakTmpFile" |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
   if [ "$speechOutput" = "-" ]; then
     info "Generated temporary speech file: $speechTmpFile"
     input="$speechTmpFile"
