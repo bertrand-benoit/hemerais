@@ -78,7 +78,7 @@ additionalOptions=""
 #  core module result log analyzer to see only result of regarded iteration.
 # Inform the user.
 mainLogFile="$h_logFile"
-echo "See $mainLogFile-X iteration log files" > "$mainLogFile"
+echo "See $mainLogFile"."X iteration log files" > "$mainLogFile"
 
 textToSpeech="$text"
 iteration=1
@@ -96,6 +96,9 @@ while [ $iteration -le $iterationCount ]; do
 
   # Launches speech recognition from wav file.
   "$speechRecognitionDir/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
+
+  # Ensures there was a result file.
+  [ ! -f "&speechRecognitionResultFile" ] && errorMessage "Speech recognition produces NO result file." $ERROR_CORE_MODULE
 
   # Prepares for potential next iteration.
   let iteration++
