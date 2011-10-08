@@ -1,6 +1,20 @@
 VERSION 0.2.0
 =============
 
+2011-10-06  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * added running process system when starting Hemera (checking existing PID files -> useful if previous run has been brutally stopped)
+ 
+ * updated environment structure
+
+ * makeHemera.sh: added new target 'init' allowing to setup minimum required environment (useful after cleaning, for tests system)
+
+ * updated tests systems to use 'clean' and 'init' targets of makeHemera ensuring same cleaned environment to perform tests
+
+2011-10-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * implement Hemera activities localized monitor system (need a command for ease of use)
+
 2011-10-04  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * checkConfig.sh: request any plugin to perform a full configuration check
