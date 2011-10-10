@@ -98,7 +98,7 @@ while [ $iteration -le $iterationCount ]; do
   "$speechRecognitionDir/speechRecognition.sh" $additionalOptions -f "$speechSoundFile" -R "$speechRecognitionResultFile" || exit $ERROR_CORE_MODULE
 
   # Ensures there was a result file.
-  [ ! -f "&speechRecognitionResultFile" ] && errorMessage "Speech recognition produces NO result file." $ERROR_CORE_MODULE
+  [ ! -f "$speechRecognitionResultFile" ] && errorMessage "Speech recognition produces NO result file." $ERROR_CORE_MODULE
 
   # Prepares for potential next iteration.
   let iteration++
