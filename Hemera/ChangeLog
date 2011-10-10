@@ -1,6 +1,10 @@
 VERSION 0.2.0
 =============
 
+2011-10-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * monitorHemera.sh: implemented this new tool allowing to monitor Hemera ('reading' monitor file, great robustness in case it is killed or monitor file is erased)
+
 2011-10-06  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * added running process system when starting Hemera (checking existing PID files -> useful if previous run has been brutally stopped)
