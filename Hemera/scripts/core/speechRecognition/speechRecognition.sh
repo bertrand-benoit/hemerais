@@ -97,7 +97,7 @@ function manageSpeechRecognition() {
 
   #  4- launches the speech recognition on the prepared sound file list.
   writeMessage "Launching speech recognition on prepared sound list file $_preparedSoundFileList ..."
-  ! speechRecognitionFromList "$_preparedSoundFileList" "$_resultFile" && markLogFileEnd && errorMessage "Speech recognition failed on prepared sound list file $_preparedSoundFileList" $ERROR_CORE_MODULE
+  ! speechRecognitionFromList "$_preparedSoundFileList" "$_resultFile" && markLogFileEnd && errorMessage "Speech recognition failed (source: prepared sound list file $_preparedSoundFileList)" $ERROR_CORE_MODULE
   markLogFileEnd
 }
 
