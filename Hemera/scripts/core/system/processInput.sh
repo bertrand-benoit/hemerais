@@ -145,7 +145,7 @@ function manageRecognitionResult() {
 
   # Checks if 'parrot' mode is activated.
   if [ "$recoCmdMode" = "$H_RECO_CMD_MODE_PARROT" ]; then
-    speechToSay "$(extractRecognitionResult $_inputPath)" "$_inputPath" "$H_MONITOR_SPEECH_PARROT" && notifyDoneInput || notifyErrInput
+    speechToSay "$(extractRecognitionResult $_inputPath)" "$_inputPath" "$H_MONITOR_SPEECH_PARROT_I18N" && notifyDoneInput || notifyErrInput
     return 0
   fi
 
@@ -163,7 +163,7 @@ function manageRecognitionResult() {
   fi
 
   # All is OK, manages the corresponding command script.
-  logMonitor "$H_MONITOR_CMD $(extractRecognitionResult $_inputPath)"
+  logMonitor "$H_MONITOR_CMD_I18N $(extractRecognitionResult $_inputPath)"
   source "$commandScript"
   checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
   execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
@@ -173,7 +173,7 @@ function manageRecognitionResult() {
 # input path will be used to produce next input corresponding to what must be said.
 # The caller MUST manage final input move (done or error).
 function speechToSay() {
-  local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH}"
+  local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH_I18N}"
   logMonitor "$_monitorMessage $_text"
   h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
@@ -282,14 +282,14 @@ case "$inputType" in
   mode)
     requestedMode=$( head -n 1 "$curInputPath" |awk '{print $1}' )
     writeMessage "$inputString: updating mode to '$requestedMode'"
-    logMonitor "$H_MONITOR_CMD_MODE $requestedMode"
+    logMonitor "$H_MONITOR_CMD_MODE_I18N $requestedMode"
     updateRecoCmdMode "$requestedMode" && notifyDoneInput || notifyErrInput
   ;;
 
   recordedSpeech)
     writeMessage "$inputString: launching speech recognition on $inputName"
     # N.B.: uses a specific log file to improve efficiencies while post-processing speech recognition.
-    logMonitor "$H_MONITOR_SPEECH_RECO" "$inputString"
+    logMonitor "$H_MONITOR_SPEECH_RECO_I18N" "$inputString"
 
     # Creates a link to the input, in the temporary directory
     #  (such a way raw and feature files will be created in the temporary directory instead of queue one).
