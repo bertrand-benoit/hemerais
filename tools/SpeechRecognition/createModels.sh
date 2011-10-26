@@ -9,7 +9,7 @@
 currentDir=$( dirname "$( which $0 )" )
 
 # Ensures Hemera third-party project is available.
-hemeraTPDir=$( dirname "$currentDir" )"/HemeraThirdParty"
+hemeraTPDir=$( dirname "$currentDir" )"/ThirdParty"
 [ ! -d "$hemeraTPDir" ] && echo -e "Unable to find third-party project '$hemeraTPDir'. You must install it before using this tool" && exit 1
 
 binDir="$hemeraTPDir/_fromSource"

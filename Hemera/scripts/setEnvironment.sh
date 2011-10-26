@@ -38,7 +38,7 @@ checkEnvironment || $ERROR_ENVIRONMENT
 checkOSLocale || $ERROR_ENVIRONMENT
 
 # Defines Third-party directory, and ensures it is available.
-declare -rx h_tpDir="$installDir/../HemeraThirdParty"
+declare -rx h_tpDir="$installDir/../ThirdParty"
 [ ! -d "$h_tpDir" ] && errorMessage "$h_tpDir NOT found. You must get Third Party project. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera" $ERROR_ENVIRONMENT
 
 # Updates configuration.
