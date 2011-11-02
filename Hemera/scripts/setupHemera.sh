@@ -59,7 +59,7 @@ function writeSysconfigFile() {
   elif [ -d "/etc/default" ]; then
     sysconfigFile="/etc/default/hemera"
   else
-    warningMessage "Unable to find system config directory (/etc/sysconfig and /etc/default not found"
+    warningMessage "Unable to find system config directory (/etc/sysconfig and /etc/default not found)"
     return $ERROR_ENVIRONMENT
   fi
 
