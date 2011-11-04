@@ -1,0 +1,201 @@
+#### Hemera global configuration file sample.
+#### Launch setupHemera.sh to create global configuration file from this one.
+
+### Information
+## For each core module, are defined:
+# - a mode (allow to swith from some tools to others)
+# - a main tool path
+# - general data
+# - (according to the mode) additional specific information, like secondary/additional tools and data
+
+## Path can be absolute, relative to [HEMERA_TP_PATH]
+#   or "simple" if corresponding tool is available from PATH environment variable.
+
+## Special variables which will be replaced (when needed):
+# $input: input of the tool
+# $output: output of the tool
+# $h_language: Hemera language (defined by hemera.language)
+
+
+### General.
+############
+# The root directory of third-party tools, called [HEMERA_TP_PATH]
+#  later in this file, in other configuration files, and in Hemera documentation.
+hemera.thirdParty.path="/usr/share/hemera"
+
+# Binary directory paths to add to PATH environment variable.
+# You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
+# You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin-XX directory).
+# For each path you add there, you can specify "simple" name of corresponding tool in other configuration element.
+hemera.path.bin="_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_fromSource/sox/src"
+
+# Library directory paths to add to LD_LIBRARY_PATH environment variable.
+# You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
+# You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin directory).
+# You MUST specify library directory paths of tool you have compiled (e.g. sphinxbase)
+hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs:_fromSource/sphinxbase/src/libsphinxad/.libs:_fromSource/sphinx3/src/programs/.libs:_fromSource/sphinx3/src/libs3decoder/.libs:_fromSource/sox/src/.libs"
+
+# Language of Internationalized Hemera strings.
+# N.B.: a file named hemera-i18n.<hemera.language> must exist in i18n/ sub-directory.
+hemera.language="en"
+
+# The Hemera log verbose level among 0=no verbose, 3=highly verbose.
+hemera.log.verbose=0
+
+
+### Modules activation (client/server)
+######################################
+# Hemera mode:
+#  local=everything is done locally (default)
+#  client=this installation is client to another one (in server mode)
+#  server=this installation is server to N clients
+hemera.run.mode=local
+
+# Defines activation of various system:
+#  disabled=system is disabled
+#  localhost=system is enabled locally
+#  host:port=system will contact server at specified host/port
+hemera.run.activation.inputMonitor=localhost
+hemera.run.activation.ioProcessor=localhost
+hemera.run.activation.soundRecorder=localhost
+
+# Defines if Hemera start/stop system must start/stop Tomcat.
+# It works only for local installation of Tomcat, in which case a directory (or symbolic link)
+#  named 'tomcat' must exists in [HEMERA_TP_PATH]/webServices/bin/.
+# The system will look for bin/startup.sh and bin/shutdown.sh Tomcat script (provided by
+#  binary version of Tomcat).
+# Any value different of "localhost" will disable the automatic management of Tomcat.
+hemera.run.activation.tomcat=localhost
+
+
+### Environment.
+###########################
+# Home directory (i.e. root directory) of Java Development Kit installation
+# N.B.: JAVA_HOME environment variable is regarded if not set here.
+environment.java.home=""
+
+# Home directory (i.e. root directory) of Apache Ant
+# N.B.: ANT_HOME environment variable is regarded if not set here.
+environment.ant.home=""
+
+
+### Input/Output manager core module.
+#####################################
+# The Hemera input monitor (path and options).
+# It looks at $input directory and write path of new input (by default: regarde close&write as completed input creation).
+hemera.core.iomanager.inputMonitor.path="inotifywait"
+hemera.core.iomanager.inputMonitor.options="-q --format '%f' -e close_write -m $input"
+
+# The Hemera input/output processor (path and options).
+# It looks at $input file for one more available input to manage.
+hemera.core.iomanager.ioProcessorMonitor.path="inotifywait"
+hemera.core.iomanager.ioProcessorMonitor.options="-qq -e modify $input"
+
+
+### Web services module.
+#######################
+# The URL of the manager of the tomcat installation to use (can be local or remote).
+hemera.web.tomcat.manager.url=http://localhost:8080/manager
+
+# Login/password of user to use to [un]deploy Hemera web services module.
+# On the server, the $TOMCAT_HOME/conf/tomcat-users.xml must define the role "manager-gui" to this user.
+# e.g.: <user username="hemera" password="hemera" roles="manager-gui"/>
+# This user must have the "manager" role
+hemera.web.tomcat.username=hemera
+hemera.web.tomcat.password=hemera
+
+
+### Speech core module.
+#######################
+## Speech core module - general.
+# Mode of tool(s) to use.
+# Possible values: espeak, espeak+mbrola
+hemera.core.speech.mode="espeak+mbrola"
+
+# The main tool to use (path and options).
+hemera.core.speech.tool.path="espeak"
+# espeak options samples:
+# with espeak mode: -s 130 --stdout
+# with espeak+mbrola mode: -p 45 -s 125 -zqx [--pho]
+# N.B.: in recent version of espeak, the --pho option must be used to output in mbrola format
+hemera.core.speech.tool.options="-p 45 -s 125 -zqx"
+
+# The sound player (path and options).
+# e.g.: play/sox or aplay
+hemera.core.speech.soundPlayer.path="play"
+# IMPORTANT: the sample rate must be the same of the model used with speech tool.
+# e.g.: for play: -q -V1 -r22050 $input -d
+#       for aplay: -q -r22050 -fS16 $input
+hemera.core.speech.soundPlayer.options="-q -V1 -r22050 $input -d"
+
+## Speech core module - espeak (ignored if mode is not espeak or espeak+mbrola).
+# Default language.
+# espeak language samples:
+# with espeak mode: en
+# with espeak+mbrola mode: mb/mb-en1 or mb/mb-fr4
+hemera.core.speech.espeak.language="mb/mb-fr4"
+
+## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
+# mbrola tool (path and options).
+hemera.core.speech.mbrola.path="speech/bin/mbrola"
+hemera.core.speech.mbrola.options="-v 0.9"
+# Language definition - relative to [HEMERA_TP_PATH]/speech/data/language
+hemera.core.speech.mbrola.language="fr4"
+
+
+### Speech recognition core module.
+###################################
+## Speech recognition core module - general.
+# Mode of tool(s) to use.
+# Possible values: sphinx3
+hemera.core.speechRecognition.mode="sphinx3"
+
+# The main tool to use (path and options).
+hemera.core.speechRecognition.tool.path="sphinx3_decode"
+hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -upperf 6800 -silprob 0.01 -fillprob 0.02"
+
+# The speech sound (continuous) recorder (path and options).
+# IMPORTANT: you should specify 'sox' as recorder (NOT rec), because there is issue with '-d' option and compiled source code version of sox.
+# IMPORTANT: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
+hemera.core.speechRecognition.soundRecorder.path="sox"
+hemera.core.speechRecognition.soundRecorder.options="-d -q -r 22050 -c 1 -t wav $output silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
+
+# The sound converted (path and options).
+# IMPORTANT: the sample rate must be compatible with the feature file creator
+#  (for instance wave2feat supports only 8kHz and 16kHz).
+hemera.core.speechRecognition.soundConverter.path="sox"
+hemera.core.speechRecognition.soundConverter.options="$input -s -r 16000 -c 1 $output"
+
+# The sound feature file creator (path and options).
+hemera.core.speechRecognition.soundFeatureCreator.path="wave2feat"
+hemera.core.speechRecognition.soundFeatureCreator.options="-i $input -o $output -raw yes -samprate 16000 -lowerf 130 -upperf 6800 -dither yes -feat sphinx"
+
+## Speech recognition core module - sphinx3 (ignored if mode is not sphinx3).
+# Lexical model (words and fillers) - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/lexical
+hemera.core.speechRecognition.sphinx3.lexicalModel.words="lium/words_dict.utf8"
+hemera.core.speechRecognition.sphinx3.lexicalModel.fillers="lium/fillers_dict.utf8"
+
+# Language model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/language
+hemera.core.speechRecognition.sphinx3.languageModel="lium/3g/trigram_LM.DMP.utf8"
+
+# Acoustic model - relative to [HEMERA_TP_PATH]/speechRecognition/data/models/acoustic
+hemera.core.speechRecognition.sphinx3.acousticModel.definition="lium/architecture/F0.5500.mdef"
+hemera.core.speechRecognition.sphinx3.acousticModel.means="lium/parameters/F0/means"
+hemera.core.speechRecognition.sphinx3.acousticModel.variances="lium/parameters/F0/variances"
+hemera.core.speechRecognition.sphinx3.acousticModel.mixtureWeights="lium/parameters/F0/mixture_weights"
+hemera.core.speechRecognition.sphinx3.acousticModel.transitionMatrices="lium/parameters/F0/transition_matrices"
+
+
+### Recognized commands
+#######################
+# HTML to text converter (path).
+hemera.core.command.general.htmlConverter.path="html2text"
+
+# File splitter (path).
+hemera.core.command.general.fileSplitter.path="csplit"
+
+# The search URL.
+# IMPORTANT: corresponding URL contents is then parsed, if you use a no default link
+#  it is needed to contact Hemera team to update parsing system.
+# e.g.: for wikipedia mobile: http://$h_language.mobile.wikipedia.org/transcode.php?go=$input
+hemera.core.command.search.url="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"
