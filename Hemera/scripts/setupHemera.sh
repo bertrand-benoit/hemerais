@@ -29,18 +29,22 @@ source "$currentDir/utilities.sh"
 
 category="setup"
 
-userSysfile="${HOME/%\//}/.hemera/hemera.sys"
-h_configurationFile="${HOME/%\//}/.hemera/hemera.conf"
-userBashfile="${HOME/%\//}/.bashrc"
+declare -r userSysfile="${HOME/%\//}/.hemera/hemera.sys"
+declare -r h_globalConfFile="/etc/hemera.conf"
+declare -r h_globalConfFileSample="$installDir/config/hemera.conf.global.sample"
+declare -r h_configurationFile="${HOME/%\//}/.hemera/hemera.conf"
+declare -r userBashfile="${HOME/%\//}/.bashrc"
 mkdir -p "${HOME/%\//}/.hemera"
 
 #########################
 ## FUNCTIONS
 # usage: usage
 function usage() {
-  echo -e "Usage: $0 [-fshv]"
+  echo -e "Usage: $0 [-gfshvT]"
+  echo -e "-g\t\tperform global setup (only for root or user having enough permission)"
+  echo -e "-T\t\tspecify third-party tools directory (default: $H_DEFAULT_TP_DIR)"
   echo -e "-f\t\tforce file update"
-  echo -e "-s\t\tinstall Hemera service (will automatically start at boot)"
+  echo -e "-s\t\tinstall Hemera service (only for global setup)"
   echo -e "-v\t\tactivate the verbose mode"
   echo -e "-h\t\tshow this usage"
   echo -e "\nBy default the system check if files already exist in which case it does nothing, you can use the -f option to force file update."
@@ -150,11 +154,15 @@ End-of-Message
 ## Command line management
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
+global=0
+tpDirRoot="$H_DEFAULT_TP_DIR"
 force=0
 service=0
-while getopts "fsvh" opt
+while getopts "gfsvhT:" opt
 do
  case "$opt" in
+        g)      global=1;;
+        T)      tpDirRoot="$OPTARG";;
         f)      force=1;;
         s)      service=1;;
         v)      verbose=1;;
@@ -168,18 +176,55 @@ checkEnvironment || $ERROR_ENVIRONMENT
 
 info "Install directory is '$installDir'"
 
-## Manages user system file.
-checkSysFile "$userSysfile" || createSysFile "$userSysfile"
+## Checks if global setup.
+if [ $global -eq 1 ]; then
+  ## Ensures hemera group exist.
+  groupadd -f hemera && writeMessage "'hemera' group created/updated." || warnPermission
 
-## Manages user .bashrc file.
-checkUserBashrc "$userBashfile" || updateUserBashrc "$userBashfile"
+  ## Creates global configuration file, if needed.
+  writeGlobalConfigFile=0
+  [ ! -f "$h_globalConfFile" ] && writeGlobalConfigFile=1
+  [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ] && writeMessage "You have forced update of file '$h_globalConfFile'" && writeGlobalConfigFile=1
 
-## Manages ssyconfig and service files.
+  if [ $writeGlobalConfigFile -eq 1 ]; then
+    [ ! -f "$h_globalConfFileSample" ] && errorMessage "Unable to find global configuration file sample '$h_globalConfFileSample'." $ERROR_ENVIRONMENT
 
-## Manages Hemera Web module deploy.
+    pathForSed=$( echo "$tpDirRoot" |sed -e 's/\//\\\//g;' )
+    cat "$h_globalConfFileSample" |sed -e "s/^hemera.thirdParty.path=.*$/hemera.thirdParty.path=\"$pathForSed\"/" > "$h_globalConfFile" || warnPermission
+    writeMessage "Global configuration file '$h_globalConfFile' created."
 
-## Checks if Hemera has been configured.
-[ ! -f "$h_configurationFile" ] && writeMessage "You might begin configuring Hemera creating $h_configurationFile file from sample."
+    # Creates third-party directories structure.
+    updateStructure "$tpDirRoot/_fromSource" || warnPermission
+    updateStructure "$tpDirRoot/webServices" || warnPermission
+    updateStructure "$tpDirRoot/speech/data/language" || warnPermission
+    updateStructure "$tpDirRoot/speech/bin" || warnPermission
+    updateStructure "$tpDirRoot/speechRecognition/bin" || warnPermission
+    updateStructure "$tpDirRoot/speechRecognition/data/models/language" || warnPermission
+    updateStructure "$tpDirRoot/speechRecognition/data/models/acoustic" || warnPermission
+    updateStructure "$tpDirRoot/speechRecognition/data/models/lexical" || warnPermission
+
+    chgrp -R hemera "$tpDirRoot"
+    find "$tpDirRoot" -type d -exec chmod g+rwx {} \;
+
+    writeMessage "Third-party tools '$tpDirRoot' structure updated/created."
+  fi
+
+  ## Manages sysconfig and service files.
+  [ $service -eq 1 ] && writeMessage "Service setup not implemented yet."
+else
+  # Ensures it is not root.
+  [ "$( whoami )" = "root" ] && errorMessage "User specific setup is NOT allowed for root user (use -g option for global setup)." $ERROR_ENVIRONMENT
+
+  # It is NOT a global setup, manages user specific setup.
+  ## Manages user system file.
+  checkSysFile "$userSysfile" || createSysFile "$userSysfile"
+
+  ## Manages user .bashrc file.
+  checkUserBashrc "$userBashfile" || updateUserBashrc "$userBashfile"
+
+  ## Checks if Hemera has been configured.
+  [ ! -f "$h_configurationFile" ] && writeMessage "You might begin configuring Hemera creating $h_configurationFile file from sample."
+fi
 
 ## Informs.
 writeMessage "Hemera completed successfully."
