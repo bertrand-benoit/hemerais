@@ -90,7 +90,10 @@ function checkSysFile() {
   [ -z "$confInstallDir" ] && confInstallDir="NONE"
 
   # Ensures it is the same.
-  [[ "$installDir" == "$confInstallDir" ]] && return 0
+  if [[ "$installDir" == "$confInstallDir" ]]; then
+    writeMessage "System file '$_sysFile' is up to date."
+    return 0
+  fi
 
   writeMessageSL "Configured install directory '$confInstallDir' is NOT the same of this setup '$installDir', do you want to update ? [y/n] "
   read -n 1 answer
@@ -128,7 +131,13 @@ function checkUserBashrc() {
   info "Found user bashrc file '$_userFile'"
 
   # Checks if there is already the instruction to update path.
-  [ $( grep "emera" "$_userFile" |grep -c "updatePath" ) -ge 1 ]
+  if [ $( grep "emera" "$_userFile" |grep -c "updatePath" ) -ge 1 ]; then
+    writeMessage "User bashrc file '$_userFile' is up to date."
+    return 0
+  fi
+
+  # User bashrc file must be updated.
+  return 1
 }
 
 # usage: checkUserBashrc <file>
@@ -179,19 +188,27 @@ info "Install directory is '$installDir'"
 ## Checks if global setup.
 if [ $global -eq 1 ]; then
   ## Ensures hemera group exist.
-  groupadd -f hemera && writeMessage "'hemera' group created/updated." || warnPermission
+  info "Create/check 'hemera' group"
+  groupadd -f hemera 2>/dev/null && writeMessage "'hemera' group created/updated." || warnPermission
 
   ## Creates global configuration file, if needed.
   writeGlobalConfigFile=0
-  [ ! -f "$h_globalConfFile" ] && writeGlobalConfigFile=1
-  [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ] && writeMessage "You have forced update of file '$h_globalConfFile'" && writeGlobalConfigFile=1
+  if [ -f "$h_globalConfFile" ]; then
+    info "Found global configuration file '$h_globalConfFile'"
+  else
+    writeGlobalConfigFile=1
+  fi
+
+  [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ] && writeMessage "You have forced update of global configuration file '$h_globalConfFile'" && writeGlobalConfigFile=1
 
   if [ $writeGlobalConfigFile -eq 1 ]; then
     [ ! -f "$h_globalConfFileSample" ] && errorMessage "Unable to find global configuration file sample '$h_globalConfFileSample'." $ERROR_ENVIRONMENT
 
     pathForSed=$( echo "$tpDirRoot" |sed -e 's/\//\\\//g;' )
     cat "$h_globalConfFileSample" |sed -e "s/^hemera.thirdParty.path=.*$/hemera.thirdParty.path=\"$pathForSed\"/" > "$h_globalConfFile" || warnPermission
-    writeMessage "Global configuration file '$h_globalConfFile' created."
+    chgrp hemera "$h_globalConfFile"
+    chmod g+rw "$h_globalConfFile"
+    writeMessage "Global configuration file '$h_globalConfFile' created/updated."
 
     # Creates third-party directories structure.
     updateStructure "$tpDirRoot/_fromSource" || warnPermission
@@ -205,8 +222,9 @@ if [ $global -eq 1 ]; then
 
     chgrp -R hemera "$tpDirRoot"
     find "$tpDirRoot" -type d -exec chmod g+rwx {} \;
+    find "$tpDirRoot" -type f -exec chmod g+rw {} \;
 
-    writeMessage "Third-party tools '$tpDirRoot' structure updated/created."
+    writeMessage "Third-party tools '$tpDirRoot' structure created/updated."
   fi
 
   ## Manages sysconfig and service files.
