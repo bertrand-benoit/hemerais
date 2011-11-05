@@ -1,5 +1,19 @@
-VERSION 0.2.0
+VERSION 0.1.5
 =============
+
+2011-11-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * redesign the way Hemera can be setup by a system administrator, and can be used by a standard user
+
+ * setupHemera: implemented a 'global setup' system allowing to create hemera group, global configuration file, third-party tools directory structure ...
+
+ * removed fully ThirdParty 'project' which is no more needed (misc files have been moved in misc/ sub-directory of Hemera project)
+
+2011-10-26  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * migrate from SVN repository to GIT repository
+
+ * updated some projects accordingly
 
 2011-10-10  Bertrand Benoit <projettwk@users.sourceforge.net>
 
