@@ -37,12 +37,12 @@ source "$installDir/scripts/utilities.sh"
 checkEnvironment || $ERROR_ENVIRONMENT
 checkOSLocale || $ERROR_ENVIRONMENT
 
-# Defines Third-party directory, and ensures it is available.
-declare -rx h_tpDir="$installDir/../ThirdParty"
-[ ! -d "$h_tpDir" ] && errorMessage "$h_tpDir NOT found. You must get Third Party project. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera" $ERROR_ENVIRONMENT
-
 # Updates configuration.
 declare -rx h_libDir="$installDir/lib"
+
+# Defines global configuration file.
+# It is NOT mandatory to have a global configuration file to allow user with NO privileges access to use Hemera.
+declare -rx h_globalConfFile="/etc/hemera.conf"
 
 # Defines configuration file, and ensures the system has been configured.
 declare -r configDir="${HOME/%\//}/.hemera"
@@ -50,6 +50,10 @@ updateStructure "$configDir"
 declare -rx h_configurationFileSample="$installDir/config/hemera.conf.sample"
 declare -rx h_configurationFile="$configDir/hemera.conf"
 [ ! -f "$h_configurationFile" ] && errorMessage "$h_configurationFile NOT found. You must create it to configure the system (See $h_configurationFileSample)." $ERROR_ENVIRONMENT
+
+# Defines Third-party directory, and ensures it is available.
+declare -rx h_tpDir=$( getConfigPath "hemera.thirdParty.path" "$installDir" ) || exit $ERROR_CONFIG_PATH
+[ ! -d "$h_tpDir" ] && errorMessage "'$h_tpDir' NOT found. Hemera must be setup (contact admin), or update your configuration file to define third-party tools root directory. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera" $ERROR_ENVIRONMENT
 
 # Updates environment path if needed.
 checkAndSetConfig "hemera.path.bin" "$CONFIG_TYPE_OPTION"
