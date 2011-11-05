@@ -21,7 +21,7 @@
 ############
 # The root directory of third-party tools, called [HEMERA_TP_PATH]
 #  later in this file, in other configuration files, and in Hemera documentation.
-hemera.thirdParty.path="/usr/share/hemera"
+hemera.thirdParty.path="/usr/share/hemera/ThirdParty"
 
 # Binary directory paths to add to PATH environment variable.
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.

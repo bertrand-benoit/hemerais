@@ -25,11 +25,11 @@
 
 ## General constants
 # Hemera version.
-declare -r H_VERSION="0.1.5b1"
+declare -r H_VERSION="0.1.5-beta1"
 
 # Some default values.
 declare -r H_DEFAULT_LOG="/tmp/hemera.log"
-declare -r H_DEFAULT_TP_DIR="/usr/share/hemera"
+declare -r H_DEFAULT_TP_DIR="/usr/share/hemera/ThirdParty"
 declare -r H_INFO=1
 declare -r H_MESSAGE=2
 declare -r H_WARNING=3
