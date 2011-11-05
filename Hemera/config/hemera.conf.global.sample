@@ -27,7 +27,7 @@ hemera.thirdParty.path="/usr/share/hemera"
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
 # You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin-XX directory).
 # For each path you add there, you can specify "simple" name of corresponding tool in other configuration element.
-hemera.path.bin="_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_fromSource/sox/src"
+hemera.path.bin="speech/bin:speechRecognition/bin:_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_fromSource/sox/src"
 
 # Library directory paths to add to LD_LIBRARY_PATH environment variable.
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
@@ -76,7 +76,7 @@ environment.java.home=""
 
 # Home directory (i.e. root directory) of Apache Ant
 # N.B.: ANT_HOME environment variable is regarded if not set here.
-environment.ant.home=""
+environment.ant.home="/usr/share/ant"
 
 
 ### Input/Output manager core module.
@@ -137,7 +137,7 @@ hemera.core.speech.espeak.language="mb/mb-fr4"
 
 ## Speech core module - mbrola (ignored if mode is not espeak+mbrola).
 # mbrola tool (path and options).
-hemera.core.speech.mbrola.path="speech/bin/mbrola"
+hemera.core.speech.mbrola.path="mbrola"
 hemera.core.speech.mbrola.options="-v 0.9"
 # Language definition - relative to [HEMERA_TP_PATH]/speech/data/language
 hemera.core.speech.mbrola.language="fr4"
@@ -158,7 +158,7 @@ hemera.core.speechRecognition.tool.options="-agc max -wlen 0.0256 -lowerf 130 -u
 # IMPORTANT: you should specify 'sox' as recorder (NOT rec), because there is issue with '-d' option and compiled source code version of sox.
 # IMPORTANT: the threshold (N%) must be adapted according to the quality of your microphone (0%=digital quality, >0%=there is noise)
 hemera.core.speechRecognition.soundRecorder.path="sox"
-hemera.core.speechRecognition.soundRecorder.options="-d -q -r 22050 -c 1 -t wav $output silence 1 0.2 2% 1 2.0 2%  : newfile : restart"
+hemera.core.speechRecognition.soundRecorder.options="-d -q -r 22050 -c 1 -t wav $output silence -l 1 0.2 2% 1 2.0 2%  : newfile : restart"
 
 # The sound converted (path and options).
 # IMPORTANT: the sample rate must be compatible with the feature file creator
