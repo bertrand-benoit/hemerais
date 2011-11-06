@@ -221,8 +221,8 @@ if [ $global -eq 1 ]; then
     updateStructure "$tpDirRoot/speechRecognition/data/models/lexical" || warnPermission
 
     chgrp -R hemera "$tpDirRoot"
-    find "$tpDirRoot" -type d -exec chmod g+rwx {} \;
-    find "$tpDirRoot" -type f -exec chmod g+rw {} \;
+    chmod -R g+rw "$tpDirRoot"
+    find "$tpDirRoot" -type d -exec chmod g+x {} \;
 
     writeMessage "Third-party tools '$tpDirRoot' structure created/updated."
   fi
@@ -231,7 +231,7 @@ if [ $global -eq 1 ]; then
   [ $service -eq 1 ] && writeMessage "Service setup not implemented yet."
 else
   # Ensures it is not root.
-  [ "$( whoami )" = "root" ] && errorMessage "User specific setup is NOT allowed for root user (use -g option for global setup)." $ERROR_ENVIRONMENT
+  isRootUser && errorMessage "User specific setup is NOT allowed for root user (use -g option for global setup)." $ERROR_ENVIRONMENT
 
   # It is NOT a global setup, manages user specific setup.
   ## Manages user system file.
