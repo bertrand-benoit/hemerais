@@ -31,6 +31,10 @@ source "$currentDir/setEnvironment.sh"
 
 #########################
 ## INSTRUCTIONS
+# Ensures work directory is defined (it can be NOT defined if configuration files have not been created yet).
+[ -z "${h_workDir:-}" ] && h_workDir="$H_DEFAULT_WORK_DIR/$( whoami )"
+mkdir -p "$h_workDir"
+
 ## Checks i18n files.
 writeMessage "Checking internationalization files (BEGIN)"
 declare -r refI18nFile="$installDir/i18n/hemera-i18n.fr"
@@ -84,6 +88,15 @@ checkAndSetConfig "hemera.run.activation.tomcat" "$CONFIG_TYPE_OPTION"
 declare -r tomcatActivation="$h_lastConfig"
 if [ "$tomcatActivation" = "localhost" ]; then
   manageTomcatHome || exit $ERROR_ENVIRONMENT
+fi
+
+## Ensures minimal configuration has been done before requesting various Hemera components.
+# If third-party tools directory, or hemera log, run or tmp directories are not defined,
+#  there is no sense to check config -> it will fail for each script because the -X option
+#  will not have been managed yet (defining checkConfAndQuit flag), and setEnvironment will fail.
+if [ $h_minConfigOK -eq 0 ]; then
+  warning "Hemera must be setup and configured for advanced configuration check."
+  exit $ERROR_CHECK_CONFIG  
 fi
 
 ## Requests configuration check to Hemera main script.

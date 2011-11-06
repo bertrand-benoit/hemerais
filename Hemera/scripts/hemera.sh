@@ -26,6 +26,9 @@
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 category="hemera"
+# Special short-circuit allowing to activate 'check config and quit' mode asap.
+#[ $# -eq 1 ] && [[ "$1"=="-X" ]] && checkConfAndQuit=1
+
 # Each call to this main script must log in same logFile.
 continueLogFile=1
 source "$currentDir/setEnvironment.sh"

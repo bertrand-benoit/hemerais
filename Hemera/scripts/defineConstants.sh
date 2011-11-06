@@ -28,6 +28,7 @@
 declare -r H_VERSION="0.1.5-beta1"
 
 # Some default values.
+declare -r H_DEFAULT_WORK_DIR="/tmp/hemera"
 declare -r H_DEFAULT_LOG="/tmp/hemera.log"
 declare -r H_DEFAULT_TP_DIR="/usr/share/hemera/ThirdParty"
 declare -r H_INFO=1
@@ -36,9 +37,11 @@ declare -r H_WARNING=3
 declare -r H_ERROR=4
 
 # Configuration element types.
-declare -r CONFIG_TYPE_OPTION=1
-declare -r CONFIG_TYPE_BIN=2
-declare -r CONFIG_TYPE_DATA=3
+declare -r CONFIG_NOT_FOUND="CONFIG NOT FOUND"
+declare -r CONFIG_TYPE_PATH=1
+declare -r CONFIG_TYPE_OPTION=2
+declare -r CONFIG_TYPE_BIN=3
+declare -r CONFIG_TYPE_DATA=4
 
 # Hemera modes.
 declare -r H_RECO_CMD_MODE_NORMAL="normal"
