@@ -44,6 +44,10 @@ declare -rx h_libDir="$installDir/lib"
 # It is NOT mandatory to have a global configuration file to allow user with NO privileges access to use Hemera.
 declare -rx h_globalConfFile="/etc/hemera.conf"
 
+# Safe-guard: ensures HOME variable is defined and corresponding path exists.
+! isRootUser && [ -z "${HOME:-}" ] && errorMessage "HOME environment variable must be defined." $ERROR_ENVIRONMENT
+! isRootUser && [ ! -d "$HOME" ] && errorMessage "Home directory '$HOME' must exist (update your HOME environment variable)." $ERROR_ENVIRONMENT
+
 # Defines configuration file, and ensures the system has been configured.
 declare -r configDir="${HOME/%\//}/.hemera"
 updateStructure "$configDir"

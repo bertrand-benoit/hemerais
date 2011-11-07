@@ -26,15 +26,15 @@
 hemera.language="fr"
 
 # The Hemera logs directory (where log files will be created).
-hemera.run.log="run/log"
+hemera.run.log="~/hemera/run/log"
 
 # The Hemera run temporary directory (where event temporary files will be created,
 #  like speech recording).
-hemera.run.temp="run/tmp"
+hemera.run.temp="~/hemera/tmp"
 
 # The Hemera run queue directory (where event files will be created).
 # The event manager will look for event in this queue.
-hemera.run.queue="run/queue"
+hemera.run.queue="~/hemera/queue"
 
 
 ### Speech core module.
