@@ -29,12 +29,13 @@ source "$currentDir/utilities.sh"
 
 category="setup"
 
-declare -r userSysfile="${HOME/%\//}/.hemera/hemera.sys"
+declare -r userHome="$( pruneSlash $HOME )"
+declare -r userSysfile="$userHome/.hemera/hemera.sys"
 declare -r h_globalConfFile="/etc/hemera.conf"
 declare -r h_globalConfFileSample="$installDir/config/hemera.conf.global.sample"
-declare -r h_configurationFile="${HOME/%\//}/.hemera/hemera.conf"
-declare -r userBashfile="${HOME/%\//}/.bashrc"
-mkdir -p "${HOME/%\//}/.hemera"
+declare -r h_configurationFile="$userHome/.hemera/hemera.conf"
+declare -r userBashfile="$userHome/.bashrc"
+mkdir -p "$userHome/.hemera"
 
 #########################
 ## FUNCTIONS
@@ -171,7 +172,9 @@ while getopts "gfsvhT:" opt
 do
  case "$opt" in
         g)      global=1;;
-        T)      tpDirRoot="$OPTARG";;
+        T)      tpDirRoot="$OPTARG"
+                checkForbiddenPath "$tpDirRoot" || errorMessage "For security reason, '$tpDirRoot' is a forbidden path. Specify another third-party tools directory." $ERROR_ENVIRONMENT
+        ;;
         f)      force=1;;
         s)      service=1;;
         v)      verbose=1;;

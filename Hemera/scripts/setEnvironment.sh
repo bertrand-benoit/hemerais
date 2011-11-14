@@ -49,7 +49,7 @@ declare -rx h_globalConfFile="/etc/hemera.conf"
 ! isRootUser && [ ! -d "$HOME" ] && errorMessage "Home directory '$HOME' must exist (update your HOME environment variable)." $ERROR_ENVIRONMENT
 
 # Defines configuration file, and ensures the system has been configured.
-declare -r configDir="${HOME/%\//}/.hemera"
+declare -r configDir="$( pruneSlash $HOME )/.hemera"
 updateStructure "$configDir"
 declare -rx h_configurationFileSample="$installDir/config/hemera.conf.sample"
 declare -rx h_configurationFile="$configDir/hemera.conf"
@@ -132,6 +132,7 @@ fi
 
 checkAndSetConfig "hemera.run.log" "$CONFIG_TYPE_PATH" "$installDir" 0
 declare -rx h_logDir="$h_lastConfig"
+checkForbiddenPath "$h_logDir" || errorMessage "For security reason, '$h_logDir' is a forbidden path. Update 'hemera.run.log' configuration." $ERROR_ENVIRONMENT
 if [[ "$h_logDir" != "$CONFIG_NOT_FOUND" ]]; then
   updateStructure "$h_logDir"
 else
@@ -145,6 +146,7 @@ fi
 #  [queue]/done   input managed
 checkAndSetConfig "hemera.run.queue" "$CONFIG_TYPE_PATH" "$installDir" 0
 declare -rx queueDir="$h_lastConfig"
+checkForbiddenPath "$queueDir" || errorMessage "For security reason, '$queueDir' is a forbidden path. Update 'hemera.run.queue' configuration." $ERROR_ENVIRONMENT
 if [[ "$queueDir" != "$CONFIG_NOT_FOUND" ]]; then
   declare -rx h_newInputDir="$queueDir/new"
   declare -rx h_curInputDir="$queueDir/cur"
@@ -164,6 +166,7 @@ fi
 #  [tmp]/work   temporary files
 checkAndSetConfig "hemera.run.temp" "$CONFIG_TYPE_PATH" "$installDir" 0
 declare -rx tmpDir="$h_lastConfig"
+checkForbiddenPath "$tmpDir" || errorMessage "For security reason, '$tmpDir' is a forbidden path. Update 'hemera.run.temp' configuration." $ERROR_ENVIRONMENT
 if [[ "$tmpDir" != "$CONFIG_NOT_FOUND" ]]; then
   declare -rx h_cacheDir="$tmpDir/cache"
   declare -rx h_pidDir="$tmpDir/pid"

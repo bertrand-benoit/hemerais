@@ -31,6 +31,7 @@ declare -r H_VERSION="0.1.5-beta1"
 declare -r H_DEFAULT_WORK_DIR="/tmp/hemera"
 declare -r H_DEFAULT_LOG="/tmp/hemera.log"
 declare -r H_DEFAULT_TP_DIR="/usr/share/hemera/ThirdParty"
+declare -r H_FORBIDDEN_PATH="/ /bin /boot /dev /etc /home /lib /media /misc /mnt /net /opt /proc /root /sbin /selinux /srv /sys /tmp /usr /var"
 declare -r H_INFO=1
 declare -r H_MESSAGE=2
 declare -r H_WARNING=3

@@ -1,6 +1,10 @@
 VERSION 0.1.5
 =============
 
+2011-11-14  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * added safe-guard on user configuration directories to avoid forbidden directories (/, /root, /home, /etc ...)
+
 2011-11-05  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * redesign the way Hemera can be setup by a system administrator, and can be used by a standard user
