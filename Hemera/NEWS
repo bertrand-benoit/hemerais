@@ -1,19 +1,33 @@
-Noteworthy changes in version 0.1.5 (not yet released)
+Noteworthy changes in version 0.1.6 (not yet released)
+------------------------------------------------
+
+ * internationalized web module giving lots of information (static and real-time)
+
+
+Noteworthy changes in version 0.1.5 (coming soon)
 ------------------------------------------------
 
  * various great infrastructure updates for better flexibility and evolvability
 
  * easy plug-ins system to add recognized commands
 
- * internationalized web module giving lots of information (static and real-time)
-
  * new configuration auto-diagnosis system (optimal check)
-
- * new miscellaneous tools helping to configure Hemera (e.g. microphone)
 
  * offline version of Hemera Book
 
- * improved compatibility with Debian-like GNU/Linux
+ * improved compatibility and robustness with RedHat-like and Debian-like GNU/Linux
+
+ * fixed all reported bugs in previous Hemera versions
+
+
+Noteworthy changes in version 0.1.1 (2011-07-27)
+------------------------------------------------
+
+ * soundChecker: new miscellaneous tool allowing to quickly test sound recording, and sound playing
+
+ * improved robustness in some cases (e.g. missing third-party tools like GNU version of 'which')
+
+ * fixed reported major bugs
 
 
 Noteworthy abilities/functionalities in version 0.1.0 (2011-04-08)
