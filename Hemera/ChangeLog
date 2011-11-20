@@ -1,6 +1,10 @@
 VERSION 0.1.5
 =============
 
+2011-11-20  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * makeDistrib: redesigned system according to GIT, new projects and architecture updates
+
 2011-11-14  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * added safe-guard on user configuration directories to avoid forbidden directories (/, /root, /home, /etc ...)

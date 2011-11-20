@@ -29,8 +29,8 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-installDir=$( dirname "$currentDir" )"/../../Hemera"
-svnRep="https://hemerais.svn.sourceforge.net/svnroot/hemerais/branches"
+repoDir=$( dirname "$currentDir" )"/.."
+installDir="$repoDir/Hemera"
 
 # Ensures hemera main project is available in the same root directory.
 [ ! -d "$installDir" ] && echo -e "Unable to find hemera main project ($installDir)" && exit 1
@@ -40,26 +40,37 @@ export h_logFile="/tmp/"$( date +'%s' )"-makeDistrib.log"
 
 source "$installDir/scripts/setEnvironment.sh"
 
+# Ensures git repository is currently on master branch, to have up-to-date gitattributes information.
+cd "$repoDir"
+[ $( git branch |grep -c "* master" ) -ne 1 ] && errorMessage "'master' branch of GIT repository must be checkout (ensuring having up to date gitattributes)." $ERROR_ENVIRONMENT
+
 # Informs about log file now that functions are available.
 writeMessage "LogFile: $h_logFile"
 
 #########################
 ## FUNCTIONS
 function usage() {
-  echo -e "usage: $0 -v <version> -o <destination dir>"
-  echo -e "  version\tthe version name, relative to branches folder on SVN repository"
-  echo -e "  dir\t\tthe destination directory where to checkout, and create distribution"
+  echo -e "usage: $0 -n <name> [-v <version> -o <destination dir> -ST]"
+  echo -e "  name\t\tthe name (suffix) of release to create (e.g. 0.1.5)"
+  echo -e "  version\tthe GIT ID (e.g. master, HEAD, Hemera-0.1.1); default: master"
+  echo -e "  dir\t\tthe destination directory where to checkout, and create distribution; default: /tmp (or directory defined by environment variable HEMERA_DISTRIB_DIR)"
+  echo -e "  -S\t\tactivate samples archive creation, in addition to release one"
+  echo -e "  -T\t\tactivate tests archive creation, in addition to release one"
 
   exit $ERROR_USAGE
 }
 
-# usage: coProject <name> <subPath> <destName>
-function coProject() {
-  local _name="$1" _subPath="$2" _destName="$3"
+# usage: createArchive <name> <prefix> <archiveFile>
+function createArchive() {
+  local _name="$1" _prefix="$2" _archiveFile="$3"
 
-  writeMessage "Checking out $_name project v$version from SVN repository ... " 0
-  ! svn -q export "$svnUrl/$_subPath" "$destDir/$_destName" >/dev/null 2>&1 && echo "failed" && exit $ERROR_ENVIRONMENT
-  echo "ok"
+  # N.B.: using a symbolic link to have the good root directory name.
+
+  writeMessage "Creating archive '$_prefix' from '$version' ... " 0
+  ln -s "$_name" "$_prefix"
+  ! tar  --exclude=".project" -czf "$_archiveFile" "$_prefix"/* && echo "failed" && exit 1
+  echo "successfully created release file: $_archiveFile"
+  rm "$_prefix"
 }
 
 #########################
@@ -67,43 +78,38 @@ function coProject() {
 
 # Defines verbose to 0 if not already defined.
 verbose=${verbose:-0}
-while getopts "v:o:" opt
+createSamplesArchive=0
+createTestsArchive=0
+while getopts "v:o:n:ST" opt
 do
  case "$opt" in
+        n)      name="$OPTARG";;
         v)      version="$OPTARG";;
         o)      destDir="$OPTARG";;
+        S)      createSamplesArchive=1;;
+        T)      createTestsArchive=1;;
         h|[?])  usage ;; 
  esac
 done
 
-[ -z "$version" ] && usage
-[ -z "$destDir" ] && usage
+[ -z "${name:-}" ] && usage
+[ -z "${version:-}" ] && writeMessage "Using default version 'master'" && version="master"
+[ -z "${destDir:-}" ] && destDir="${HEMERA_DISTRIB_DIR:-/tmp}" && writeMessage "Using default output directory '$destDir'"
 
-[ ! -d "$destDir" ] && errorMessage "Destination directory $destDir not found." $ERROR_BAD_CLI
+[ ! -d "$destDir" ] && errorMessage "Destination directory '$destDir' not found." $ERROR_BAD_CLI
 
-svnUrl="$svnRep/$version"
-writeMessage "Looking for version $version on SVN repository ... " 0
-! svn list "$svnUrl" >/dev/null 2>&1 && echo "failed" && exit $ERROR_ENVIRONMENT
+writeMessage "Looking for version '$version' on GIT repository ... " 0
+! git describe $version --always >/dev/null 2>&1 && echo "failed" && exit $ERROR_ENVIRONMENT
 echo "ok"
 
 #########################
 ## INSTRUCTIONS
-coProject "Hemera" "hemera" "Hemera"
-coProject "Hemera Tests" "tests" "HemeraTests"
-coProject "Hemera Samples" "samples" "HemeraSamples"
+releaseName="Hemera-$name"
+releaseFile="$destDir/$releaseName".tgz
+writeMessage "Creating release '$releaseName' from '$version' ... " 0
+! git archive --format=tar --worktree-attributes --prefix="Hemera-$name/" "$version" | gzip >"$releaseFile" && echo "failed" && exit 1
+echo "successfully created release file: $releaseFile"
 
-# Removes some meta data.
-writeMessage "Removing some metadata ... " 0
-! find "$destDir" -regextype posix-extended -iregex ".*[.]classpath|.*[.]project" -exec rm -Rf {} \; && echo "failed" && exit $ERROR_ENVIRONMENT
-echo "ok"
-
-# Creates distrib.
-cd "$destDir"
-writeMessage "Creating distribution ... " 0
-echo -n "Hemera and Tests ... "
-! tar czf "Hemera-v$version.tgz" Hemera HemeraTests  && echo "failed" && exit $ERROR_ENVIRONMENT
-echo -n "Hemera samples ... "
-! tar cjf "Hemera-samples-v$version.tbz" HemeraSamples && echo "failed" && exit $ERROR_ENVIRONMENT
-echo "ok"
-
-writeMessage "Distribution available in $destDir"
+# Creates additional archive according to options.
+[ $createSamplesArchive -eq 1 ] && createArchive "Samples" "Hemera-samples-$name" "$destDir/Hemera-samples-$name.tgz"
+[ $createTestsArchive -eq 1 ] && createArchive "Tests" "Hemera-tests-$name" "$destDir/Hemera-tests-$name.tgz"
