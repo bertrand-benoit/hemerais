@@ -17,14 +17,13 @@
      or write to the Free Software Foundation,Inc., 51 Franklin Street,
      Fifth Floor, Boston, MA 02110-1301  USA
 -->
-<project name="Hemera - Intelligent System" default="libraries" basedir=".">
+<project name="Hemera - Intelligent System" default="noManualLaunch" basedir=".">
 <!-- Constants definition -->
   <property environment="env"/>
   <property name="src" value="../src"/>
   <property name="bin" value="../build"/>
   <property name="doc" value="../doc/javadoc"/>
   <property name="lib" value="../lib"/>
-  <property name="defaultRun" value="../run"/>
 
 <!-- Initialization -->
   <target name="init">
@@ -32,6 +31,12 @@
   </target>
 
 <!-- Main targets -->
+  <target name="noManualLaunch">
+   <echo level="warning">
+    You should NOT launched ant manually. You SHOULD use makeHemera.sh script.
+   </echo>
+  </target>
+  
   <target name="all" depends="libraries,doc" />
 
 <!-- Source code management targets -->
@@ -69,7 +74,6 @@
     <delete dir="${bin}"/>
     <delete dir="${doc}"/>
     <delete file="${lib}/hemera.jar"/>
-    <delete dir="${defaultRun}"/> <!-- delete default run directory -->
   </target>
 
 <!-- Documentation target -->
