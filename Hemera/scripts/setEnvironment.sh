@@ -49,7 +49,7 @@ declare -rx h_globalConfFile="/etc/hemera.conf"
 ! isRootUser && [ ! -d "$HOME" ] && errorMessage "Home directory '$HOME' must exist (update your HOME environment variable)." $ERROR_ENVIRONMENT
 
 # Defines configuration file, and ensures the system has been configured.
-declare -r configDir="$( pruneSlash $HOME )/.hemera"
+declare -r configDir="$( pruneSlash "$HOME" )/.hemera"
 updateStructure "$configDir"
 declare -rx h_configurationFileSample="$installDir/config/hemera.conf.sample"
 declare -rx h_configurationFile="$configDir/hemera.conf"

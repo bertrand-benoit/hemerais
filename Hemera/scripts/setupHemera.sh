@@ -29,7 +29,7 @@ source "$currentDir/utilities.sh"
 
 category="setup"
 
-declare -r userHome="$( pruneSlash $HOME )"
+declare -r userHome="$( pruneSlash "$HOME" )"
 declare -r userSysfile="$userHome/.hemera/hemera.sys"
 declare -r h_globalConfFile="/etc/hemera.conf"
 declare -r h_globalConfFileSample="$installDir/config/hemera.conf.global.sample"
