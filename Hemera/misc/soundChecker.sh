@@ -92,7 +92,16 @@ trap 'manageDaemon "stop" "soundChecker" "$pidFile" "$soundRecorderBin" "$output
 writeMessage "At any time you can stop the test with CTRL+C"
 
 # The only way to quit is to CTRL+C.
+inputIndex=1
 while [ 1 ]; do
+  # Important: sounds recorded (and closed) during current sound playing will be ignored, because
+  #  inotifywait won't be processing during this time.
+  # It is a known limitation which is acceptable -> usually if lots of recorded wav files are created
+  #  in few seconds, it means there is a configuration issue.
+  # If ever, we want to fix this limitation, it is enough to implement equivalent to:
+  #  - inputMonitor which watches for new recorded files and updates corresponding file h_inputList
+  #  - ioprocessor which watches h_inputList and manage files one after the other.  
+
   writeMessage "Speak in your microphone (then ensure there is silence when you have finished)"
   newSoundFile=$( inotifywait -q --format '%f' -e close_write "$wDir" )
 
