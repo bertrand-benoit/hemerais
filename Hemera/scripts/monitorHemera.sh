@@ -53,7 +53,19 @@ function startMonitor() {
     writeMessage "Restarting monitor (the previous one has been killed or stopped because Hemera monitor information has been erased)"
   fi
 
-  ( LANG=C tail --retry -q -F "$h_monitor" 2>"$_errorOutput" ) &
+  (
+    # Prepares the error output file to avoid false positive error (and monitor restarting).
+    touch "$_errorOutput"
+
+    # Ensures the monitor file exists before launching tail to avoid false positive error (and monitor restarting).
+    while [ ! -f "$h_monitor" ]; do
+        sleep 1
+    done
+
+    # Uses a 'simple' tail (NO --retry, and NO -F option to avoid duplicate output when monitor has
+    #  been restarted, in which case, several 'tail' will live until this parent script is stopped).
+    LANG=C tail -q -f "$h_monitor" 2>"$_errorOutput"
+  ) &
 }
 
 #########################
