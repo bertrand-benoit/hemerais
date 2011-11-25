@@ -145,13 +145,13 @@ fi
 #  [queue]/err    input with unknown type or error occurs while processing
 #  [queue]/done   input managed
 checkAndSetConfig "hemera.run.queue" "$CONFIG_TYPE_PATH" "$installDir" 0
-declare -rx queueDir="$h_lastConfig"
-checkForbiddenPath "$queueDir" || errorMessage "For security reason, '$queueDir' is a forbidden path. Update 'hemera.run.queue' configuration." $ERROR_ENVIRONMENT
-if [[ "$queueDir" != "$CONFIG_NOT_FOUND" ]]; then
-  declare -rx h_newInputDir="$queueDir/new"
-  declare -rx h_curInputDir="$queueDir/cur"
-  declare -rx h_errInputDir="$queueDir/err"
-  declare -rx h_doneInputDir="$queueDir/done"
+declare -rx h_queueDir="$h_lastConfig"
+checkForbiddenPath "$h_queueDir" || errorMessage "For security reason, '$h_queueDir' is a forbidden path. Update 'hemera.run.queue' configuration." $ERROR_ENVIRONMENT
+if [[ "$h_queueDir" != "$CONFIG_NOT_FOUND" ]]; then
+  declare -rx h_newInputDir="$h_queueDir/new"
+  declare -rx h_curInputDir="$h_queueDir/cur"
+  declare -rx h_errInputDir="$h_queueDir/err"
+  declare -rx h_doneInputDir="$h_queueDir/done"
   updateStructure "$h_newInputDir"
   updateStructure "$h_curInputDir"
   updateStructure "$h_errInputDir"
@@ -165,12 +165,12 @@ fi
 #  [tmp]/pid    PID files
 #  [tmp]/work   temporary files
 checkAndSetConfig "hemera.run.temp" "$CONFIG_TYPE_PATH" "$installDir" 0
-declare -rx tmpDir="$h_lastConfig"
-checkForbiddenPath "$tmpDir" || errorMessage "For security reason, '$tmpDir' is a forbidden path. Update 'hemera.run.temp' configuration." $ERROR_ENVIRONMENT
-if [[ "$tmpDir" != "$CONFIG_NOT_FOUND" ]]; then
-  declare -rx h_cacheDir="$tmpDir/cache"
-  declare -rx h_pidDir="$tmpDir/pid"
-  declare -rx h_workDir="$tmpDir/work"
+declare -rx h_tmpDir="$h_lastConfig"
+checkForbiddenPath "$h_tmpDir" || errorMessage "For security reason, '$h_tmpDir' is a forbidden path. Update 'hemera.run.temp' configuration." $ERROR_ENVIRONMENT
+if [[ "$h_tmpDir" != "$CONFIG_NOT_FOUND" ]]; then
+  declare -rx h_cacheDir="$h_tmpDir/cache"
+  declare -rx h_pidDir="$h_tmpDir/pid"
+  declare -rx h_workDir="$h_tmpDir/work"
   updateStructure "$h_cacheDir"
   updateStructure "$h_pidDir"
   updateStructure "$h_workDir"

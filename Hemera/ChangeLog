@@ -1,6 +1,10 @@
 VERSION 0.1.5
 =============
 
+2011-11-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * makeHemera: redesigned clean system (support any kind of user directories); did not removed log directory anymore
+
 2011-11-20  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * makeDistrib: redesigned system according to GIT, new projects and architecture updates

@@ -69,6 +69,14 @@ if [ "$target" = "clean" ]; then
 
   # Ensures Hemera is not running (checking PID file).
   isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT
+
+  # Cleans any working directories.
+  writeMessageSL "Cleaning queue and temporary directories ."
+  for dirToClean in "$h_queueDir" "$h_tmpDir"; do
+    rm -Rf "$dirToClean" >>"$h_logFile" 2>&1
+    echo -ne "."
+  done
+  echo " done"
 fi
 
 if [ "$target" != "webModule" ]; then
