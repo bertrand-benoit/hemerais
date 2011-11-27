@@ -1,6 +1,10 @@
 VERSION 0.1.5
 =============
 
+2011-11-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * completed offline Hemera Book generator
+
 2011-11-25  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * makeHemera: redesigned clean system (support any kind of user directories); did not removed log directory anymore
