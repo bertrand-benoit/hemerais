@@ -175,7 +175,7 @@ function manageRecognitionResult() {
 function speechToSay() {
   local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH_I18N}"
   logMonitor "$_monitorMessage $_text"
-  h_logFile="$h_logFile" noconsole=1 "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
+  h_logFile="$h_logFile" noconsole=${noconsole:-1} "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
 
 # usage: speechListPut
@@ -295,7 +295,7 @@ case "$inputType" in
     #  (such a way raw and feature files will be created in the temporary directory instead of queue one).
     tmpFileToManage="$h_workDir/$inputName"
     ln -s "$curInputPath" "$tmpFileToManage"
-    h_logFile="$h_logFile.$inputString" noconsole=1 "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    h_logFile="$h_logFile.$inputString" noconsole=${noconsole:-1} "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)

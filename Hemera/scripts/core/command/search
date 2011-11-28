@@ -114,5 +114,5 @@ function execute() {
   parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt" || return $ERROR_EXTERNAL_TOOL
 
   # Uses the speech core module to read the produced file.
-  h_logFile="$h_logFile" noconsole=1 "$speechScript" -f "$urlContentsFile.txt" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
+  h_logFile="$h_logFile" noconsole=${noconsole:-1} "$speechScript" -f "$urlContentsFile.txt" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
