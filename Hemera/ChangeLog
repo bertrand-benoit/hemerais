@@ -1,6 +1,13 @@
 VERSION 0.1.5
 =============
 
+2011-11-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * setupHemera:
+  - restored (and improved) management of global sysconfig file and profile file when performing a global setup
+
+  - create backup when forcing update of global configuration file
+
 2011-11-27  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * completed offline Hemera Book generator

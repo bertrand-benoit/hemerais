@@ -29,6 +29,7 @@ source "$currentDir/utilities.sh"
 
 category="setup"
 
+declare -r profileFile="/etc/profile.d/hemera.sh"
 declare -r userHome="$( pruneSlash "$HOME" )"
 declare -r userSysfile="$userHome/.hemera/hemera.sys"
 declare -r h_globalConfFile="/etc/hemera.conf"
@@ -55,20 +56,6 @@ function usage() {
 # usage: warnPermission
 function warnPermission() {
   warning "Current user '"$( whoami )"' has not enough permission. Launch this script with 'sudo' or another user (or root) having enough permission."
-}
-
-# usage: writeSysconfigFile
-function writeSysconfigFile() {
-  if [ -d "/etc/sysconfig" ]; then
-    sysconfigFile="/etc/sysconfig/hemera"
-  elif [ -d "/etc/default" ]; then
-    sysconfigFile="/etc/default/hemera"
-  else
-    warningMessage "Unable to find system config directory (/etc/sysconfig and /etc/default not found)"
-    return $ERROR_ENVIRONMENT
-  fi
-
-  createSysFile "$sysconfigFile"
 }
 
 # usage: checkSysFile <sys file>
@@ -108,9 +95,9 @@ function createSysFile() {
   local _sysFile="$1"
 
   # Writes the sysconfig file.
-  writeMessageSL "Managing System configuration file '$_sysFile' ... "
+  writeMessageSL "System configuration file '$_sysFile' ... "
   if [ ! -w "$( dirname "$_sysFile" )" ]; then
-    echo "FAILED"
+    echo "FAILED to create/update"
     warnPermission
   else
 cat > "$_sysFile" << End-of-Message
@@ -194,6 +181,50 @@ if [ $global -eq 1 ]; then
   info "Create/check 'hemera' group"
   groupadd -f hemera 2>/dev/null && writeMessage "'hemera' group created/updated." || warnPermission
 
+  ## Manages sysconfig file and profile file.
+  # Defines sysconfig file.
+  if [ -d "/etc/sysconfig" ]; then
+    sysconfigFile="/etc/sysconfig/hemera"
+  elif [ -d "/etc/default" ]; then
+    sysconfigFile="/etc/default/hemera"
+  else
+    warning "Unable to find system config directory (/etc/sysconfig and /etc/default not found)"
+  fi
+
+  if [ ! -z "$sysconfigFile" ]; then
+    checkSysFile "$sysconfigFile" || createSysFile "$sysconfigFile"
+  fi
+
+  ## Manages profile file.
+  writeProfileFile=0
+  if [ -f "$profileFile" ]; then
+    info "Found profile file '$profileFile'"
+  else
+    writeProfileFile=1
+  fi
+
+  [ $writeProfileFile -eq 0 ] && [ $force -eq 1 ] && writeMessage "You have forced update of profile file '$profileFile'" && writeProfileFile=1
+
+  if [ $writeProfileFile -eq 1 ]; then
+    if [ ! -w "$( dirname "$profileFile" )" ]; then
+      warning "Unable to create/update profile file '$profileFile' because parent directory is not writable for current user."
+    else
+cat > $profileFile << End-of-Message
+# Ensures the configuration file exists.
+if [ -f "$sysconfigFile" ]; then
+  # Gets installation directory.
+  source "$sysconfigFile"
+
+  # Updates the path.
+  source "\$installDir/scripts/updatePath.sh"
+fi
+End-of-Message
+  chmod +x "$profileFile"
+
+  writeMessage "Profile file '$profileFile' created/updated. Hemera main binaries/scripts will be globally available in PATH after next reboot, or immediately when user launch 'source $profileFile' in his shell."
+    fi
+  fi
+
   ## Creates global configuration file, if needed.
   writeGlobalConfigFile=0
   if [ -f "$h_globalConfFile" ]; then
@@ -202,7 +233,11 @@ if [ $global -eq 1 ]; then
     writeGlobalConfigFile=1
   fi
 
-  [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ] && writeMessage "You have forced update of global configuration file '$h_globalConfFile'" && writeGlobalConfigFile=1
+  if [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ]; then
+    cp -f "$h_globalConfFile" "$h_globalConfFile.bak" >>"$h_logFile" 2>&1
+    writeMessage "You have forced update of global configuration file '$h_globalConfFile' (created $h_globalConfFile.bak backup)."
+    writeGlobalConfigFile=1
+  fi
 
   if [ $writeGlobalConfigFile -eq 1 ]; then
     [ ! -f "$h_globalConfFileSample" ] && errorMessage "Unable to find global configuration file sample '$h_globalConfFileSample'." $ERROR_ENVIRONMENT
