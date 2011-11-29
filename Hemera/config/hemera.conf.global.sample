@@ -65,7 +65,7 @@ hemera.run.activation.soundRecorder=localhost
 # The system will look for bin/startup.sh and bin/shutdown.sh Tomcat script (provided by
 #  binary version of Tomcat).
 # Any value different of "localhost" will disable the automatic management of Tomcat.
-hemera.run.activation.tomcat=localhost
+hemera.run.activation.tomcat=disabled
 
 
 ### Environment.
