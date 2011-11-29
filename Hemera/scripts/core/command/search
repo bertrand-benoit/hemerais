@@ -70,7 +70,7 @@ function parseHTML() {
   ! "$htmlConverter" -o "$_txtFile" "$_srcfile" >>"$h_logFile" 2>&1 && errorMessage "Unable to convert HTML of file '$_srcfile'" -1 && return 1
 
   # Additional parsing according to search URL.
-  if [[ "$_srcURL" =~ ".*DISABLEDmobile.wikipedia.*" ]]; then # Temporary disabled
+  if [[ "$_srcURL" =~ ".*mobile.wikipedia.*" ]]; then # Temporary disabled
     # Extracts contents part (will be in file numbered 1).
     # TODO: use -2 instead of 0, but manage error case where there is not enough lines.
     ! "$fileSplitter" -n 1 -qz -f "$_destFile" "$_txtFile" "/******/1" "/******/0" >>"$h_logFile" 2>&1 && errorMessage "Unable to split file '$_txtFile'" -1 && return 1
@@ -108,7 +108,9 @@ function execute() {
   # Gets the corresponding URL.
   input=$( echo "$termsToDefine" |sed -e 's/[ \t]/%20/g;' )
   urlContentsFile="$h_workDir/$h_fileDate-DefinitionContents.tmp"
-  getURLContents $( eval echo "$searchURL" ) "$urlContentsFile" || return $ERROR_EXTERNAL_TOOL
+  completeUrl=$( eval echo "$searchURL" )
+  getURLContents "$completeUrl" "$urlContentsFile" || return $ERROR_EXTERNAL_TOOL
+  info "Downloaded '$completeUrl' to '$urlContentsFile'"
 
   # Parses HTML.
   parseHTML "$searchURL" "$urlContentsFile" "$urlContentsFile.txt" || return $ERROR_EXTERNAL_TOOL
