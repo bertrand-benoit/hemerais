@@ -66,7 +66,12 @@ function speechSentence() {
   LANG=C "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions $_additionalOptions "$_sentence" > "$espeakTmpFile" 2>&1 || exit $ERROR_SPEECH
 
   # Ensures there was no error (e.g. espeak exists with status 0 even if there was error with mbrola !).
-  [ $( grep -cEi "error|not found|no such" "$espeakTmpFile" ) -gt 0 ] && errorMessage "There was error while using espeak (See $espeakTmpFile)." $ERROR_SPEECH
+  if [ $( grep -cEi "cannot.*file.*voices" "$espeakTmpFile" ) -gt 0 ]; then
+    mbrolaError=$( grep -Ei "cannot.*file.*voices" "$espeakTmpFile" |head -n 1 )
+    errorMessage "There was error while using mbrola, install corresponding file or create symbolic link. Error message: $mbrolaError." $ERROR_SPEECH
+  elif [ $( grep -cEi "error|not found|no such" "$espeakTmpFile" ) -gt 0 ]; then
+    errorMessage "There was error while using espeak (See $espeakTmpFile)." $ERROR_SPEECH
+  fi
 
   # Process espeak output with mbrola.
   sed -e 's/^[ ]/; /g;' "$espeakTmpFile" |"$mbrolaBin" $mbrolaOptions -e "$mbrolaLanguageFile" - "$speechTmpFile" || exit $ERROR_SPEECH
