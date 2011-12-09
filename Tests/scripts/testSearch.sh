@@ -38,8 +38,6 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 # completes configuration.
 scripstDir="$installDir/scripts"
 category="TSearch."
-verbose=1
-
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
 export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
@@ -49,10 +47,87 @@ source "$installDir/scripts/setEnvironment.sh"
 # Informs about log file now that functions are available.
 writeMessage "LogFile: $h_logFile"
 
-SEARCH_STRINGS=( "Intelligence Artificielle" ) #"Conscience" "Compréhension" "Language" )
+# Defines some additionals variables.
+speechScript="$h_coreDir/speech/speech.sh"
+
+SEARCH_STRINGS=( "Intelligence Artificielle" "Conscience" "Compréhension" "Langage" "Logique" "Psychologie" "Sentiment" "Sensation" "Désir" "Evolution" "Monde" )
+# English version: SEARCH_STRINGS=( "Artificial Intelligence" "Consciousness" "Understanding" "Language" "Logic" "Psychology" "Sentiment" "Sensation" "Desire" "Evolution" "World" )
 
 #########################
 ## FUNCTIONS
+
+# usage: simulateSearchPlugin <search term>
+function simulateSearchPlugin() {
+  local _term="$1"
+
+  writeMessage "Simulating search definition plugin for: $_term"
+
+  # Gets the corresponding URL.
+  input=$( echo "$_term" |sed -e 's/[ \t]/%20/g;' )
+  urlContentsFile="$h_workDir/$h_language-$_term-DefinitionContents.tmp"
+  completeUrl="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"
+  [ ! -s "$urlContentsFile" ] && ! getURLContents "$completeUrl" "$urlContentsFile" && errorMessage "Unable to get HTML file for definition of '$_term'" $ERROR_EXTERNAL_TOOL
+
+  # Parses HTML.
+  _destFile="$urlContentsFile.txt"
+  _srcfile="$urlContentsFile"
+  _tmpFile="$_srcfile.pruned"
+  html2textRCFile="$h_coreDir/command/search_definition.mobile.wikipedia.rc"
+  # Removes lots of things (VERY IMPORTANT: one-line substitution MUST be done before multi-line substituion to avoid bad positive):
+  #  - any kind of thumb image -> div with class="thumbcaption" or class="thumbinner"
+  #  - any part ('Bandeau' in French) requesting collaboration for definition
+  #  - homonymy part (same line + multi line) ('homonymie' in French, 'disambiguation' in English)
+  #  - See also part (same line + multi line)
+  #  - language selector
+  #  - any form (e.g. search)
+  #  - any single image (e.g. <img ... Logo />)
+  #  - any button (e.g. show/hidden)
+  #  - any reference (e.g. <sup ...>[1]...</sup>) / one version with </span>, one without
+  #  - any Navigation Head/Content (when one article links to several others)
+  #  - any table
+  #  - any remaining <tr> and <td> tags (can happen if there is nested <table>/</table>).
+  #  - cut after 'footer'
+  cat "$_srcfile" | sed \
+    -e '/<div[ ]*class="thumbcaption"[^>]*>/,/<\/div>/d;/<div[ ]*class="thumbinner"[^>]*>/,/<\/div>/d;' \
+    -e '/<table[^>]*><tr><td[^>]*class="bandeau-icone">/,/<\/table>/d;' \
+    -e 's/<div[^>]*class="homonym.*"[^>]*>.*>[^<]*[Hh]omonym.*<\/a>[^<]*<\/div>//g;/<div[^>]*class="homonym.*"[^>]*>/,/<\/div>/d;' \
+    -e 's/<div[^>]*class="dablink"[^>]*>.*>[^<]*[Dd]isambiguation.*<\/a>[^<]*<\/div>//g;/<div[ ]*class="dablink"[^>]*>/,/<\/div>/d;' \
+    -e 's/<div[^>]*class="[^"]*seealso"[^>]*>See also.*<\/a>[^<]*<\/div>//g;/<div[^>]*class="[^"]*seealso"[^>]*>/,/<\/div>/d;' \
+    -e '/<div[ ]*id="languageselectionsection[^>]*>/,/<\/div>/d;' \
+    -e '/<form/,/<\/form>/d;' \
+    -e 's/<img[^>]*\/>//g;' \
+    -e 's/<button[^>]*>[^<]*<\/button>//g;' \
+    -e 's/<div[^>]*class="section_anchors"[^>]*>[^<]*<a[^>]*>[^<]*<\/a><\/div>//g;' \
+    -e 's/<sup[^[]*[[][^]]*[]]<\/span><\/a><\/sup>//g;s/<sup[^[]*[[][^]]*[]]<\/a><\/sup>//g;' \
+    -e 's/<div[^>]*class="NavHead"[^>]*>.*<\/div>//g;/<div[^>]*class="NavHead"[^>]*>/,/<\/div>/d;' \
+    -e 's/<div[^>]*class="NavContent"[^>]*>.*<\/div>//g;/<div[^>]*class="NavContent"[^>]*>/,/<\/div>/d;' \
+    -e 's/<\/table>/<\/table>\n/g;/<table/,/<\/table>/d;' \
+    -e 's/<tr[^>]*>.*<\/tr[^>]*>//g;s/<td[^>]*>.*<\/td[^>]*>//g;' \
+    -e '/<div id=.footer.>/,//d' \
+  > "$_tmpFile"
+
+  # Converts HTML to text, with dedicated rcfile.
+  # Then, performs some post processing:
+  #  - cut anything since "Reference" part
+  #  - removes empty lines
+  #  - show at maximum 2 headings, and show only 1 heading, if there is more than N lines.
+  echo -n "$SEARCH_CMD_DEF_OF_I18N" > "$_destFile"
+  ! html2text -nobs -rcfile "$html2textRCFile" "$_tmpFile" |sed \
+    -e '/^@@*R[eé]f[eé]rences/Q' | \
+    grep -v "^$" | \
+    awk '/@@@*/{head++; printSomething=0}; head >= 3 {exit}; head == 2 && NR >= 8 && !printSomething {exit}; { print $0; printSomething=1 }' | \
+    sed -e 's/^@@@*\([^@]*\)$/\1.\n/g;' \
+  >> "$_destFile" && errorMessage "Unable to convert HTML of file '$_srcfile'" -1 && return 1
+
+  echo -e "***** RESULT - $_term - BEGIN *****"
+  cat "$_destFile"
+  echo -e "***** RESULT - $_term - END *****\n"
+
+  # Uses the speech core module to read the produced file.
+  h_logFile="$h_logFile" noconsole=${noconsole:-1} "$speechScript" -f "$_destFile" -o "$h_newInputDir/speech_$h_language-$input.wav"
+
+  return 0
+}
 
 #########################
 ## INSTRUCTIONS
@@ -72,7 +147,9 @@ writeMessage "Test system will start some daemons"
 export noconsole=0
 
 # Starts IO processor.
+export verbose=1
 "$h_daemonDir/ioprocessor.sh" -S
+export verbose=0
 
 # Waits a little, everything is well started.
 sleep 2
@@ -82,12 +159,13 @@ inputIndex=1
 for searchStringRaw in "${SEARCH_STRINGS[@]}"; do
   searchString=$( echo "$searchStringRaw" |sed -e 's/€/ /g;' )
   # Launch search.
-  echo "${SEARCH_CMD_PATTERN_I18N[0]} $searchString" > "$h_newInputDir/recognitionResult_test$inputIndex.txt"
+  simulateSearchPlugin "$searchString"
 
   # Wait some times.
   sleep 10
 
   # Requests stop, and wait until all is managed.
+  writeMessage "Stopping speech synthesis of definition of: $searchString"
   echo "stop" > "$h_newInputDir/recognitionResult_test$inputIndex-2.txt"
   waitUntilAllInputManaged
 
