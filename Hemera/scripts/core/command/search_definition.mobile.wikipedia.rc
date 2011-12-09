@@ -1,0 +1,25 @@
+OL.indents=4
+UL.indents=4
+DIR.indents=4
+MENU.indents=4
+LI.disc_bullet = *
+UL.default_types = DISC
+DIR.default_types = DISC
+HR.marker = =
+H1.prefix = @@@@@@@@@@@
+H1.suffix =
+H2.prefix = @@@@@@@@@@
+H2.suffix =
+H3.prefix = @@@@@@@@@
+H3.suffix =
+H4.prefix = @@@@@@@@
+H4.suffix =
+H5.prefix = @@@@@@@
+H5.suffix =
+H6.prefix = @@@@@@
+H6.suffix =
+IMG.replace.all =
+IMG.alt.prefix = €[€
+IMG.alt.suffix = €]€
+A.attributes.internal_link = NONE
+A.attributes.external_link = NONE

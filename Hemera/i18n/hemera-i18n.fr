@@ -79,3 +79,4 @@ STOP_CMD_BAD_USE_I18N="La commande stop ne prend pas d'argument"
 # Day task - 'search' command.
 SEARCH_CMD_PATTERN_I18N=( "recherche" "rechercher" )
 SEARCH_CMD_BAD_USE_I18N="La commande rechercher nécessite au moins un argument"
+SEARCH_CMD_DEF_OF_I18N="Définition de "
