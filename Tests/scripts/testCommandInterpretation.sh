@@ -98,7 +98,7 @@ function test1() {
   done
 
   # From there, the speech starts playing, lets it during few seconds.
-  sleep 3
+  sleep 5
 
   writeMessage "Test 1: pause for 3 seconds"
   echo "pause" > "$h_newInputDir/recognitionResult_test2.txt"
