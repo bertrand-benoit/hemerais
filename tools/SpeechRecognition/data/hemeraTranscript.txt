@@ -108,7 +108,7 @@ relancer le module de sonde thermique
 Les modules coeurs suivants sont démarrés
 Anomalie d'un module coeur détecté
 Héméra est démarrée depuis
-Voici la liste des plug-ins disponibles
+Voici la liste des plugins disponibles
 Module réinitialisé
 
 
