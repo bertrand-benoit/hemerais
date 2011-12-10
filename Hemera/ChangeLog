@@ -1,6 +1,10 @@
 VERSION 0.1.5
 =============
 
+2011-12-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+
+ * search plugin: redesigned this plugin for greater efficiencies (mobile wikipedia is now fully supported)
+
 2011-11-28  Bertrand Benoit <projettwk@users.sourceforge.net>
 
  * setupHemera:
@@ -178,14 +182,14 @@ VERSION 0.1.5
 
 2011-05-10  Bertrand Benoit <projettwk@users.sourceforge.net>
 
- * important scripts structure update for better methodology and plug-ins development:
+ * important scripts structure update for better methodology and plugins development:
    - extracted all command management from processInput.sh
 
-   - created dedicated sub scripts (as plug-ins) for each available commands: continue, mode, pause, say, search, stop
+   - created dedicated sub scripts (as plugins) for each available commands: continue, mode, pause, say, search, stop
 
 2011-05-09  Bertrand Benoit <projettwk@users.sourceforge.net>
 
- * important scripts structure update for better methodology and plug-ins development:
+ * important scripts structure update for better methodology and plugins development:
    - moved processInput.sh and manageSound.sh in scripts/core/system
 
    - speech scripts moved from thirdParty/speech/scripts to scripts/core/speech

@@ -191,9 +191,6 @@ hemera.core.speechRecognition.sphinx3.acousticModel.transitionMatrices="lium/par
 # HTML to text converter (path).
 hemera.core.command.general.htmlConverter.path="html2text"
 
-# File splitter (path).
-hemera.core.command.general.fileSplitter.path="csplit"
-
 # The search URL.
 # IMPORTANT: corresponding URL contents is then parsed, if you use a no default link
 #  it is needed to contact Hemera team to update parsing system.

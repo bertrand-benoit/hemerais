@@ -1,21 +1,15 @@
-Noteworthy changes in version 0.1.6 (not yet released)
-------------------------------------------------
-
- * internationalized web module giving lots of information (static and real-time)
-
-
-Noteworthy changes in version 0.1.5 (coming soon)
+Noteworthy changes in version 0.1.5 (2011-12-10)
 ------------------------------------------------
 
  * various great infrastructure updates for better flexibility and evolvability
 
- * easy plug-ins system to add recognized commands
+ * easy plugins system to add recognized commands
 
  * new configuration auto-diagnosis system (optimal check)
 
  * offline version of Hemera Book
 
- * improved compatibility and robustness with RedHat-like and Debian-like GNU/Linux
+ * improved compatibility and robustness with RedHat-based and Debian-based distributions
 
  * fixed all reported bugs in previous Hemera versions
 
