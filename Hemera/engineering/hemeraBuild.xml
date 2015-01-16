@@ -36,7 +36,7 @@
     You should NOT launched ant manually. You SHOULD use makeHemera.sh script.
    </echo>
   </target>
-  
+
   <target name="all" depends="libraries,doc" />
 
 <!-- Source code management targets -->
