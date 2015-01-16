@@ -48,7 +48,7 @@ function showScriptDescription() {
     [ $( head -n $MUST_NOT_BE_CALLED_LIMIT "$script" |grep -c "must NOT be directly called" ) -gt 0 ] && continue
 
     # Extracts the description.
-    description=$( head -n $DESCRIPTION_LINE_LIMIT "$script" |grep -re "# Description:" |sed -e 's/# Description: //' )
+    description=$( head -n $DESCRIPTION_LINE_LIMIT "$script" |grep -e "# Description:" |sed -e 's/# Description: //' )
 
     # Prints directory only if it is the first script to be shown.
     [ $_firstScript -eq 1 ] && _firstScript=0 && echo -e " in $_scriptDir"
