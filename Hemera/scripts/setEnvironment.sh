@@ -219,12 +219,13 @@ if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
 
   # Checks if the caller must continue in same log file (usually it is the case
   #  of the main Hemera script).
+  messagePrefix="new"
   if [ $continueLogFile -eq 1 ]; then
     declare -x h_logFile="$h_runningLogFile"
-    messagePrefix="continue"
+    [ -f "$h_logFile" ] && messagePrefix="continue"
   else
     declare -x h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
-    messagePrefix="new"
+
   fi
 
   # Doesn't inform in 'checkConfigAndQuit' mode.
