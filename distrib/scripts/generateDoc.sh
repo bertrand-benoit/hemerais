@@ -107,7 +107,8 @@ archiveDate=$( LANG=C date +'%Y-%m-%d' )
 
 # Manages export, if requested.
 if [ $export -eq 1 ]; then
-  ## Export all pages.
+  ## TODO: Export only pages of English version of HemeraBook (should use title=Category:HemeraBook/en)
+  # Right now, export all pages (templates are NOT included, use: title=Special:AllPages).
   echo -ne "Defining list of pages to export ... "
   [ ! -f "$allPagesHtml" ] && wget -q "$HEMERA_ONLINE_DOC?title=Special:AllPages" -O "$allPagesHtml"
   allPagesList=$( grep "Appendix" "$allPagesHtml" |sed -e 's/<a[^>]*>\([^<]*\)<\/a>/\1\n/g;' |sed -e 's/^.*>\([^>]*\)$/\1/' |grep -v "All pages" |grep -v "^$" )
@@ -124,7 +125,8 @@ if [ $export -eq 1 ]; then
   pageCount=$( echo "$allCatPagesList" |wc -l )
   echo -e "$pageCount Category description found"
 
-  completePageList=$( echo -e "$allPagesList\n$allFilePagesList\n$allCatPagesList" )
+  # TODO: removed quick&dirty template addition asap a clean solution is implemented.
+  completePageList=$( echo -e "Template:HemeraInternalDiagram\n$allPagesList\n$allFilePagesList\n$allCatPagesList" )
 
   echo -ne "Exporting pages ... "
   ! wget -q "$HEMERA_ONLINE_DOC?title=Special:Export&action=submit" --post-data="pages=$completePageList" -O "$allPagesExporter" && echo "failed."
@@ -168,7 +170,7 @@ End-of-Message
     sed -i 's/^.*\/raw\/.*$//g;' "$htmlPage"
 
     # Fixed some broken images links.
-    sed -i 's/href="\/wiki\/images/href="..\/..\/images/g;' "$htmlPage"
+    sed -i 's/href="\/wiki\/images/href="..\/..\/images/g;s/src="\/wiki\/images/src="..\/..\/images/g;' "$htmlPage"
 
     # Removes useless Edit links.
     sed -i 's/(<a[^>]*>Edit this file[^<]*<\/a>[^<]*<a[^>]*>contribs<\/a>)//' "$htmlPage"
