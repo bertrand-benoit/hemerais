@@ -50,6 +50,20 @@ declare -r mbrolaLanguageFile="$h_lastConfig"
 
 [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
 
+# Checks if espeak and mbrola are working together.
+if [ $checkConfAndQuit -eq 1 ]; then
+  espeakTmpFile="$h_workDir/$h_fileDate"-"CheckConfig-espeak+mbrola.tmp"
+  LANG=C "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions "Checking configuration" > "$espeakTmpFile" 2>&1 || exit $ERROR_SPEECH
+
+  # Ensures there was no error (e.g. espeak exists with status 0 even if there was error with mbrola !).
+  if [ $( grep -cEi "cannot.*file.*voices" "$espeakTmpFile" ) -gt 0 ]; then
+    mbrolaError=$( grep -Ei "cannot.*file.*voices" "$espeakTmpFile" |head -n 1 )
+    warning "There was error while using mbrola, install corresponding file or create symbolic link (in parent directory specified in following error, with $( dirname "$mbrolaLanguageFile" ) as target). Error message: $mbrolaError."
+  elif [ $( grep -cEi "error|not found|no such" "$espeakTmpFile" ) -gt 0 ]; then
+    warning "There was error while using espeak (See $espeakTmpFile)."
+  fi
+fi
+
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {
   local _sentence="$1" _additionalOptions="${2:-}"
@@ -68,7 +82,7 @@ function speechSentence() {
   # Ensures there was no error (e.g. espeak exists with status 0 even if there was error with mbrola !).
   if [ $( grep -cEi "cannot.*file.*voices" "$espeakTmpFile" ) -gt 0 ]; then
     mbrolaError=$( grep -Ei "cannot.*file.*voices" "$espeakTmpFile" |head -n 1 )
-    errorMessage "There was error while using mbrola, install corresponding file or create symbolic link. Error message: $mbrolaError." $ERROR_SPEECH
+    errorMessage "There was error while using mbrola, install corresponding file or create symbolic link (in parent directory specified in following error, with $( dirname "$mbrolaLanguageFile" ) as target). Error message: $mbrolaError." $ERROR_SPEECH
   elif [ $( grep -cEi "error|not found|no such" "$espeakTmpFile" ) -gt 0 ]; then
     errorMessage "There was error while using espeak (See $espeakTmpFile)." $ERROR_SPEECH
   fi
