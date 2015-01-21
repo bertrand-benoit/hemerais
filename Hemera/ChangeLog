@@ -1,22 +1,22 @@
 VERSION 0.1.5
 =============
 
-2011-12-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-12-10  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * search plugin: redesigned this plugin for greater efficiencies (mobile wikipedia is now fully supported)
 
-2011-11-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-28  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * setupHemera:
   - restored (and improved) management of global sysconfig file and profile file when performing a global setup
 
   - create backup when forcing update of global configuration file
 
-2011-11-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-27  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * completed offline Hemera Book generator
 
-2011-11-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-25  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * makeHemera: redesigned clean system (support any kind of user directories); did not removed log directory anymore
 
@@ -25,15 +25,15 @@ VERSION 0.1.5
 
   - fixed duplicate output
 
-2011-11-20  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-20  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * makeDistrib: redesigned system according to GIT, new projects and architecture updates
 
-2011-11-14  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-14  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * added safe-guard on user configuration directories to avoid forbidden directories (/, /root, /home, /etc ...)
 
-2011-11-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-11-05  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * redesign the way Hemera can be setup by a system administrator, and can be used by a standard user
 
@@ -41,17 +41,17 @@ VERSION 0.1.5
 
  * removed fully ThirdParty 'project' which is no more needed (misc files have been moved in misc/ sub-directory of Hemera project)
 
-2011-10-26  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-10-26  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * migrate from SVN repository to GIT repository
 
  * updated some projects accordingly
 
-2011-10-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-10-10  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * monitorHemera.sh: implemented this new tool allowing to monitor Hemera ('reading' monitor file, great robustness in case it is killed or monitor file is erased)
 
-2011-10-06  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-10-06  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * added running process system when starting Hemera (checking existing PID files -> useful if previous run has been brutally stopped)
  
@@ -61,19 +61,19 @@ VERSION 0.1.5
 
  * updated tests systems to use 'clean' and 'init' targets of makeHemera ensuring same cleaned environment to perform tests
 
-2011-10-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-10-05  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implement Hemera activities localized monitor system (need a command for ease of use)
 
-2011-10-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-10-04  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * checkConfig.sh: request any plugin to perform a full configuration check
 
-2011-07-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-07-27  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved path management in some extrems situation (under Debian-like GNU/Linux distribution, when user launch script without having installed GNU version of 'which')
 
-2011-07-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-07-24  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved daemon process management (added support to rec/play/sox/lt-sox synonym)
  
@@ -81,7 +81,7 @@ VERSION 0.1.5
 
  * ensured LD_LIBRARY_PAH is initialized
 
-2011-06-12  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-12  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * all GNU/Bash scripts components: implemented new version of message management system (info, message, warning, error)
 
@@ -89,7 +89,7 @@ VERSION 0.1.5
 
  * speech.sh: removed -u <url> and -d <term to define> options (will be available in coming CLI command interpretation script)
 
-2011-06-11  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-11  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * command script: improved structure (each one has now "checkConfig", "testCommand", "checkCoherence" and "execution" functions)
 
@@ -107,29 +107,29 @@ VERSION 0.1.5
 
    - improved log file management (no more double messages), and fixed some incomplete log files
 
-2011-06-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-05  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * speech.sh: improved greatly definition search system (added configuration elements, and improved post processing)
 
-2011-06-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-04  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * renamed locale/ sub-directory to i18n for better legibility
  
  * renamed hemera.locale configuration element to hemera.language for better legibility
 
-2011-06-02  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-02  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * updated system to take care of offline documentation if any
 
-2011-06-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-06-01  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented a method to generate an offline version of the Hemera documentation (called Hemera Book) 
   
-2011-05-29  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-29  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * added check on OS locale (must use UTF-8 charmaps, and it must be installed) 
 
-2011-05-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-28  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * soundChecker.sh: implemented this new miscellaneous script allowing to test sound recording, and sound playing 
 
@@ -138,21 +138,21 @@ VERSION 0.1.5
    
    - added usage and messages
 
-2011-05-19  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-19  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * updateConfig.sh: implemented a script allowing to create a configuration file from a source (default: sample) and a destination one (default: user configuration file)
 
-2011-05-18  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-18  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented powerful path management for PATH and LD_LIBRARY_PATH update (including support of '*' wilcard) 
  
-2011-05-17  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-17  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved greatly configuration check system (any daemon, core module and system scripts can perform auto-diagnosis)
 
  * checkConfig.sh: request any daemon, core module and system scripts to perform a full configuration check
 
-2011-05-16  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-16  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented Hemera version system (giving precise information if source code version)
 
@@ -160,14 +160,14 @@ VERSION 0.1.5
 
  * configuration file is now lookup in $HOME/.hemera allowing any user to have specific configuration (and easier Hemera update)
 
-2011-05-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-15  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * SpeechRecognition.sh
    - improved path management ensuring it is absolute paths (whatever the used option)
    
    - added new option allowing to activate source sound file convert in raw (by default it is now disabled) 
 
-2011-05-11  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-11  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented Hemera uptime functions
  
@@ -180,14 +180,14 @@ VERSION 0.1.5
    
  * ensured everything is stopped when Tests are interrupted
 
-2011-05-10  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-10  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * important scripts structure update for better methodology and plugins development:
    - extracted all command management from processInput.sh
 
    - created dedicated sub scripts (as plugins) for each available commands: continue, mode, pause, say, search, stop
 
-2011-05-09  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-09  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * important scripts structure update for better methodology and plugins development:
    - moved processInput.sh and manageSound.sh in scripts/core/system
@@ -196,11 +196,11 @@ VERSION 0.1.5
 
    - speechRecognition scripts moved from thirdParty/speechRecognition/scripts to scripts/core/speechRecognition
 
-2011-05-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-05  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * setupHemera.sh: replaced 'root user' check by 'needed permission' check. Added specific warning message if case of not enough permission.
 
-2011-05-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-04  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * hemera.sh:
    - fixed PID files removal (only done with 'stop' action)
@@ -209,7 +209,7 @@ VERSION 0.1.5
 
  * checkConfig.sh: added check on Java, Apache Ant, and (if configured to be used locally) Apache Tomcat 
  
-2011-05-02  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-02  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * added some configuration elements allowing to request Apache Tomcat management when starting/stopping Hemera
  
@@ -218,19 +218,19 @@ VERSION 0.1.5
  * Web module:
    - improved build.xml and adpated to work with remote installation of Tomcat (using catalina-ant third-party tool)   
 
-2011-04-30  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-30  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * Web module:
    - implemented Processing Systems page giving real-time graph of new/error input, and each processing activities among: speech, recorded speech and recognition result 
 
-2011-04-26  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-26  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * Web module:
    - implemented Licenses page giving access to licenses of used third-party 
    
    - improved language selector (current page action is kept, and current language is no more shown) 
  
-2011-04-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-25  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * Web module:
    - added use of Struts 2, log4j and javassist
@@ -243,13 +243,13 @@ VERSION 0.1.5
    
    - implemented ChangeLog page giving access to this file (and usable e-mail link)
 
-2011-04-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-24  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * Web module: implemented first version (ready for Tomcat)
 
  * renamed Hemera, Samples and Tests repository projects for better methodology (make difference between main project and remote folder containing some projects)
 
-2011-04-20  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-20  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * help.sh: added lots of additional information
 
@@ -257,19 +257,19 @@ VERSION 0.1.5
 VERSION 0.1.1
 =============
 
-2011-07-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-07-27  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved path management in some extrems situation (under Debian-like GNU/Linux distribution, when user launch script without having installed GNU version of 'which')
  
  * updated some elements in Hemera configuration sample
 
-2011-07-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-07-24  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved daemon process management (added support to rec/play/sox/lt-sox synonym)
  
  * improved sound player/recorder configuration (input/output must now be specified) to support compiled source code version of sox   
 
-2011-05-28  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-28  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * soundChecker.sh: implemented this new miscellaneous script allowing to test sound recording, and sound playing 
 
@@ -278,7 +278,7 @@ VERSION 0.1.1
    
    - added usage and messages
    
-2011-05-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-05-04  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * hemera.sh:
    - fixed PID files removal (only done with 'stop' action)
@@ -287,11 +287,11 @@ VERSION 0.1.1
 VERSION 0.1.0
 =============
 
-2011-04-08  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-04-08  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * released version 0.1
 
-2011-03-05  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-03-05  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved robustneed of speech core module (in case of espeak/mbrola error)
 
@@ -299,15 +299,15 @@ VERSION 0.1.0
 
  * setupHemera.sh: fixed created profile file
 
-2011-02-25  Bertrand Benoit <projettwk@users.sourceforge.net>
+2011-02-25  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * updated checkConfig.sh to ensure internationalized files are ok (special characters are well escaped, i18n elements are well defined ...)
 
-2010-11-08  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-11-08  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * completed Hemera strings internationalized system
 
-2010-11-04  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-11-04  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented Hemera mode system ("normal" and "parrot" mode are fully managed)
 
@@ -322,7 +322,7 @@ VERSION 0.1.0
 
    - added speech error message when needed
 
-2010-10-18  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-10-18  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * manageSound.sh: implemented new script allowing to manage sound play/pause/continue/stop action linked to ONE process
 
@@ -330,7 +330,7 @@ VERSION 0.1.0
 
    - testManageSound.sh: implemented tests script allowing to test play/pause/continue/stop action
 
-2010-10-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-10-15  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved system allowing to kill child processes (no more "broken pipe")
 
@@ -340,7 +340,7 @@ VERSION 0.1.0
 
    - testCommandInterpretation: implemented tests script allowing to simulate command (e.g. search/pause/continue/stop)
 
-2010-10-14  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-10-14  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * makeHemera.sh: disabled clean request if Hemera is started
 
@@ -354,7 +354,7 @@ VERSION 0.1.0
 
  * improved some global variables management (did not reset anymore if already set)
 
-2010-10-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-10-01  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * renamed all Hemera global variable prefixing with "h_" for better legibility
 
@@ -362,17 +362,17 @@ VERSION 0.1.0
 
  * formalized error code status (constants definition, and use everywhere)
 
-2010-10-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-10-01  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * ioprocessor.sh: improved input management (input not found, incoming input while managing some, real-time)
 
  * processInput.sh: implemented first version of script processing ONE input in background
 
-2010-09-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-27  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * hemera.sh: implemented script allowing to start/status/stop Hemera according to configuration (initially named startHemera.sh)
 
-2010-09-27  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-27  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved process/pid system
 
@@ -380,11 +380,11 @@ VERSION 0.1.0
 
  * ioprocessor.sh: implemented first version of input/output processor daemon
 
-2010-09-24  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-24  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * makeHemera.sh: improved system allowing to specify target on command line
 
-2010-09-23  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-23  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented a process/pid system allowing to start/status/stop daemon
 
@@ -396,35 +396,35 @@ VERSION 0.1.0
 
  * soundRecorder.sh: implemented sound recorder daemon
 
-2010-09-15  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-15  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented Hemera Java base
 
-2010-09-13  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-13  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * makeHemera.sh: implemented new script allowing to build or clean Hemera
 
  * help.sh: implemented new script allowing to give help on each available scripts/tools (and link to documentation)
 
-2010-09-09  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-09  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * added license information (GPLv3)
 
  * setupHemera.sh: implemented new script allowing to update Operating System for Hemera integration
 
-2010-09-06  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-06  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * updated speech recognition core module to be fully configurable
 
  * speech2Recognition.sh: added option allowing to specify iteration count, improved given information
 
-2010-09-03  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-03  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * created configuration system
 
  * updated speech core module to be fully configurable
 
-2010-09-01  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-09-01  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * improved speech recognition core module:
 
@@ -432,7 +432,7 @@ VERSION 0.1.0
 
    - log analyzer system (to get feedback asap in case of multiple recognition) giving result and speech recognition statistics
 
-2010-08-13  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-08-13  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * implemented first version of speech recognition core module
 
@@ -444,7 +444,7 @@ VERSION 0.1.0
 
  * speech2Recognition.sh: implemented new tool allowing to perform text to speech, then speech recognition
 
-2010-08-12  Bertrand Benoit <projettwk@users.sourceforge.net>
+2010-08-12  Bertrand Benoit <hemerais@bertrand-benoit.net>
 
  * created main project
 

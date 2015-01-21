@@ -1,6 +1,6 @@
 /*
- * Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
- * Copyright (C) 2010-2015 Bertrand Benoit <projettwk@users.sourceforge.net>
+ * Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
+ * Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ package hemera;
 /**
  * Hemera - Intelligent System General Hemera exception.
  * 
- * @author Bertrand Benoit <projettwk@users.sourceforge.net>
+ * @author Bertrand Benoit <hemerais@bertrand-benoit.net>
  * @since 1.0.0
  */
 public class HemeraException extends Exception {

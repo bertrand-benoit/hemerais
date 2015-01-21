@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
-# Copyright (C) 2010-2015 Bertrand Benoit <projettwk@users.sourceforge.net>
+# Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
+# Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ echo -e "Hemera - Intelligent System - Help"
 echo -e "Online documentation:\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page"
 echo -e "Quick Start:\t\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Hemera_Quick_Start"
 echo -e "Troubleshooting:\thttps://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Troubleshooting"
-echo -e "Help Forum:\t\thttps://sourceforge.net/projects/hemerais/forums/forum/1202771"
+echo -e "Help Forum:\t\thttp://hemerais.bertrand-benoit.net/forums/forum/1202771"
 echo -e "Check your config.:\tscripts/checkConfig.sh"
 echo -e "In case of problem with a command, check the generated log which contains lots of information."
 echo -e "\nAvailable tools"

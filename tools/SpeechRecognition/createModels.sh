@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Author: Bertrand BENOIT <projettwk@users.sourceforge.net>
+# Author: Bertrand BENOIT <hemerais@bertrand-benoit.net>
 # Version: 1.0
 # Description: creates lexical and language models.
 

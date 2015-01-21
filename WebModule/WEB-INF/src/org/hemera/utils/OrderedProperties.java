@@ -1,6 +1,6 @@
 /*
- * Hemera - Intelligent System (https://sourceforge.net/projects/hemerais)
- * Copyright (C) 2010-2015 Bertrand Benoit <projettwk@users.sourceforge.net>
+ * Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
+ * Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ import java.util.Set;
  * Hemera - Intelligent System
  * Properties implementation which keeps loaded file order.
  * 
- * @author Bertrand Benoit <projettwk@users.sourceforge.net>
+ * @author Bertrand Benoit <hemerais@bertrand-benoit.net>
  * @since 0.2
  */
 public final class OrderedProperties extends Properties {
