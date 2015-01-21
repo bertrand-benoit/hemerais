@@ -1,22 +1,37 @@
-About
------
-Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, form recognition ...); with applications in day tasks, domotics and robotics ...
+Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form recognition ...); with applications in day tasks, domotics and robotics ...
+
+
+Features
+---------
+ * speech synthesis
+ * speech recognition
+ * interpretation of recognized commands
+ * highly configurable
+ * robust (lots of check are performed)
+ * internationalization ability
+
+
+Quick Start
+-----------
+Quick Start Guide: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart
+
+Demo: check files in the Samples/ sub-directory
+
+Clone source code: git clone https://github.com/bertrand-benoit/hemerais.git
+
+Download Tarball: https://sourceforge.net/projects/hemerais/files/Hemera/
+
+Get help on available commands: launch Hemera/scripts/help.sh
+
+
+All you want to know about Hemera
+------------------
+See online documentation:  hemerais.bertrand-benoit.net/doc/index.php?title=Main_Page
+
+In any tarball, you can get documentation in doc/ sub-directory
+
 
 License
 -------
 Hemera is developed under the GNU General Public License version 3.0 (GPLv3).
 See LICENSE or COPYING file.
-
-Quick Start
------------
- - to get speech samples
-svn co https://hemerais.svn.sourceforge.net/svnroot/hemerais/trunk/Samples HemeraSamples
-
-Help
-------------------
-launch scripts/help.sh
-
-All you want to know about Hemera
-------------------
-See documentation in doc/ sub-directory   
-See online documentation:  https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page
