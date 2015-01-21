@@ -23,7 +23,7 @@
 
 #########################
 ## CONFIGURATION
-HEMERA_ONLINE_DOC="http://sourceforge.net/apps/mediawiki/hemerais/index.php"
+HEMERA_ONLINE_DOC="http://hemerais.bertrand-benoit.net/doc/index.php"
 HEMERA_BOOK_NAME="HemeraBook"
 hemeraDocRootDir="${HEMERA_DOC_DIR:-/tmp/hemeraDoc}"
 
@@ -209,7 +209,7 @@ End-of-Message
 
 cat >> "$htmlPage" << End-of-Message
 <a href="http://www.mediawiki.org">Powered by MediaWiki</a>, its <a href="http://www.mediawiki.org/wiki/Extension:DumpHTML">DumpHTML extension</a> has been used to generate this offline version of Hemera Book at $generationDate<br />
-See updated <a href="https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page">online documentation</a>, hosted by <a href="http://sourceforge.net">SourceForge</a>
+See updated <a href="http://hemerais.bertrand-benoit.net/doc">online documentation</a>
 </div><br />
 </body></html>
 End-of-Message

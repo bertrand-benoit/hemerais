@@ -5,7 +5,7 @@ Currently it only supports French language.
 
 Full documentation
 ------------------
-You should prefer online documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Main_Page
+You should prefer online documentation: http://hemerais.bertrand-benoit.net/doc
 
 Quick Start
 -----------
@@ -19,4 +19,4 @@ The createModels.sh script will check for these tools availability.
 
 Installation
 ------------
-See online documentation: http://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Speech_Recognition_Models_Creation
+See online documentation: http://hemerais.bertrand-benoit.net/doc/index.php?title=Third-party:SpeechRecognition:Models:create

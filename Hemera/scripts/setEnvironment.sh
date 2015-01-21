@@ -67,7 +67,7 @@ minConfigOK=1
 checkAndSetConfig "hemera.thirdParty.path" "$CONFIG_TYPE_PATH" "$installDir"
 declare -rx h_tpDir="$h_lastConfig"
 if [[ "$h_tpDir" == "$CONFIG_NOT_FOUND" ]]; then
-  _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: https://sourceforge.net/apps/mediawiki/hemerais/index.php?title=Install_Hemera"
+  _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:Install"
   [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_ENVIRONMENT
   warning "$_message"
   minConfigOK=0
