@@ -1,4 +1,4 @@
-Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form recognition ...); with applications in day tasks, domotics and robotics ...
+Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form/motion recognition ...); with applications in day tasks, domotics and robotics ...
 
 
 Features
@@ -29,6 +29,13 @@ All you want to know about Hemera
 See online documentation: http://hemerais.bertrand-benoit.net/doc
 
 In any tarball, you can get documentation in doc/ sub-directory
+
+
+Notes
+------
+In January 2015, to provide you the best experience:
+ * the Web Site has been migrated from sourceforge.net to http://hemerais.bertrand-benoit.net
+ * the source code has been migrated from sourceforge.net to https://github.com/bertrand-benoit/hemerais.git
 
 
 License
