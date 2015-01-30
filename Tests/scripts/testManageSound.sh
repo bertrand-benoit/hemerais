@@ -54,11 +54,11 @@ writeMessage "Generate speech sound file"
 
 # Launches sound play.
 "$manageSoundScript" -p "$speechSoundPIDFile" -f "$speechSoundFile" &
-sleep 2
+sleep 4
 
 # Pauses the sound.
 "$manageSoundScript" -p "$speechSoundPIDFile" -P
-sleep 2
+sleep 5
 
 # Continues the sound.
 "$manageSoundScript" -p "$speechSoundPIDFile" -C
