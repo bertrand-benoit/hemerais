@@ -27,13 +27,13 @@ hemera.thirdParty.path="/usr/share/hemera/ThirdParty"
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
 # You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin-XX directory).
 # For each path you add there, you can specify "simple" name of corresponding tool in other configuration element.
-hemera.path.bin="speech/bin:speechRecognition/bin:_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_fromSource/sox/src"
+hemera.path.bin="speech/bin:speechRecognition/bin:_fromSource/SphinxTrain/bin*:_fromSource/sphinx3/src/programs:_fromSource/sox/src:_fromSource/opencv/_hemera/bin"
 
 # Library directory paths to add to LD_LIBRARY_PATH environment variable.
 # You can specify several directory paths, absolute or relative to [HEMERA_TP_PATH], separated by colon.
 # You can use the '*' wilcard for Hemera to complete the path (e.g. SphinxTrain bin directory).
 # You MUST specify library directory paths of tool you have compiled (e.g. sphinxbase)
-hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs:_fromSource/sphinxbase/src/libsphinxad/.libs:_fromSource/sphinx3/src/programs/.libs:_fromSource/sphinx3/src/libs3decoder/.libs:_fromSource/sox/src/.libs"
+hemera.path.lib="_fromSource/sphinxbase/src/libsphinxbase/.libs:_fromSource/sphinxbase/src/libsphinxad/.libs:_fromSource/sphinx3/src/programs/.libs:_fromSource/sphinx3/src/libs3decoder/.libs:_fromSource/sox/src/.libs:_fromSource/opencv/_hemera/lib"
 
 # Language of Internationalized Hemera strings.
 # N.B.: a file named hemera-i18n.<hemera.language> must exist in i18n/ sub-directory.
