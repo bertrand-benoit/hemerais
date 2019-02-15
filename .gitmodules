@@ -1,0 +1,3 @@
+[submodule "Hemera/scripts-common"]
+	path = Hemera/scripts-common
+	url = git@github.com:bertrand-benoit/scripts-common.git
