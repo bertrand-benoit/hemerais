@@ -77,7 +77,7 @@ additionalOptions=""
 # We need a specific log file for each iteration for speech recognition
 #  core module result log analyzer to see only result of regarded iteration.
 # Inform the user.
-mainLogFile="$h_logFile"
+mainLogFile="$LOG_FILE"
 echo "See $mainLogFile"."X iteration log files" > "$mainLogFile"
 
 textToSpeech="$text"
@@ -86,7 +86,7 @@ iteration=1
 while [ $iteration -le $iterationCount ]; do
   speechSoundFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration.wav"
   speechRecognitionResultFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration-result.txt"
-  h_logFile="$mainLogFile.$iteration"
+  LOG_FILE="$mainLogFile.$iteration"
 
   CATEGORY="speech2Recognition"
   writeMessage "Iteration $iteration/$iterationCount, text to speech then recognize is '$textToSpeech'"

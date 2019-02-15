@@ -236,7 +236,7 @@ End-of-Message
   fi
 
   if [ $writeGlobalConfigFile -eq 0 ] && [ $force -eq 1 ]; then
-    cp -f "$h_globalConfFile" "$h_globalConfFile.bak" >>"$h_logFile" 2>&1
+    cp -f "$h_globalConfFile" "$h_globalConfFile.bak" >>"$LOG_FILE" 2>&1
     writeMessage "You have forced update of global configuration file '$h_globalConfFile' (created $h_globalConfFile.bak backup)."
     writeGlobalConfigFile=1
   fi

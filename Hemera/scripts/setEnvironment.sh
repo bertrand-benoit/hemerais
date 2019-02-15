@@ -185,7 +185,7 @@ fi
 # Further environment set is no more needed for 'check configuration and quit' mode.
 declare -rx h_minConfigOK="$minConfigOK"
 if [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ]; then
-  declare -x h_logFile="$H_DEFAULT_LOG.checkConfig-$( whoami )"
+  declare -x LOG_FILE="$H_DEFAULT_LOG.checkConfig-$( whoami )"
   return 0
 fi
 
@@ -216,8 +216,8 @@ declare -rx h_speechRunningPIDFile="$h_pidDir/runningSpeech.pid"
 declare -rx h_speechToPlayList="$h_cacheDir/speechToPlay"
 
 # Defines the log file if not already done (e.g. if it has the default value).
-if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
-  # IMPORTANT: $h_logFile is NOT read-only allowing to generate specific log file for some components
+if [[ "$LOG_FILE" == "$H_DEFAULT_LOG" ]]; then
+  # IMPORTANT: $LOG_FILE is NOT read-only allowing to generate specific log file for some components
   #  like speech recognition which need post-processing (like log analyzing); which will be more efficient
   #  on little log.
 
@@ -225,13 +225,13 @@ if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
   #  of the main Hemera script).
   messagePrefix="new"
   if [ $continueLogFile -eq 1 ]; then
-    declare -x h_logFile="$h_runningLogFile"
-    [ -f "$h_logFile" ] && messagePrefix="continue"
+    declare -x LOG_FILE="$h_runningLogFile"
+    [ -f "$LOG_FILE" ] && messagePrefix="continue"
   else
-    declare -x h_logFile="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$category.log"
+    declare -x LOG_FILE="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$CATEGORY.log"
 
   fi
 
   # Doesn't inform in 'checkConfigAndQuit' mode.
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && writeMessage "$messagePrefix LogFile: $h_logFile"
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && writeMessage "$messagePrefix LogFile: $LOG_FILE"
 fi

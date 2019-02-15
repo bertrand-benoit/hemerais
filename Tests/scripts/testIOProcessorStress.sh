@@ -66,18 +66,18 @@ function checkInputManagement() {
   local _inputCount=$1
 
   writeMessageSL "Ensuring $_inputCount input has been managed ... "
-  managedCount=$( cat "$h_logFile" |grep "input-" |wc -l )
-  [ $managedCount -eq $_inputCount ] && echo "ok" |tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m ($managedCount instead of $_inputCount)"|tee -a "$h_logFile"
+  managedCount=$( cat "$LOG_FILE" |grep "input-" |wc -l )
+  [ $managedCount -eq $_inputCount ] && echo "ok" |tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m ($managedCount instead of $_inputCount)"|tee -a "$LOG_FILE"
 
   writeMessageSL "Ensuring index of the last input is $_inputCount ... "
-  lastManagedIndex=$( cat "$h_logFile" |grep "input-" |tail -n 1 |sed -e 's/.*input-\([0-9][0-9]*\).*$/\1/g;' )
+  lastManagedIndex=$( cat "$LOG_FILE" |grep "input-" |tail -n 1 |sed -e 's/.*input-\([0-9][0-9]*\).*$/\1/g;' )
   [ -z "$lastManagedIndex" ] && lastManagedIndex="none"
   awaitedLastIndex=$( printf "%04d" "$_inputCount" )
-  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && echo "ok"|tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m ($lastManagedIndex instead of $awaitedLastIndex)"|tee -a "$h_logFile"
+  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && echo "ok"|tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m ($lastManagedIndex instead of $awaitedLastIndex)"|tee -a "$LOG_FILE"
 
   writeMessageSL "Ensuring each managed input has been seen in good order ... "
-  badlyManagedInput=$( cat "$h_logFile" |grep "input-" |sed -e 's/.*input-\([0-9][0-9]*\)[^0-9]*\([0-9][0-9]*\)$/\1 \2/g;' |awk '$1 != $2 {print}' )
-  [ -z "$badlyManagedInput" ] && echo "ok"|tee -a "$h_logFile" || echo -e "\E[31mFAILED\E[0m (format: <ordered input index> <input name index>):\n$badlyManagedInput"|tee -a "$h_logFile"
+  badlyManagedInput=$( cat "$LOG_FILE" |grep "input-" |sed -e 's/.*input-\([0-9][0-9]*\)[^0-9]*\([0-9][0-9]*\)$/\1 \2/g;' |awk '$1 != $2 {print}' )
+  [ -z "$badlyManagedInput" ] && echo "ok"|tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m (format: <ordered input index> <input name index>):\n$badlyManagedInput"|tee -a "$LOG_FILE"
 }
 
 # usage: cleanAllNewInput
@@ -113,12 +113,12 @@ writeMessage "Test system will ensure Hemera is not running"
 "$scripstDir/makeHemera.sh" init
 
 # Defines main log file.
-mainLogFile="$h_logFile"
+mainLogFile="$LOG_FILE"
 
 ## Test 1
 # Stress IOProcessor, without inputMonitor.
-h_logFile="$mainLogFile.1"
-writeMessage "Test 1: IOProcessor stress without inputMonitor (specific log file: $h_logFile)"
+LOG_FILE="$mainLogFile.1"
+writeMessage "Test 1: IOProcessor stress without inputMonitor (specific log file: $LOG_FILE)"
 
 # Cleans all potential remaining "new" input.
 cleanAllNewInput
@@ -134,8 +134,8 @@ launchInputGenerationAndCheck "simu"
 
 ## Test 2
 # Stress IOProcessor, WITH inputMonitor.
-h_logFile="$mainLogFile.2"
-writeMessage "Test 2: IOProcessor stress WITH inputMonitor (specific log file: $h_logFile)"
+LOG_FILE="$mainLogFile.2"
+writeMessage "Test 2: IOProcessor stress WITH inputMonitor (specific log file: $LOG_FILE)"
 
 # Cleans all potential remaining "new" input.
 cleanAllNewInput

@@ -57,7 +57,7 @@ do
         X) MODE_CHECK_CONFIG_AND_QUIT=1;;
         S)
           action="start"
-          outputFile="$h_logFile.soundRecorder"
+          outputFile="$LOG_FILE.soundRecorder"
           newLogFile="$outputFile"
         ;;
         T)      action="status";;

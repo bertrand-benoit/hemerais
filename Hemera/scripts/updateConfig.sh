@@ -55,7 +55,7 @@ do
         c)      srcConfFile="$OPTARG";;
         o)      dstConfFile="$OPTARG";;
         v)      VERBOSE=1;;
-        h|[?])  usage;; 
+        h|[?])  usage;;
  esac
 done
 
@@ -68,8 +68,8 @@ done
 # Backups existing destination if any.
 backupFile="$dstConfFile.backup."$( date +'%Y-%m-%d-%H.%M.%S' )
 writeMessageSL "Creating backup '$backupFile' ... "
-! cp "$dstConfFile" "$backupFile" && echo "FAILED"|tee -a "$h_logFile" && exit 1
-echo "OK"|tee -a "$h_logFile"
+! cp "$dstConfFile" "$backupFile" && echo "FAILED"|tee -a "$LOG_FILE" && exit 1
+echo "OK"|tee -a "$LOG_FILE"
 
 # For each lines of the source config file.
 writeMessageSL "Checking change ... "
@@ -89,21 +89,21 @@ for lineRaw in $( cat "$srcConfFile" |sed -e 's/[ \t]/€/g;s/^$/EmptY/g;' ); do
   sourceKey=$( echo "$line" |sed -e 's/^\([^=]*\)=.*$/\1/g;' )
 
   # Checks if configuration element already exists.
-  if [ $( grep -cre "^$sourceKey=" "$dstConfFile" 2>/dev/null ) -ge 1 ]; then    
+  if [ $( grep -ce "^$sourceKey=" "$dstConfFile" 2>/dev/null ) -ge 1 ]; then
     # Gets value of destination.
-    dstValue=$( grep -re "^$sourceKey=" "$dstConfFile" 2>/dev/null|sed -e 's/^[^=]*=//;' |tail -n 1 )
+    dstValue=$( grep -e "^$sourceKey=" "$dstConfFile" 2>/dev/null|sed -e 's/^[^=]*=//;' |tail -n 1 )
     echo "$sourceKey=$dstValue" >> "$tmpDstFile"
   else
-    echo -ne "new key $sourceKey ... "|tee -a "$h_logFile"
-    let keyChangeCount++    
+    echo -ne "new key $sourceKey ... "|tee -a "$LOG_FILE"
+    let keyChangeCount++
     # Adds the line of the "source file".
     echo "$line" >> "$tmpDstFile"
   fi
 done
-echo "done"|tee -a "$h_logFile"
+echo "done"|tee -a "$LOG_FILE"
 
 # Computes count of changed comments.
-commentChangeCount=$( diff "$dstConfFile" "$tmpDstFile" |grep -cre ">[ \t]*#" )
+commentChangeCount=$( diff "$dstConfFile" "$tmpDstFile" |grep -ce ">[ \t]*#" )
 
 # Exists if there was no change.
 [ $keyChangeCount -eq 0 ] && [ $commentChangeCount -eq 0 ] && writeMessage "Nothing to update." && rm -f "$tmpDstFile" && exit 0

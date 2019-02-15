@@ -36,7 +36,7 @@ installDir="$repoDir/Hemera"
 [ ! -d "$installDir" ] && echo -e "Unable to find hemera main project ($installDir)" && exit 1
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
-export h_logFile="/tmp/"$( date +'%s' )"-makeDistrib.log"
+export LOG_FILE="/tmp/"$( date +'%s' )"-makeDistrib.log"
 
 source "$installDir/scripts/setEnvironment.sh"
 
@@ -45,7 +45,7 @@ cd "$repoDir"
 [ $( git branch |grep -c "* master" ) -ne 1 ] && errorMessage "'master' branch of GIT repository must be checkout (ensuring having up to date gitattributes)." $ERROR_ENVIRONMENT
 
 # Informs about log file now that functions are available.
-writeMessage "LogFile: $h_logFile"
+writeMessage "LogFile: $LOG_FILE"
 
 #########################
 ## FUNCTIONS

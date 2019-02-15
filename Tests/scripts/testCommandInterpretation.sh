@@ -41,12 +41,12 @@ CATEGORY="TCmdInterp."
 VERBOSE=1
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
-export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
+export LOG_FILE="/tmp/"$( date +'%s' )"-$CATEGORY.log"
 
 source "$installDir/scripts/setEnvironment.sh"
 
 # Informs about log file now that functions are available.
-writeMessage "LogFile: $h_logFile"
+writeMessage "LogFile: $LOG_FILE"
 
 # Defines some additionals variables.
 speechScript="$h_coreDir/speech/speech.sh"
@@ -137,7 +137,7 @@ function test2() {
   echo "$STRING4" > "$h_newInputDir/recognitionResult_test6.txt"
   echo "$STRING5" > "$h_newInputDir/recognitionResult_test7.txt"
   echo "$STRING6" > "$h_newInputDir/recognitionResult_test8.txt"
-  
+
   waitUntilAllInputManaged
 }
 

@@ -49,7 +49,7 @@ for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-
   [[ "$i18nFile" != "$refI18nFile" ]] && extractI18Nelement "$i18nFile" "$i18nFilePurified"
 
   # Checks each definition.
-  for i18nElementRaw in $( grep -re "^[ \t]*[^#]" "$i18nFile" |sed -e 's/[ \t]/€/g;' ); do
+  for i18nElementRaw in $( grep -e "^[ \t]*[^#]" "$i18nFile" |sed -e 's/[ \t]/€/g;' ); do
     i18nElement=$( echo "$i18nElementRaw" |sed -e 's/€/ /g;' )
 
     # Checks if there is a variable into this definition.
@@ -72,10 +72,10 @@ for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-
   # Ensures there is the same i18n elements of the reference file.
   cat "$i18nFilePurified" |sed -e 's/=.*$//g;' |sort > "$i18nFilePurified.keys"
   diff "$refI18nFilePurified.keys" "$i18nFilePurified.keys" > "$i18nFilePurified.keys.diff"
-  missingI18NElements=$( grep -re "^<" "$i18nFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
+  missingI18NElements=$( grep -e "^<" "$i18nFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
   [ ! -z "$missingI18NElements" ] &&  warning "($i18nFileName) missing following i18n definition: $missingI18NElements"
 
-  unknownI18NElements=$( grep -re "^>" "$i18nFilePurified.keys.diff" |sed -e 's/>/,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
+  unknownI18NElements=$( grep -e "^>" "$i18nFilePurified.keys.diff" |sed -e 's/>/,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
   [ ! -z "$unknownI18NElements" ] &&  warning "($i18nFileName) following i18n definition are unknown: $unknownI18NElements"
 done
 writeMessage "Checking internationalization files (END)"

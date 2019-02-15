@@ -75,13 +75,13 @@ function getAbsolutePath() {
 
 # usage: markLogFileEnd
 function markLogFileEnd() {
-  echo "$LOG_FILE_END" >> "$h_logFile"
+  echo "$LOG_FILE_END" >> "$LOG_FILE"
 }
 
 # usage: startLogAnalyzer
 function startLogAnalyzer() {
   writeMessage "Launching result log analyzer ..."
-  h_logFile="$h_logFile" "$myPath" -Z "$h_logFile" &
+  LOG_FILE="$LOG_FILE" "$myPath" -Z "$LOG_FILE" &
 }
 
 # usage: manageSpeechRecognition <prepared sound file list> [<result file>]

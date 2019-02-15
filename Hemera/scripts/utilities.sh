@@ -66,6 +66,14 @@ function waitUntilAllInputManaged() {
 }
 
 #########################
+## Functions - PID & Process management
+# usage: isHemeraComponentStarted
+# returns <true> if at least one component is started (regarding PID files).
+function isHemeraComponentStarted() {
+  [ $( find "$DEFAULT_PID_DIR" -type f |wc -l ) -gt 0 ]
+}
+
+#########################
 ## Functions - configuration
 
 # usage: checkForbiddenPath <path>
@@ -155,7 +163,7 @@ function initializeCommandMap() {
     [ -z "$_keyword" ] && warning "The command '$_commandName' doesn't seem to respect format. It will be ignored." && continue
 
     # Updates command map file.
-    for localizedName in $( grep -re "$_keyword"_"PATTERN_I18N" "$h_i18nFile" |sed -e 's/^[^(]*(//g;s/).*$//g;s/"//g;' ); do
+    for localizedName in $( grep -e "$_keyword"_"PATTERN_I18N" "$h_i18nFile" |sed -e 's/^[^(]*(//g;s/).*$//g;s/"//g;' ); do
       echo "$localizedName=$_command" >> "$h_commandMap"
     done
   done
@@ -222,7 +230,7 @@ function launchJavaTool() {
   "$JAVA_HOME/bin/java" -classpath "$_jarFile" \
     -Djava.system.class.loader=hemera.HemeraClassLoader \
     -Dhemera.property.file="$h_configurationFile" \
-    -Dhemera.log.file="$h_logFile" $_additionalProperties \
+    -Dhemera.log.file="$LOG_FILE" $_additionalProperties \
     "$_className" \
-    $_options >> "$h_logFile" 2>&1
+    $_options >> "$LOG_FILE" 2>&1
 }

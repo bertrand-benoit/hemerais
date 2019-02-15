@@ -40,12 +40,12 @@ scripstDir="$installDir/scripts"
 CATEGORY="TSearch."
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
-export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
+export LOG_FILE="/tmp/"$( date +'%s' )"-$CATEGORY.log"
 
 source "$installDir/scripts/setEnvironment.sh"
 
 # Informs about log file now that functions are available.
-writeMessage "LogFile: $h_logFile"
+writeMessage "LogFile: $LOG_FILE"
 
 # Defines some additionals variables.
 speechScript="$h_coreDir/speech/speech.sh"
@@ -124,7 +124,7 @@ function simulateSearchPlugin() {
   echo -e "***** RESULT - $_term - END *****\n"
 
   # Uses the speech core module to read the produced file.
-  h_logFile="$h_logFile" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -f "$_destFile" -o "$h_newInputDir/speech_$h_language-$input.wav"
+  LOG_FILE="$LOG_FILE" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -f "$_destFile" -o "$h_newInputDir/speech_$h_language-$input.wav"
 
   return 0
 }

@@ -73,7 +73,7 @@ if [ "$target" = "clean" ]; then
   # Cleans any working directories.
   writeMessageSL "Cleaning queue and temporary directories ."
   for dirToClean in "$h_queueDir" "$h_tmpDir"; do
-    rm -Rf "$dirToClean" >>"$h_logFile" 2>&1
+    rm -Rf "$dirToClean" >>"$LOG_FILE" 2>&1
     echo -ne "."
   done
   echo " done"
@@ -81,13 +81,13 @@ fi
 
 if [ "$target" != "webModule" ]; then
   writeMessageSL "Making Hemera target: $target ... "
-  ! "$ANT" -v -f "$buildAntFile" "$target" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
+  ! "$ANT" -v -f "$buildAntFile" "$target" >> "$LOG_FILE" 2>&1 && echo -e "error (See $LOG_FILE)" && exit 1
 
   # Ensures the log file still exists (it won't be the case after "cleaning").
-  [ ! -f "$h_logFile" ] && echo "done" || echo "done" |tee -a "$h_logFile"
+  [ ! -f "$LOG_FILE" ] && echo "done" || echo "done" |tee -a "$LOG_FILE"
 fi
 
-# Checks if "all" or "webModule" target has been specified, and checks if corresponding 
+# Checks if "all" or "webModule" target has been specified, and checks if corresponding
 #  project is available.
 [ "$target" != "all" ] && [ "$target" != "webModule" ] && exit 0
 declare -r webModuleDir="$installDir/../HemeraWebModule"
@@ -97,5 +97,5 @@ if [ ! -d "$webModuleDir" ]; then
 fi
 
 writeMessageSL "Making Hemera Web module ... "
-! "$ANT" -v -f "$webModuleDir/engineering/build.xml" >> "$h_logFile" 2>&1 && echo -e "error (See $h_logFile)" && exit 1
-echo "done" |tee -a "$h_logFile"
+! "$ANT" -v -f "$webModuleDir/engineering/build.xml" >> "$LOG_FILE" 2>&1 && echo -e "error (See $LOG_FILE)" && exit 1
+echo "done" |tee -a "$LOG_FILE"

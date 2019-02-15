@@ -82,7 +82,7 @@ mkdir -p "$wDir"
 rm -f "$pidFile"
 
 # Manages daemon.
-outputFile="$h_logFile.soundRecorder"
+outputFile="$LOG_FILE.soundRecorder"
 writeMessage "Starting sound recorder ... "
 ( manageDaemon "daemon" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "$options" ) &
 

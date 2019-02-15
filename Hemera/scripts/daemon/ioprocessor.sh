@@ -66,7 +66,7 @@ do
           # Removes potential speech running lock file, and speech to play list.
           rm -f "$h_speechRunningLockFile" "$h_speechToPlayList"
           action="start"
-          newLogFile="$h_logFile"
+          newLogFile="$LOG_FILE"
           outputFile="$newLogFile"
         ;;
         T)      action="status";;
@@ -141,8 +141,8 @@ while [ 1 ]; do
       writeMessage "$inputString: $inputName not found"
     else
       # Launches background process on this input.
-      # N.B.: to have one log specific to each input -> h_logFile="$h_logFile.$inputString"
-      h_logFile="$h_logFile" "$processInputScript" -i "$inputName" -S "$inputString" &
+      # N.B.: to have one log specific to each input -> LOG_FILE="$LOG_FILE.$inputString"
+      LOG_FILE="$LOG_FILE" "$processInputScript" -i "$inputName" -S "$inputString" &
     fi
 
     # Memorizes a new input has been managed or ignored.

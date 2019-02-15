@@ -120,13 +120,13 @@ function manageRecognitionResult() {
 
   # Gets recognized commands mode.
   recoCmdMode=$( getRecoCmdMode ) || exit $ERROR_ENVIRONMENT
- 
+
   # Removes wav file information from input file.
   # If there is finally nothing to say, replace with a default speech.
   sed -i 's/([^)]*)$//' "$_inputPath"
 
   # Checks if there is still something recognized.
-  if [ $( cat "$_inputPath" |grep -vcre "^$" ) -eq 0 ]; then
+  if [ $( cat "$_inputPath" |grep -vce "^$" ) -eq 0 ]; then
     logMonitor "/!\ $NOT_RECOGNIZED_COMMAND_I18N"
     speechToSay "$NOT_RECOGNIZED_COMMAND_I18N" "$_inputPath"
     notifyErrInput
@@ -167,6 +167,7 @@ function manageRecognitionResult() {
   source "$commandScript"
   checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
   execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
+  return 0
 }
 
 # usage: speechToSay <text> <input path> [<monitor log>]
@@ -175,7 +176,7 @@ function manageRecognitionResult() {
 function speechToSay() {
   local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH_I18N}"
   logMonitor "$_monitorMessage $_text"
-  h_logFile="$h_logFile" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
+  LOG_FILE="$LOG_FILE" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
 
 # usage: speechListPut
@@ -255,7 +256,7 @@ do
         i)      inputName="$OPTARG";;
         S)      inputString="$OPTARG";;
         v)      VERBOSE=1;;
-        h|[?])  usage ;; 
+        h|[?])  usage ;;
  esac
 done
 
@@ -295,7 +296,7 @@ case "$inputType" in
     #  (such a way raw and feature files will be created in the temporary directory instead of queue one).
     tmpFileToManage="$h_workDir/$inputName"
     ln -s "$curInputPath" "$tmpFileToManage"
-    h_logFile="$h_logFile.$inputString" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    LOG_FILE="$LOG_FILE.$inputString" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)

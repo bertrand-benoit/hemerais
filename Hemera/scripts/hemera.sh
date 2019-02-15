@@ -68,15 +68,15 @@ function finalization() {
   finalizeStartTime
 
   # Ensures there is no more PID files (like "runningSpeech" for instance, otherwise cleaning could not be done).
-  rm -f "$h_pidDir"/* >> "$h_logFile" 2>&1
+  rm -f "$h_pidDir"/* >> "$LOG_FILE" 2>&1
 
   # Moves the running logFile.
-  if [ -f "$h_logFile" ]; then
-    newLogName=$( basename "$h_logFile" )
+  if [ -f "$LOG_FILE" ]; then
+    newLogName=$( basename "$LOG_FILE" )
     newLogPath="$h_logDir/"$(date +"%Y-%m-%d-%H-%M-%S")"-$newLogName"
     writeMessageSL "Moving LogFile to '$newLogPath' ... "
     # Does not log in log file because ... we have just moved it !
-    mv -f "$h_logFile" "$newLogPath" && echo "done" || echo -e "\E[31mFAILED\E[0m"
+    mv -f "$LOG_FILE" "$newLogPath" && echo "done" || echo -e "\E[31mFAILED\E[0m"
   fi
 
   finalizeMonitor
@@ -98,7 +98,7 @@ do
         T)      action="status";;
         K)      action="stop";;
         v)      VERBOSE=1;;
-        h|[?])  usage;; 
+        h|[?])  usage;;
  esac
 done
 
@@ -151,13 +151,13 @@ if [ "$hemeraMode" = "local" ]; then
 
     status)
       # Informs about version.
-      declare -r version=$( getDetailedVersion )
+      declare -r version=$( getDetailedVersion "$H_VERSION" "$installDir" )
       writeMessage "Hemera version: $version"
 
       # Informs about uptime.
       declare -r uptime=$( getUptime )
       writeMessage "Hemera uptime: $uptime"
-      
+
       # Informs about current Hemera mode.
       writeMessage "Hemera mode: $hemeraMode"
 
@@ -177,7 +177,7 @@ if [ "$hemeraMode" = "local" ]; then
 
     h|[?])
       errorMessage "Unknown action: $action" $ERROR_BAD_CLI
-    ;; 
+    ;;
   esac
 
   # Adds VERBOSE if needed.
@@ -215,11 +215,12 @@ if [ "$hemeraMode" = "local" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else
         writeMessageSL "Apache Tomcat $action ... "
-        "$tomcatBin" >> "$h_logFile" 2>&1 && echo "ok" || echo -e "\E[31mFAILED\E[0m"
+        "$tomcatBin" >> "$LOG_FILE" 2>&1 && echo "ok" || echo -e "\E[31mFAILED\E[0m"
       fi
     fi
   fi
 
   # Finalizes.
   [ "$action" = "stop" ] && ! finalization && exit $ERROR_ENVIRONMENT
+  exit 0
 fi
