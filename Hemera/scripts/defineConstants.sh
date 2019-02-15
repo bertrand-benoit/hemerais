@@ -24,67 +24,25 @@
 # This script must NOT be directly called.
 
 ## General constants
+# Defines constants tuning scripts-common/utilities.sh
+TMP_DIR="/tmp/hemera"
+DEFAULT_LOG_FILE="/tmp/hemera-$( whoami ).log"
+DEFAULT_ROOT_DIR="/usr/share/hemera/ThirdParty"
+
 # Hemera version.
-declare -r H_VERSION="0.1.5-beta1"
+declare -r H_VERSION="0.1.6-beta1"
 
 # Some default values.
-declare -r H_DEFAULT_WORK_DIR="/tmp/hemera"
-declare -r H_DEFAULT_LOG="/tmp/hemera-$( whoami ).log"
-declare -r H_DEFAULT_TP_DIR="/usr/share/hemera/ThirdParty"
+declare -r H_DEFAULT_WORK_DIR="$TMP_DIR"
+declare -r H_DEFAULT_LOG="$DEFAULT_LOG_FILE"
+declare -r H_DEFAULT_TP_DIR="$DEFAULT_ROOT_DIR"
 declare -r H_FORBIDDEN_PATH="/ /bin /boot /dev /etc /home /lib /media /misc /mnt /net /opt /proc /root /sbin /selinux /srv /sys /tmp /usr /var"
-declare -r H_INFO=1
-declare -r H_MESSAGE=2
-declare -r H_WARNING=3
-declare -r H_ERROR=4
-
-# Configuration element types.
-declare -r CONFIG_NOT_FOUND="CONFIG NOT FOUND"
-declare -r CONFIG_TYPE_PATH=1
-declare -r CONFIG_TYPE_OPTION=2
-declare -r CONFIG_TYPE_BIN=3
-declare -r CONFIG_TYPE_DATA=4
 
 # Hemera modes.
 declare -r H_RECO_CMD_MODE_NORMAL="normal"
 declare -r H_RECO_CMD_MODE_SECURITY="security"
 declare -r H_RECO_CMD_MODE_PARROT="parrot"
 declare -r H_SUPPORTED_RECO_CMD_MODES=( "$H_RECO_CMD_MODE_NORMAL" "$H_RECO_CMD_MODE_SECURITY" "$H_RECO_CMD_MODE_PARROT" )
-
-# timeout (in seconds) when stopping process, before killing it.
-declare -r PROCESS_STOP_TIMEOUT=10
-declare -r DAEMON_SPECIAL_RUN_ACTION="-R"
-
-## Error code
-# Default error message code.
-declare -r ERROR_DEFAULT=101
-
-# Error code after showing usage.
-declare -r ERROR_USAGE=102
-
-# Command line syntax not respected.
-declare -r ERROR_BAD_CLI=103
-
-# Bad/incomplete environment, like:
-#  - missing Java or Ant
-#  - bad user (e.g. Hemera setup)
-#  - permission issue (e.g. while updating structure)
-#  - Hemera not built
-#  - Cleaning is requested while Hemera is running
-declare -r ERROR_ENVIRONMENT=104
-
-# Invalid configuration, or path definition.
-declare -r ERROR_CONFIG_VARIOUS=105
-declare -r ERROR_CONFIG_PATH=106
-
-# Binary or data configured file not found.
-declare -r ERROR_CHECK_BIN=107
-declare -r ERROR_CHECK_CONFIG=108
-
-# Bad/unsupported mode.
-declare -r ERROR_MODE=109
-
-# External tool fault (like wget).
-declare -r ERROR_EXTERNAL_TOOL=110
 
 # Error while processing input.
 declare -r ERROR_INPUT_PROCESS=111

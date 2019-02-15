@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
-category="featureFile"
+CATEGORY="featureFile"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -54,25 +54,25 @@ function usage() {
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 while getopts "Xf:vh" opt
 do
  case "$opt" in
-        X)      checkConfAndQuit=1;;
+        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
         f)      soundFile="$OPTARG";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?]) usage;;
  esac
 done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.path" "$CONFIG_TYPE_BIN"
-declare -r soundFeatureCreatorBin="$h_lastConfig"
+declare -r soundFeatureCreatorBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.options" "$CONFIG_TYPE_OPTION"
-declare -r soundFeatureCreatorOptions="$h_lastConfig"
+declare -r soundFeatureCreatorOptions="$LAST_READ_CONFIG"
 
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 [ -z "${soundFile:-}" ] && usage

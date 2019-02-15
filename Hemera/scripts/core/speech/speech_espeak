@@ -27,9 +27,9 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-declare -r espeakBin="$h_lastConfig"
+declare -r espeakBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-declare -r espeakOptions="$h_lastConfig"
+declare -r espeakOptions="$LAST_READ_CONFIG"
 
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {

@@ -27,31 +27,31 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-declare -r espeakBin="$h_lastConfig"
+declare -r espeakBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-declare -r espeakOptions="$h_lastConfig"
+declare -r espeakOptions="$LAST_READ_CONFIG"
 
 # Ensures --pho option is specify if espeak version is >= 1.44
 espeakVersion=$( "$espeakBin" --help |grep -v "^$" |head -n 1 |sed -e 's/^[^:]*:[ ]*\([0-9.]*\)[ ].*$/\1/' )
 if $( isVersionGreater "$espeakVersion" "1.44.0" ); then
   if [ $( echo "$espeakOptions" |grep -wc "\-\-pho" ) -lt 1 ]; then
     _message="Detected version $espeakVersion of espeak which needs --pho option. You should add it to your configuration file ($CONFIG_KEY.tool.options)."
-    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_SPEECH
+    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_SPEECH
     warning "$_message"
   fi
 fi
 
 checkAndSetConfig "$CONFIG_KEY.mbrola.path" "$CONFIG_TYPE_BIN"
-declare -r mbrolaBin="$h_lastConfig"
+declare -r mbrolaBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.mbrola.options" "$CONFIG_TYPE_OPTION"
-declare -r mbrolaOptions="$h_lastConfig"
+declare -r mbrolaOptions="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.mbrola.language" "$CONFIG_TYPE_DATA" "$h_tpDir/speech/data/language"
-declare -r mbrolaLanguageFile="$h_lastConfig"
+declare -r mbrolaLanguageFile="$LAST_READ_CONFIG"
 
 [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
 
 # Checks if espeak and mbrola are working together.
-if [ $checkConfAndQuit -eq 1 ]; then
+if [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ]; then
   espeakTmpFile="$h_workDir/$h_fileDate"-"CheckConfig-espeak+mbrola.tmp"
   LANG=C "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions "Checking configuration" > "$espeakTmpFile" 2>&1 || exit $ERROR_SPEECH
 

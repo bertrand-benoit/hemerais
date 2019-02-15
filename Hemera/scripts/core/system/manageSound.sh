@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir="$currentDir/../../../"
-category="manageSound"
+CATEGORY="manageSound"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -59,29 +59,29 @@ function usage() {
 #########################
 ## Command line management
 
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 while getopts "PCSp:f:vhX" opt
 do
  case "$opt" in
-        X)      checkConfAndQuit=1;;
+        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
         p)      pidFile="$OPTARG";;
         f)      action="play";soundFile="$OPTARG";;
         P)      action="pause";;
         C)      action="continue";;
         S)      action="stop";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  usage;;
  esac
 done
 
 ## Configuration check.
 checkAndSetConfig "hemera.core.speech.soundPlayer.path" "$CONFIG_TYPE_BIN"
-declare -r soundPlayerBin="$h_lastConfig"
+declare -r soundPlayerBin="$LAST_READ_CONFIG"
 checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
-declare -r soundPlayerOptions="$h_lastConfig"
+declare -r soundPlayerOptions="$LAST_READ_CONFIG"
 
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 [ -z "${action:-}" ] && usage

@@ -37,7 +37,7 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="TioProcStress"
+CATEGORY="TioProcStress"
 source "$installDir/scripts/setEnvironment.sh"
 
 INPUT_COUNT_1=500
@@ -126,7 +126,7 @@ cleanAllNewInput
 # Resets input list file.
 rm -f "$h_inputList" && touch "$h_inputList"
 # Starts ioProcessor.
-verbose=1 "$h_daemonDir/ioprocessor.sh" -S
+VERBOSE=1 "$h_daemonDir/ioprocessor.sh" -S
 # Launches input generation and check.
 launchInputGenerationAndCheck "simu"
 # Stops ioProcessor.
@@ -141,7 +141,7 @@ writeMessage "Test 2: IOProcessor stress WITH inputMonitor (specific log file: $
 cleanAllNewInput
 
 # Starts inputMonitor, and ioprocessor.
-verbose=1
+VERBOSE=1
 "$h_daemonDir/inputMonitor.sh" -S
 "$h_daemonDir/ioprocessor.sh" -S
 # Launches input generation and check.

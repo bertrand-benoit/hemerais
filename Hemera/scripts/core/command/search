@@ -27,9 +27,9 @@
 ## Checks configuration specific to this command.
 function checkConfig() {
   checkAndSetConfig "hemera.core.command.general.htmlConverter.path" "$CONFIG_TYPE_BIN"
-  export htmlConverter="$h_lastConfig"
+  export htmlConverter="$LAST_READ_CONFIG"
   checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
-  export searchURL="$h_lastConfig"
+  export searchURL="$LAST_READ_CONFIG"
 
   # Defines rc file to use.
   export htmlConverterRCFile="$h_coreDir/command/search_definition.mobile.wikipedia.rc"

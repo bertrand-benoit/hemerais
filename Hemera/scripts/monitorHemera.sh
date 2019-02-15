@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="monitor"
+CATEGORY="monitor"
 source "$currentDir/setEnvironment.sh"
 
 # Safeguard to automagically stop monitor in Hemera file(s) are not available during a "long" time.

@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$( dirname "$currentDir" )" )
-category="IOProcessor"
+CATEGORY="IOProcessor"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -53,15 +53,15 @@ declare -r processInputScript="$h_coreDir/system/processInput.sh"
 
 # N.B.: the -D (for daemon) option must be only internally used.
 # N.B.: the -R (for run) option must be only internally used.
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 newLogFile=""
 outputFile=""
 options=""
 while getopts "XSTKDRvh" opt
 do
  case "$opt" in
-        X) checkConfAndQuit=1;;
+        X) MODE_CHECK_CONFIG_AND_QUIT=1;;
         S)
           # Removes potential speech running lock file, and speech to play list.
           rm -f "$h_speechRunningLockFile" "$h_speechToPlayList"
@@ -74,18 +74,18 @@ do
         D)      action="daemon";;
         R)      action="run";;
 
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  daemonUsage "$daemonName" ;; 
  esac
 done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.path" "$CONFIG_TYPE_BIN"
-declare -r monitorBin="$h_lastConfig"
+declare -r monitorBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
-declare -r monitorOptions="$h_lastConfig"
+declare -r monitorOptions="$LAST_READ_CONFIG"
 
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 # Ensures action is defined.

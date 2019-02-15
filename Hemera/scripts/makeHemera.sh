@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="make"
+CATEGORY="make"
 source "$currentDir/setEnvironment.sh"
 
 declare -r CONFIG_KEY="environment"

@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="speech2Recognition"
+CATEGORY="speech2Recognition"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -52,14 +52,14 @@ function usage() {
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 iterationCount=1
 while getopts "t:I:vh" opt
 do
  case "$opt" in
         t)      text="$OPTARG";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         I)      iterationCount="$OPTARG";;
         h|[?]) usage;;
  esac
@@ -72,7 +72,7 @@ done
 speechDir="$h_coreDir/speech"
 speechRecognitionDir="$h_coreDir/speechRecognition"
 additionalOptions=""
-[ $verbose -eq 1 ] && additionalOptions="-v"
+[ $VERBOSE -eq 1 ] && additionalOptions="-v"
 
 # We need a specific log file for each iteration for speech recognition
 #  core module result log analyzer to see only result of regarded iteration.
@@ -88,7 +88,7 @@ while [ $iteration -le $iterationCount ]; do
   speechRecognitionResultFile="$h_workDir/$h_fileDate-speech2Recognition-$iteration-result.txt"
   h_logFile="$mainLogFile.$iteration"
 
-  category="speech2Recognition"
+  CATEGORY="speech2Recognition"
   writeMessage "Iteration $iteration/$iterationCount, text to speech then recognize is '$textToSpeech'"
 
   # Generates the speech sound file.
@@ -105,5 +105,5 @@ while [ $iteration -le $iterationCount ]; do
   textToSpeech=$( cat "$speechRecognitionResultFile" |sed -e 's/[ \t]*([^(]*)$//;' )
 done
 
-category="speech2Recognition"
+CATEGORY="speech2Recognition"
 writeMessage "After $iterationCount iterations, text to speech '$text' -> '$textToSpeech'"

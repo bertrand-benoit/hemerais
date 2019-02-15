@@ -33,6 +33,10 @@
 [ ! -d "$installDir/scripts" ] && [ $( LANG=C which --version 2>&1|head -n 1 |grep -cw "GNU" ) -ne 1 ] && echo -e "\E[31m\E[4mERROR\E[0m: failure in path management; you MUST have a GNU version of 'which' tool (check Hemera documentation)." && exit 1
 source "$installDir/scripts/utilities.sh"
 
+# Defines constants tuning scripts-common/utilities.sh
+CONFIG_FILE="${HOME:-/home/$( whoami )}/.hemera/hemera.conf"
+GLOBAL_CONFIG_FILE="/etc/hemera.conf"
+
 # Ensures environment is OK.
 checkEnvironment || $ERROR_ENVIRONMENT
 checkOSLocale || $ERROR_ENVIRONMENT
@@ -42,7 +46,7 @@ declare -rx h_libDir="$installDir/lib"
 
 # Defines global configuration file.
 # It is NOT mandatory to have a global configuration file to allow user with NO privileges access to use Hemera.
-declare -rx h_globalConfFile="/etc/hemera.conf"
+declare -rx h_globalConfFile="$GLOBAL_CONFIG_FILE"
 
 # Safe-guard: ensures HOME variable is defined and corresponding path exists.
 ! isRootUser && [ -z "${HOME:-}" ] && errorMessage "HOME environment variable must be defined." $ERROR_ENVIRONMENT
@@ -65,26 +69,26 @@ minConfigOK=1
 
 # Defines Third-party directory, and ensures it is available.
 checkAndSetConfig "hemera.thirdParty.path" "$CONFIG_TYPE_PATH" "$installDir"
-declare -rx h_tpDir="$h_lastConfig"
+declare -rx h_tpDir="$LAST_READ_CONFIG"
 if [[ "$h_tpDir" == "$CONFIG_NOT_FOUND" ]]; then
   _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:Install"
-  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_ENVIRONMENT
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_ENVIRONMENT
   warning "$_message"
   minConfigOK=0
 fi
 
 # Updates environment path if needed.
 checkAndSetConfig "hemera.path.bin" "$CONFIG_TYPE_OPTION"
-if [[ "$h_lastConfig" != "$CONFIG_NOT_FOUND" ]]; then
-  formattedPaths=$( checkAndFormatPath "$h_lastConfig" )
+if [[ "$LAST_READ_CONFIG" != "$CONFIG_NOT_FOUND" ]]; then
+  formattedPaths=$( checkAndFormatPath "$LAST_READ_CONFIG" )
   export PATH=$formattedPaths:$PATH
 else
   minConfigOK=0
 fi
 
 checkAndSetConfig "hemera.path.lib" "$CONFIG_TYPE_OPTION"
-if [[ "$h_lastConfig" != "$CONFIG_NOT_FOUND" ]]; then
-  formattedPaths=$( checkAndFormatPath "$h_lastConfig" )
+if [[ "$LAST_READ_CONFIG" != "$CONFIG_NOT_FOUND" ]]; then
+  formattedPaths=$( checkAndFormatPath "$LAST_READ_CONFIG" )
   export LD_LIBRARY_PATH=$formattedPaths:$LD_LIBRARY_PATH
 else
   minConfigOK=0
@@ -92,10 +96,10 @@ fi
 
 # Hemera language.
 checkAndSetConfig "hemera.language" "$CONFIG_TYPE_OPTION"
-if [ ! -z "$h_lastConfig" ] && [[ "$h_lastConfig" != "$CONFIG_NOT_FOUND" ]]; then
-  h_language="$h_lastConfig"
+if [ ! -z "$LAST_READ_CONFIG" ] && [[ "$LAST_READ_CONFIG" != "$CONFIG_NOT_FOUND" ]]; then
+  h_language="$LAST_READ_CONFIG"
 else
-  [ -z "$h_lastConfig" ] && warning "'hemera.language' must be defined with no-empty value (using 'en' as default language)."
+  [ -z "$LAST_READ_CONFIG" ] && warning "'hemera.language' must be defined with no-empty value (using 'en' as default language)."
   h_language="en"
   minConfigOK=0
 fi
@@ -115,9 +119,9 @@ declare -rx h_coreDir="$installDir/scripts/core"
 ## Checks if current user is root, in which case there is
 #   no specific configuration of following elements which are user specific.
 if isRootUser; then
-  # If 'check config and quit' mode  is not activated yet (like when a script is launched with -X option),
+  # If 'check config and quit' mode is not activated yet (like when a script is launched with -X option),
   #  ensures that it will be performing short-circuit tests on arguments.
-  [ $checkConfAndQuit -eq 0 ] && [ $( echo "$*" |grep -wEc "\-X|\-Xh|\-hX" ) -eq 0 ] && errorMessage "root user can only use -X and -h options with this command." $ERROR_ENVIRONMENT
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && [ $( echo "$*" |grep -wEc "\-X|\-Xh|\-hX" ) -eq 0 ] && errorMessage "root user can only use -X and -h options with this command." $ERROR_ENVIRONMENT
 
   # Completes minimal configuration needed to perform check config of all components.
   declare -rx h_minConfigOK="$minConfigOK"
@@ -131,7 +135,7 @@ fi
 #  structure must NOT be updated/created.
 
 checkAndSetConfig "hemera.run.log" "$CONFIG_TYPE_PATH" "$installDir" 0
-declare -rx h_logDir="$h_lastConfig"
+declare -rx h_logDir="$LAST_READ_CONFIG"
 checkForbiddenPath "$h_logDir" || errorMessage "For security reason, '$h_logDir' is a forbidden path. Update 'hemera.run.log' configuration." $ERROR_ENVIRONMENT
 if [[ "$h_logDir" != "$CONFIG_NOT_FOUND" ]]; then
   updateStructure "$h_logDir"
@@ -145,7 +149,7 @@ fi
 #  [queue]/err    input with unknown type or error occurs while processing
 #  [queue]/done   input managed
 checkAndSetConfig "hemera.run.queue" "$CONFIG_TYPE_PATH" "$installDir" 0
-declare -rx h_queueDir="$h_lastConfig"
+declare -rx h_queueDir="$LAST_READ_CONFIG"
 checkForbiddenPath "$h_queueDir" || errorMessage "For security reason, '$h_queueDir' is a forbidden path. Update 'hemera.run.queue' configuration." $ERROR_ENVIRONMENT
 if [[ "$h_queueDir" != "$CONFIG_NOT_FOUND" ]]; then
   declare -rx h_newInputDir="$h_queueDir/new"
@@ -165,7 +169,7 @@ fi
 #  [tmp]/pid    PID files
 #  [tmp]/work   temporary files
 checkAndSetConfig "hemera.run.temp" "$CONFIG_TYPE_PATH" "$installDir" 0
-declare -rx h_tmpDir="$h_lastConfig"
+declare -rx h_tmpDir="$LAST_READ_CONFIG"
 checkForbiddenPath "$h_tmpDir" || errorMessage "For security reason, '$h_tmpDir' is a forbidden path. Update 'hemera.run.temp' configuration." $ERROR_ENVIRONMENT
 if [[ "$h_tmpDir" != "$CONFIG_NOT_FOUND" ]]; then
   declare -rx h_cacheDir="$h_tmpDir/cache"
@@ -180,7 +184,7 @@ fi
 
 # Further environment set is no more needed for 'check configuration and quit' mode.
 declare -rx h_minConfigOK="$minConfigOK"
-if [ $checkConfAndQuit -eq 1 ]; then
+if [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ]; then
   declare -x h_logFile="$H_DEFAULT_LOG.checkConfig-$( whoami )"
   return 0
 fi
@@ -229,5 +233,5 @@ if [[ "$h_logFile" == "$H_DEFAULT_LOG" ]]; then
   fi
 
   # Doesn't inform in 'checkConfigAndQuit' mode.
-  [ $checkConfAndQuit -eq 0 ] && writeMessage "$messagePrefix LogFile: $h_logFile"
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && writeMessage "$messagePrefix LogFile: $h_logFile"
 fi

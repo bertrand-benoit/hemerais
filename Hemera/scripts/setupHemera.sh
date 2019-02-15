@@ -27,12 +27,14 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 source "$currentDir/utilities.sh"
 
-category="setup"
+# Defines constants tuning scripts-common/utilities.sh
+CATEGORY="setup"
+GLOBAL_CONFIG_FILE="/etc/hemera.conf"
 
 declare -r profileFile="/etc/profile.d/hemera.sh"
 declare -r userHome="$( pruneSlash "$HOME" )"
 declare -r userSysfile="$userHome/.hemera/hemera.sys"
-declare -r h_globalConfFile="/etc/hemera.conf"
+declare -r h_globalConfFile="$GLOBAL_CONFIG_FILE"
 declare -r h_globalConfFileSample="$installDir/config/hemera.conf.global.sample"
 declare -r h_configurationFile="$userHome/.hemera/hemera.conf"
 declare -r userBashfile="$userHome/.bashrc"
@@ -149,8 +151,8 @@ End-of-Message
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 global=0
 tpDirRoot="$H_DEFAULT_TP_DIR"
 force=0
@@ -164,7 +166,7 @@ do
         ;;
         f)      force=1;;
         s)      service=1;;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  usage;;
  esac
 done

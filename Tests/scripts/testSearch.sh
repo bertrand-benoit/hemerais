@@ -37,7 +37,7 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="TSearch."
+CATEGORY="TSearch."
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
 export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
@@ -124,7 +124,7 @@ function simulateSearchPlugin() {
   echo -e "***** RESULT - $_term - END *****\n"
 
   # Uses the speech core module to read the produced file.
-  h_logFile="$h_logFile" noconsole=${noconsole:-1} "$speechScript" -f "$_destFile" -o "$h_newInputDir/speech_$h_language-$input.wav"
+  h_logFile="$h_logFile" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -f "$_destFile" -o "$h_newInputDir/speech_$h_language-$input.wav"
 
   return 0
 }
@@ -143,13 +143,13 @@ writeMessage "Test system will start some daemons"
 "$h_daemonDir/inputMonitor.sh" -S
 
 # We want all information about input management.
-# export verbose=1
-export noconsole=0
+# export VERBOSE=1
+export LOG_CONSOLE_OFF=0
 
 # Starts IO processor.
-export verbose=1
+export VERBOSE=1
 "$h_daemonDir/ioprocessor.sh" -S
-export verbose=0
+export VERBOSE=0
 
 # Waits a little, everything is well started.
 sleep 2

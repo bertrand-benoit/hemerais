@@ -29,7 +29,7 @@
 declare -r myPath="$( which "$0" )"
 declare -r currentDir=$( dirname "$myPath" )
 declare -r installDir=$( dirname "$( dirname "$( dirname "$currentDir" )" )" )
-category="speechReco"
+CATEGORY="speechReco"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -106,8 +106,8 @@ function manageSpeechRecognition() {
 declare -r SOURCE_MODE_SOUND_FILE=1
 declare -r SOURCE_MODE_LIST_FILE=2
 declare -r SOURCE_MODE_DIR=3
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 logToAnalyze=""
 speechFilePattern=""
 force=0
@@ -117,7 +117,7 @@ convert=1
 while getopts "f:l:d:Z:P:R:CFvhX" opt
 do
  case "$opt" in
-        X)      checkConfAndQuit=1;;
+        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
         f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
         l)      mode=$SOURCE_MODE_LIST_FILE; path="$OPTARG";;
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
@@ -125,7 +125,7 @@ do
         R)      resultFile="$OPTARG";;
         C)      convert=0;;
         F)      force=1;;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         Z)      logToAnalyze="$OPTARG";;
         h|[?])  usage;;
  esac
@@ -133,39 +133,39 @@ done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
-declare -r moduleMode="$h_lastConfig"
+declare -r moduleMode="$LAST_READ_CONFIG"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
-  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
   _message="Unsupported mode: $moduleMode. Update your configuration."
-  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message"
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message"
   warning "$_message"
 else
-  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
   # "Not yet implemented" message to help adaptation with potential futur mode.
   if [[ "$moduleMode" != "sphinx3" ]]; then
     _message="Not yet implemented mode: $moduleMode"
-    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_MODE
     warning "$_message"
   fi
 fi
 
 checkAndSetConfig "$CONFIG_KEY.soundConverter.path" "$CONFIG_TYPE_BIN"
-declare -r soundConverterBin="$h_lastConfig"
+declare -r soundConverterBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.soundConverter.options" "$CONFIG_TYPE_OPTION"
-declare -r soundConverterOptions="$h_lastConfig"
+declare -r soundConverterOptions="$LAST_READ_CONFIG"
 
 # Gets functions specific to mode.
 # N.B.: specific configuration will be checked asap the script is sourced.
 declare -r specModScript="$currentDir/speechRecognition_$moduleMode"
 if [ -f "$specModScript" ]; then
-  [ $checkConfAndQuit -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
   source "$specModScript"
-elif [ $checkConfAndQuit -eq 0 ]; then
+elif [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ]; then
   errorMessage "Unable to find the core module sub-script '$specModScript'" $ERROR_MODE
 fi
 
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 # Checks if special mode or analyzing log file.

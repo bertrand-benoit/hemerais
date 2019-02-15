@@ -25,9 +25,9 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="hemera"
+CATEGORY="hemera"
 # Special short-circuit allowing to activate 'check config and quit' mode asap.
-#[ $# -eq 1 ] && [[ "$1"=="-X" ]] && checkConfAndQuit=1
+#[ $# -eq 1 ] && [[ "$1"=="-X" ]] && MODE_CHECK_CONFIG_AND_QUIT=1
 
 # Each call to this main script must log in same logFile.
 continueLogFile=1
@@ -87,50 +87,50 @@ function finalization() {
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 action=""
 while getopts "STKvhX" opt
 do
  case "$opt" in
-        X)      checkConfAndQuit=1;;
+        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
         S)      action="start";;
         T)      action="status";;
         K)      action="stop";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  usage;; 
  esac
 done
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
-declare -r hemeraMode="$h_lastConfig"
+declare -r hemeraMode="$LAST_READ_CONFIG"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode"; then
-  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
   _message="Unsupported mode: $hemeraMode. Update your configuration."
-  [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message"
+  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message"
   warning "$_message"
 else
-  # It is not a fatal error if in "checkConfAndQuit" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
   # "Not yet implemented" message to help adaptation with potential futur mode.
   if [[ "$hemeraMode" != "local" ]]; then
     _message="Not yet implemented mode: $hemeraMode"
-    [ $checkConfAndQuit -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_MODE
     warning "$_message"
   fi
 fi
 
 checkAndSetConfig "$CONFIG_KEY.activation.inputMonitor" "$CONFIG_TYPE_OPTION"
-declare -r inputMonitorActivation="$h_lastConfig"
+declare -r inputMonitorActivation="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.activation.ioProcessor" "$CONFIG_TYPE_OPTION"
-declare -r ioProcessorActivation="$h_lastConfig"
+declare -r ioProcessorActivation="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.activation.soundRecorder" "$CONFIG_TYPE_OPTION"
-declare -r soundRecorderActivation="$h_lastConfig"
+declare -r soundRecorderActivation="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.activation.tomcat" "$CONFIG_TYPE_OPTION"
-declare -r tomcatActivation="$h_lastConfig"
+declare -r tomcatActivation="$LAST_READ_CONFIG"
 
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 # Ensures action is defined.
@@ -180,8 +180,8 @@ if [ "$hemeraMode" = "local" ]; then
     ;; 
   esac
 
-  # Adds verbose if needed.
-  [ $verbose -eq 1 ] && option="-v $option"
+  # Adds VERBOSE if needed.
+  [ $VERBOSE -eq 1 ] && option="-v $option"
 
   # Initializes if not already done (e.g. if NOT isHemeraComponentStarted).
   if [ "$action" = "start" ]; then

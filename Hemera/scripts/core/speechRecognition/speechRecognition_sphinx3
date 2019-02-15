@@ -27,29 +27,29 @@
 
 ## Configuration check.
 checkAndSetConfig "$CONFIG_KEY.tool.path" "$CONFIG_TYPE_BIN"
-declare -r sphinx3DecoderBin="$h_lastConfig"
+declare -r sphinx3DecoderBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.tool.options" "$CONFIG_TYPE_OPTION"
-declare -r sphinx3DecoderOptions="$h_lastConfig"
+declare -r sphinx3DecoderOptions="$LAST_READ_CONFIG"
 
 declare -r dataDir="$h_tpDir/speechRecognition/data"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.lexicalModel.words" "$CONFIG_TYPE_DATA" "$dataDir/models/lexical"
-declare -r lexicalModelWords="$h_lastConfig"
+declare -r lexicalModelWords="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.lexicalModel.fillers" "$CONFIG_TYPE_DATA" "$dataDir/models/lexical"
-declare -r lexicalModelFillers="$h_lastConfig"
+declare -r lexicalModelFillers="$LAST_READ_CONFIG"
 
 checkAndSetConfig "$CONFIG_KEY.sphinx3.languageModel" "$CONFIG_TYPE_DATA" "$dataDir/models/language"
-declare -r languageModel="$h_lastConfig"
+declare -r languageModel="$LAST_READ_CONFIG"
 
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.definition" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-declare -r acousticModelDefinition="$h_lastConfig"
+declare -r acousticModelDefinition="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.means" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-declare -r acousticModelMeans="$h_lastConfig"
+declare -r acousticModelMeans="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.variances" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-declare -r acousticModelVariances="$h_lastConfig"
+declare -r acousticModelVariances="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.mixtureWeights" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-declare -r acousticModelMixtureWeights="$h_lastConfig"
+declare -r acousticModelMixtureWeights="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.sphinx3.acousticModel.transitionMatrices" "$CONFIG_TYPE_DATA" "$dataDir/models/acoustic"
-declare -r acousticModelTransitionMatrices="$h_lastConfig"
+declare -r acousticModelTransitionMatrices="$LAST_READ_CONFIG"
 
 # usage: prepareAudioSource <source wav file> <destination raw file> <convert>
 # convert to raw file: 0=disabled, 1=enabled

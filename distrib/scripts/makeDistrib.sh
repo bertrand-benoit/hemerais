@@ -76,8 +76,8 @@ function createArchive() {
 #########################
 ## Command line management
 
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 createSamplesArchive=0
 createTestsArchive=0
 while getopts "v:o:n:ST" opt

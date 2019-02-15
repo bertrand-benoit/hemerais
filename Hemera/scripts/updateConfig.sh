@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="configUpdater"
+CATEGORY="configUpdater"
 source "$currentDir/setEnvironment.sh"
 
 #########################
@@ -45,16 +45,16 @@ function usage() {
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
+# Defines VERBOSE to 0 if not already defined.
 srcConfFile="$h_configurationFileSample"
 dstConfFile="$h_configurationFile"
-verbose=${verbose:-0}
+VERBOSE=${VERBOSE:-0}
 while getopts "c:o:vh" opt
 do
  case "$opt" in
         c)      srcConfFile="$OPTARG";;
         o)      dstConfFile="$OPTARG";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  usage;; 
  esac
 done

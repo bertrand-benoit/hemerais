@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-category="soundChecker"
+CATEGORY="soundChecker"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -49,12 +49,12 @@ function usage() {
 
 #########################
 ## Command line management
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 while getopts "vh" opt
 do
  case "$opt" in
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?]) usage;;
  esac
 done
@@ -62,13 +62,13 @@ done
 ## Configuration check.
 checkBin "inotifywait"
 checkAndSetConfig "hemera.core.speechRecognition.soundRecorder.path" "$CONFIG_TYPE_BIN"
-declare -r soundRecorderBin="$h_lastConfig"
+declare -r soundRecorderBin="$LAST_READ_CONFIG"
 checkAndSetConfig "hemera.core.speechRecognition.soundRecorder.options" "$CONFIG_TYPE_OPTION"
-declare -r soundRecorderOptions="$h_lastConfig"
+declare -r soundRecorderOptions="$LAST_READ_CONFIG"
 checkAndSetConfig "hemera.core.speech.soundPlayer.path" "$CONFIG_TYPE_BIN"
-declare -r soundPlayerBin="$h_lastConfig"
+declare -r soundPlayerBin="$LAST_READ_CONFIG"
 checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
-declare -r soundPlayerOptions="$h_lastConfig"
+declare -r soundPlayerOptions="$LAST_READ_CONFIG"
 
 #########################
 ## INSTRUCTIONS

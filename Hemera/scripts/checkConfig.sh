@@ -25,8 +25,8 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-checkConfAndQuit=1
-category="check"
+MODE_CHECK_CONFIG_AND_QUIT=1
+CATEGORY="check"
 source "$currentDir/setEnvironment.sh"
 
 #########################
@@ -85,7 +85,7 @@ manageJavaHome || exit $ERROR_ENVIRONMENT
 manageAntHome || exit $ERROR_ENVIRONMENT
 
 checkAndSetConfig "hemera.run.activation.tomcat" "$CONFIG_TYPE_OPTION"
-declare -r tomcatActivation="$h_lastConfig"
+declare -r tomcatActivation="$LAST_READ_CONFIG"
 if [ "$tomcatActivation" = "localhost" ]; then
   manageTomcatHome || exit $ERROR_ENVIRONMENT
 fi
@@ -93,10 +93,10 @@ fi
 ## Ensures minimal configuration has been done before requesting various Hemera components.
 # If third-party tools directory, or hemera log, run or tmp directories are not defined,
 #  there is no sense to check config -> it will fail for each script because the -X option
-#  will not have been managed yet (defining checkConfAndQuit flag), and setEnvironment will fail.
+#  will not have been managed yet (defining MODE_CHECK_CONFIG_AND_QUIT flag), and setEnvironment will fail.
 if [ $h_minConfigOK -eq 0 ]; then
   warning "Hemera must be setup and configured for advanced configuration check."
-  exit $ERROR_CHECK_CONFIG  
+  exit $ERROR_CHECK_CONFIG
 fi
 
 ## Requests configuration check to Hemera main script.
@@ -122,7 +122,7 @@ for scriptRaw in $( find "$h_coreDir/command" -maxdepth 1 -type f ! -name "*~" !
   [ $( head -n 30 "$script" |grep -wc "checkConfig" ) -lt 1 ] && continue
 
   # Sources corresponding plugin and calls checkConfig function.
-  category="plugin:${script/*\//}"
+  CATEGORY="plugin:${script/*\//}"
   source "$script"
   checkConfig
 done

@@ -37,8 +37,8 @@ installDir=$( dirname "$currentDir" )"/../Hemera"
 
 # completes configuration.
 scripstDir="$installDir/scripts"
-category="TCmdInterp."
-verbose=1
+CATEGORY="TCmdInterp."
+VERBOSE=1
 
 # Defines priorly log file to avoid erasing while cleaning potential previous launch.
 export h_logFile="/tmp/"$( date +'%s' )"-$category.log"
@@ -177,8 +177,8 @@ writeMessage "Test system will start some daemons"
 "$h_daemonDir/inputMonitor.sh" -S
 
 # We want all information about input management.
-# export verbose=1
-export noconsole=0
+# export VERBOSE=1
+export LOG_CONSOLE_OFF=0
 
 # Starts IO processor.
 "$h_daemonDir/ioprocessor.sh" -S

@@ -28,7 +28,7 @@
 # general
 currentDir=$( dirname "$( which "$0" )" )
 installDir="$currentDir/../../../"
-category="processInput"
+CATEGORY="processInput"
 
 # Ensures $installDir/scripts/setEnvironment.sh is reachable.
 # It may NOT be the case if user has NOT installed GNU version of which and launched scripts
@@ -175,7 +175,7 @@ function manageRecognitionResult() {
 function speechToSay() {
   local _text="$1" _inputPath="$2" _monitorMessage="${3:-$H_MONITOR_SPEECH_I18N}"
   logMonitor "$_monitorMessage $_text"
-  h_logFile="$h_logFile" noconsole=${noconsole:-1} "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
+  h_logFile="$h_logFile" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechScript" -t "$_text" -o "$h_newInputDir/speech_"$( basename "$_inputPath" )".wav"
 }
 
 # usage: speechListPut
@@ -246,22 +246,22 @@ function manageSpeech() {
 #########################
 ## Command line management
 
-# Defines verbose to 0 if not already defined.
-verbose=${verbose:-0}
+# Defines VERBOSE to 0 if not already defined.
+VERBOSE=${VERBOSE:-0}
 while getopts "i:S:vhX" opt
 do
  case "$opt" in
-        X)      checkConfAndQuit=1;;
+        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
         i)      inputName="$OPTARG";;
         S)      inputString="$OPTARG";;
-        v)      verbose=1;;
+        v)      VERBOSE=1;;
         h|[?])  usage ;; 
  esac
 done
 
 ## Configuration check.
 # Nothing specific to check.
-[ $checkConfAndQuit -eq 1 ] && exit 0
+[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
 
 ## Command line arguments check.
 [ -z "${inputName:-}" ] && usage
@@ -295,7 +295,7 @@ case "$inputType" in
     #  (such a way raw and feature files will be created in the temporary directory instead of queue one).
     tmpFileToManage="$h_workDir/$inputName"
     ln -s "$curInputPath" "$tmpFileToManage"
-    h_logFile="$h_logFile.$inputString" noconsole=${noconsole:-1} "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
+    h_logFile="$h_logFile.$inputString" LOG_CONSOLE_OFF=${LOG_CONSOLE_OFF:-1} "$speechRecognitionScript" -F -f "$tmpFileToManage" -R "$h_newInputDir/recognitionResult_$inputName.txt" && notifyDoneInput || notifyErrInput
   ;;
 
   recognitionResult)
