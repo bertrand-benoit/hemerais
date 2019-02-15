@@ -54,5 +54,5 @@ hemera.run.queue="~/hemera/queue"
 # The search URL.
 # IMPORTANT: corresponding URL contents is then parsed, if you use a no default link
 #  it is needed to contact Hemera team to update parsing system.
-# e.g.: for wikipedia mobile: http://$h_language.mobile.wikipedia.org/transcode.php?go=$input
-#hemera.core.command.search.url="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"
+# e.g.: for wikipedia mobile: http://$h_language.m.wikipedia.org/wiki/$input
+#hemera.core.command.search.url="http://$h_language.m.wikipedia.org/wiki/$input"

@@ -65,7 +65,8 @@ function simulateSearchPlugin() {
   # Gets the corresponding URL.
   input=$( echo "$_term" |sed -e 's/[ \t]/%20/g;' )
   urlContentsFile="$h_workDir/$h_language-$_term-DefinitionContents.tmp"
-  completeUrl="http://$h_language.mobile.wikipedia.org/transcode.php?go=$input"
+  checkAndSetConfig "hemera.core.command.search.url" "$CONFIG_TYPE_OPTION"
+  eval "completeUrl=$LAST_READ_CONFIG"
   [ ! -s "$urlContentsFile" ] && ! getURLContents "$completeUrl" "$urlContentsFile" && errorMessage "Unable to get HTML file for definition of '$_term'" $ERROR_EXTERNAL_TOOL
 
   # Parses HTML.
