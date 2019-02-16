@@ -35,7 +35,7 @@ function checkConfig() {
   export htmlConverterRCFile="$h_coreDir/command/search_definition.mobile.wikipedia.rc"
 
   # Warns if needed.
-  if [[ "$searchURL" =~ ".*mobile.wikipedia.*" ]]; then
+  if [[ "$searchURL" =~ .*m.wikipedia.* ]]; then
     # OK, it is fully supported.
     declare -r nothing="ifHolder" # Only used to avoid error with 'empty if/then'.
   else
