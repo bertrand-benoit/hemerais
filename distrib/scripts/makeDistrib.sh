@@ -88,7 +88,7 @@ do
         o)      destDir="$OPTARG";;
         S)      createSamplesArchive=1;;
         T)      createTestsArchive=1;;
-        h|[?])  usage ;; 
+        h|[?])  usage ;;
  esac
 done
 
@@ -100,7 +100,7 @@ done
 
 writeMessage "Looking for version '$version' on GIT repository ... " 0
 ! git describe $version --always >/dev/null 2>&1 && echo "failed" && exit $ERROR_ENVIRONMENT
-echo "ok"
+writeOK
 
 #########################
 ## INSTRUCTIONS

@@ -215,7 +215,7 @@ if [ "$hemeraMode" = "local" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else
         writeMessageSL "Apache Tomcat $action ... "
-        "$tomcatBin" >> "$LOG_FILE" 2>&1 && echo "ok" || echo -e "\E[31mFAILED\E[0m"
+        "$tomcatBin" >> "$LOG_FILE" 2>&1 && writeOK || echo -e "\E[31mFAILED\E[0m"
       fi
     fi
   fi

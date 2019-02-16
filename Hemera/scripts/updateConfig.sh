@@ -69,7 +69,7 @@ done
 backupFile="$dstConfFile.backup."$( date +'%Y-%m-%d-%H.%M.%S' )
 writeMessageSL "Creating backup '$backupFile' ... "
 ! cp "$dstConfFile" "$backupFile" && echo "FAILED"|tee -a "$LOG_FILE" && exit 1
-echo "OK"|tee -a "$LOG_FILE"
+writeOK
 
 # For each lines of the source config file.
 writeMessageSL "Checking change ... "

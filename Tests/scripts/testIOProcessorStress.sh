@@ -67,17 +67,17 @@ function checkInputManagement() {
 
   writeMessageSL "Ensuring $_inputCount input has been managed ... "
   managedCount=$( cat "$LOG_FILE" |grep "input-" |wc -l )
-  [ $managedCount -eq $_inputCount ] && echo "ok" |tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m ($managedCount instead of $_inputCount)"|tee -a "$LOG_FILE"
+  [ $managedCount -eq $_inputCount ] && writeOK || echo -e "\E[31mFAILED\E[0m ($managedCount instead of $_inputCount)"|tee -a "$LOG_FILE"
 
   writeMessageSL "Ensuring index of the last input is $_inputCount ... "
   lastManagedIndex=$( cat "$LOG_FILE" |grep "input-" |tail -n 1 |sed -e 's/.*input-\([0-9][0-9]*\).*$/\1/g;' )
   [ -z "$lastManagedIndex" ] && lastManagedIndex="none"
   awaitedLastIndex=$( printf "%04d" "$_inputCount" )
-  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && echo "ok"|tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m ($lastManagedIndex instead of $awaitedLastIndex)"|tee -a "$LOG_FILE"
+  [[ "$lastManagedIndex" == "$awaitedLastIndex" ]] && writeOK || echo -e "\E[31mFAILED\E[0m ($lastManagedIndex instead of $awaitedLastIndex)"|tee -a "$LOG_FILE"
 
   writeMessageSL "Ensuring each managed input has been seen in good order ... "
   badlyManagedInput=$( cat "$LOG_FILE" |grep "input-" |sed -e 's/.*input-\([0-9][0-9]*\)[^0-9]*\([0-9][0-9]*\)$/\1 \2/g;' |awk '$1 != $2 {print}' )
-  [ -z "$badlyManagedInput" ] && echo "ok"|tee -a "$LOG_FILE" || echo -e "\E[31mFAILED\E[0m (format: <ordered input index> <input name index>):\n$badlyManagedInput"|tee -a "$LOG_FILE"
+  [ -z "$badlyManagedInput" ] && writeOK || echo -e "\E[31mFAILED\E[0m (format: <ordered input index> <input name index>):\n$badlyManagedInput"|tee -a "$LOG_FILE"
 }
 
 # usage: cleanAllNewInput
