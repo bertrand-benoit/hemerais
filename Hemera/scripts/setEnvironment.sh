@@ -224,7 +224,7 @@ if [[ "$LOG_FILE" == "$H_DEFAULT_LOG" ]]; then
   # Checks if the caller must continue in same log file (usually it is the case
   #  of the main Hemera script).
   messagePrefix="new"
-  if [ $continueLogFile -eq 1 ]; then
+  if [ $LOG_FILE_APPEND_MODE -eq 1 ]; then
     declare -x LOG_FILE="$h_runningLogFile"
     [ -f "$LOG_FILE" ] && messagePrefix="continue"
   else

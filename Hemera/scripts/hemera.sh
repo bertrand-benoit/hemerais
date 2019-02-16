@@ -30,7 +30,7 @@ CATEGORY="hemera"
 #[ $# -eq 1 ] && [[ "$1"=="-X" ]] && MODE_CHECK_CONFIG_AND_QUIT=1
 
 # Each call to this main script must log in same logFile.
-continueLogFile=1
+LOG_FILE_APPEND_MODE=1
 source "$currentDir/setEnvironment.sh"
 
 declare -r CONFIG_KEY="hemera.run"
