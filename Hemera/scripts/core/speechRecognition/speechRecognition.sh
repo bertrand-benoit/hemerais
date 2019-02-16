@@ -169,7 +169,7 @@ fi
 
 ## Command line arguments check.
 # Checks if special mode or analyzing log file.
-if [ ! -z "$logToAnalyze" ]; then
+if [ -n "$logToAnalyze" ]; then
   analyzeLog && exit 0 || exit $ERROR_SR_ANALYZE
 fi
 

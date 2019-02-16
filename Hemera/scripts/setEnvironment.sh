@@ -96,7 +96,7 @@ fi
 
 # Hemera language.
 checkAndSetConfig "hemera.language" "$CONFIG_TYPE_OPTION"
-if [ ! -z "$LAST_READ_CONFIG" ] && [[ "$LAST_READ_CONFIG" != "$CONFIG_NOT_FOUND" ]]; then
+if [ -n "$LAST_READ_CONFIG" ] && [[ "$LAST_READ_CONFIG" != "$CONFIG_NOT_FOUND" ]]; then
   h_language="$LAST_READ_CONFIG"
 else
   [ -z "$LAST_READ_CONFIG" ] && warning "'hemera.language' must be defined with no-empty value (using 'en' as default language)."

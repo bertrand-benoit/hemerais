@@ -210,7 +210,7 @@ if [ "$hemeraMode" = "local" ]; then
     esac
 
     # Checks if a command has been specified.
-    if [ ! -z "$tomcatBin" ]; then
+    if [ -n "$tomcatBin" ]; then
       if [ ! -x "$tomcatBin" ]; then
         warning "Unable to find $tomcatBin, or the current user has not the execute privilege on it. Tomcat management will not be done."
       else

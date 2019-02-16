@@ -115,7 +115,7 @@ function speechRecognitionFromList() {
   local _resultFile="$2"
 
   additionalOptions=""
-  [ ! -z "$_resultFile" ] && additionalOptions="-hyp $_resultFile"
+  [ -n "$_resultFile" ] && additionalOptions="-hyp $_resultFile"
 
   # Moves to root because all files are regarded as relative to it.
   cd /

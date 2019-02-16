@@ -73,10 +73,10 @@ for i18nFile in $( find "$installDir/i18n" -maxdepth 1 -type f -regextype posix-
   cat "$i18nFilePurified" |sed -e 's/=.*$//g;' |sort > "$i18nFilePurified.keys"
   diff "$refI18nFilePurified.keys" "$i18nFilePurified.keys" > "$i18nFilePurified.keys.diff"
   missingI18NElements=$( grep -e "^<" "$i18nFilePurified.keys.diff" |sed -e 's/</,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
-  [ ! -z "$missingI18NElements" ] &&  warning "($i18nFileName) missing following i18n definition: $missingI18NElements"
+  [ -n "$missingI18NElements" ] &&  warning "($i18nFileName) missing following i18n definition: $missingI18NElements"
 
   unknownI18NElements=$( grep -e "^>" "$i18nFilePurified.keys.diff" |sed -e 's/>/,/g;' |tr -d '\n' |sed -e 's/^,[ ]//' )
-  [ ! -z "$unknownI18NElements" ] &&  warning "($i18nFileName) following i18n definition are unknown: $unknownI18NElements"
+  [ -n "$unknownI18NElements" ] &&  warning "($i18nFileName) following i18n definition are unknown: $unknownI18NElements"
 done
 writeMessage "Checking internationalization files (END)"
 

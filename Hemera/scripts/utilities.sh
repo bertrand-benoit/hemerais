@@ -136,7 +136,7 @@ function logMonitor() {
 
   # TODO: adapt date to language
   local completeMessage="$(date +"%d/%m/%y %H:%M.%S") $_message"
-  [ ! -z "$_input" ] && completeMessage="$completeMessage ($_input)"
+  [ -n "$_input" ] && completeMessage="$completeMessage ($_input)"
   echo "$completeMessage" >> "$h_monitor"
 }
 

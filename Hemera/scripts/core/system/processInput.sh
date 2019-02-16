@@ -191,7 +191,7 @@ function speechListGet() {
   nextSpeech=$( cat "$h_speechToPlayList" |grep -v "^$" |head -n 1 )
 
   # Checks if it is no-empty (it can be empty if there is no more speech to play).
-  if [ ! -z "$nextSpeech" ]; then
+  if [ -n "$nextSpeech" ]; then
     # Removes it from the list.
     setCommand="s/^$nextSpeech$//"
     sed -i "$setCommand" "$h_speechToPlayList"

@@ -63,7 +63,7 @@ done
 [ $export -eq 0 ] && [ $create -eq 0 ] && echo -e "You must at least 'export' or 'create'." >&2 && usage
 
 # Ensures output directory exists if specified.
-[ ! -z "$outDir" ] && [ ! -d "$outDir" ] && echo -e "Specify output directory '$outDir' does not exist." >&2 && usage
+[ -n "$outDir" ] && [ ! -d "$outDir" ] && echo -e "Specify output directory '$outDir' does not exist." >&2 && usage
 
 # Defines output directory if needed.
 if [ -z "$outDir" ]; then
@@ -78,7 +78,7 @@ if [ -z "$outDir" ]; then
       defineNewOutputDir
     else
       outDir=$( ls -1t "$hemeraDocRootDir" |head -n 1 )
-      if [ ! -z "$outDir" ]; then
+      if [ -n "$outDir" ]; then
         outDir="$hemeraDocRootDir/$outDir" && echo -e "Using existing output directory '$outDir'."
       else
         defineNewOutputDir

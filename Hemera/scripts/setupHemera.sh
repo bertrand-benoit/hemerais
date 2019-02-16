@@ -193,7 +193,7 @@ if [ $global -eq 1 ]; then
     warning "Unable to find system config directory (/etc/sysconfig and /etc/default not found)"
   fi
 
-  if [ ! -z "$sysconfigFile" ]; then
+  if [ -n "$sysconfigFile" ]; then
     checkSysFile "$sysconfigFile" || createSysFile "$sysconfigFile"
   fi
 

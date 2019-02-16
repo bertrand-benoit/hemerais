@@ -116,7 +116,7 @@ fi
 case $action in
   play)
     # Ensures there is not already a running sound manage corresponding to this pid file.
-    [ ! -z "$runningProcessPID" ] && errorMessage "There is already a running manageSound process linked to PID file '$pidFile'. Nothing more to do" $ERROR_ENVIRONMENT
+    [ -n "$runningProcessPID" ] && errorMessage "There is already a running manageSound process linked to PID file '$pidFile'. Nothing more to do" $ERROR_ENVIRONMENT
 
     # Writes the PID file with the PID of this process.
     writePIDFile "$pidFile" "$soundPlayerBin" || return 1

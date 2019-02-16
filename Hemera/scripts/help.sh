@@ -60,7 +60,7 @@ function showScriptDescription() {
 #########################
 ## INSTRUCTIONS
 echo -e "Hemera - Intelligent System - Help"
-[ ! -z "$offlineDocPath" ] && echo -e "Offline documentation:\t$offlineDocPath"
+[ -n "$offlineDocPath" ] && echo -e "Offline documentation:\t$offlineDocPath"
 echo -e "Online documentation:\thttp://hemerais.bertrand-benoit.net/doc"
 echo -e "Quick Start:\t\thttp://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart"
 echo -e "Troubleshooting:\thttp://hemerais.bertrand-benoit.net/doc/index.php?title=Troubleshooting"
