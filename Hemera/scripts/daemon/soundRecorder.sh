@@ -84,9 +84,13 @@ declare -r soundRecorderOptions="$LAST_READ_CONFIG"
 ## INSTRUCTIONS
 
 if [ "$action" = "daemon" ]; then
+  # Eval instruction is important to subsitute all optional variables specified in options.
   declare -r output="$h_newInputDir/recordedSpeech_.wav"
   declare -r options=$( eval echo "$soundRecorderOptions" )
+
+  # Internal system requests an options array to work properly.
+  IFS=' ' read -r -a optionsArray <<< "$options"
 fi
 
 # Manages daemon.
-manageDaemon "$action" "$daemonName" "$pidFile" "$soundRecorderBin" "$newLogFile" "$outputFile" "$options"
+manageDaemon "$action" "$daemonName" "$pidFile" "$soundRecorderBin" "$newLogFile" "$outputFile" "${optionsArray[@]:-}"

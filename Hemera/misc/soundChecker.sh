@@ -75,19 +75,25 @@ declare -r soundPlayerOptions="$LAST_READ_CONFIG"
 
 pidFile="/tmp/soundChecker.pid"
 wDir="/tmp/"$( date +'%s' )"-soundChecker"
-output="$wDir/recordedSound.wav"
-options=$( eval echo "$soundRecorderOptions" )
 
-mkdir -p "$wDir"
+# Eval instruction is important to subsitute all optional variables specified in options.
+declare -r output="$wDir/recordedSound.wav"
+declare -r options=$( eval echo "$soundRecorderOptions" )
+
+# Internal system requests an options array to work properly.
+IFS=' ' read -r -a optionsArray <<< "$options"
+
+# Update structure.
+updateStructure "$wDir" || exit $ERROR_ENVIRONMENT
 rm -f "$pidFile"
 
 # Manages daemon.
 outputFile="$LOG_FILE.soundRecorder"
 writeMessage "Starting sound recorder ... "
-( manageDaemon "daemon" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "$options" ) &
+( manageDaemon "daemon" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "${optionsArray[@]:-}" ) &
 
 # Ensures everything is stopped in same time of this script.
-trap 'manageDaemon "stop" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "$options"; exit 0' INT
+trap 'manageDaemon "stop" "soundChecker" "$pidFile" "$soundRecorderBin" "$outputFile" "$outputFile" "${optionsArray[@]:-}"; exit 0' INT
 
 writeMessage "At any time you can stop the test with CTRL+C"
 
@@ -100,7 +106,7 @@ while [ 1 ]; do
   #  in few seconds, it means there is a configuration issue.
   # If ever, we want to fix this limitation, it is enough to implement equivalent to:
   #  - inputMonitor which watches for new recorded files and updates corresponding file h_inputList
-  #  - ioprocessor which watches h_inputList and manage files one after the other.  
+  #  - ioprocessor which watches h_inputList and manage files one after the other.
 
   writeMessage "Speak in your microphone (then ensure there is silence when you have finished)"
   newSoundFile=$( inotifywait -q --format '%f' -e close_write "$wDir" )

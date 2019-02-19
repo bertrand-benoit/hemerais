@@ -87,9 +87,13 @@ declare -r monitorOptions="$LAST_READ_CONFIG"
 ## INSTRUCTIONS
 
 if [ "$action" = "daemon" ]; then
+  # Eval instruction is important to subsitute all optional variables specified in options.
   declare -r input="$h_newInputDir/"
   declare -r options=$( eval echo "$monitorOptions" )
+
+  # Internal system requests an options array to work properly.
+  IFS=' ' read -r -a optionsArray <<< "$options"
 fi
 
 # Manages daemon.
-manageDaemon "$action" "$daemonName" "$pidFile" "$monitorBin" "$newLogFile" "$outputFile" "$options"
+manageDaemon "$action" "$daemonName" "$pidFile" "$monitorBin" "$newLogFile" "$outputFile" "${optionsArray[@]:-}"

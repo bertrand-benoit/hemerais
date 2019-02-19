@@ -75,7 +75,7 @@ do
         R)      action="run";;
 
         v)      VERBOSE=1;;
-        h|[?])  daemonUsage "$daemonName" ;; 
+        h|[?])  daemonUsage "$daemonName" ;;
  esac
 done
 
@@ -96,11 +96,11 @@ declare -r monitorOptions="$LAST_READ_CONFIG"
 
 if [ "$action" = "daemon" ]; then
   # Launches this script as daemon, used the -R option for core to run.
-  options="$DAEMON_SPECIAL_RUN_ACTION"
+  declare -a optionsArray=("$DAEMON_SPECIAL_RUN_ACTION")
 fi
 
 # Manages all action.
-manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" "$outputFile" "$options"
+manageDaemon "$action" "$daemonName" "$pidFile" "$ioprocessorBin" "$newLogFile" "$outputFile" "${optionsArray[@]:-}"
 
 # Exists but if in "run" action.
 [[ "$action" != "run" ]] && exit 0
@@ -119,7 +119,7 @@ while [ 1 ]; do
   [ ! -f "$h_inputList" ] && errorMessage "There is no (more ?) input list file. Stopping $0." $ERROR_INPUT_PROCESS
 
   # Waits for another input (checking write on the input list).
-  # N.B.: new input may have been created while the system was managing last ones, so checks 
+  # N.B.: new input may have been created while the system was managing last ones, so checks
   #  if the count of input in the list is lower than the count of managed input, otherwise does NOT wait.
   [ $( cat "$h_inputList" |wc -l ) -lt $inputIndex ] && "$monitorBin" $options
 
