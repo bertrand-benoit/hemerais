@@ -48,7 +48,7 @@ declare -r target="${1:-all}"
 #  only structure preparation (useful for tests).
 if [ "$target" = "init" ]; then
   # Checks all existing PID files (allowing to remove potential PID files from previous run).
-  checkAllProcessFromPIDFiles
+  checkAllProcessFromPIDFiles "$h_pidDir"
 
   # Ensures Hemera is not running (checking PID file).
   isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before [re]init" $ERROR_ENVIRONMENT
@@ -65,7 +65,7 @@ fi
 # Special management for "clean" target.
 if [ "$target" = "clean" ]; then
   # Checks all existing PID files (allowing to remove potential PID files from previous run).
-  checkAllProcessFromPIDFiles
+  checkAllProcessFromPIDFiles "$h_pidDir"
 
   # Ensures Hemera is not running (checking PID file).
   isHemeraComponentStarted && errorMessage "Hemera is running (found PID file(s)). You must stop Hemera before cleaning." $ERROR_ENVIRONMENT

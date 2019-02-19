@@ -186,7 +186,7 @@ if [ "$hemeraMode" = "local" ]; then
   # Initializes if not already done (e.g. if NOT isHemeraComponentStarted).
   if [ "$action" = "start" ]; then
     # Checks all existing PID files (allowing to remove potential PID files from previous run).
-    checkAllProcessFromPIDFiles
+    checkAllProcessFromPIDFiles "$h_pidDir"
 
     # Performs initialization only if there is not already a running component.
     ! isHemeraComponentStarted && ! initialization && exit $ERROR_ENVIRONMENT
