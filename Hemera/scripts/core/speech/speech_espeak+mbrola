@@ -36,7 +36,7 @@ espeakVersion=$( "$espeakBin" --help |grep -v "^$" |head -n 1 |sed -e 's/^[^:]*:
 if $( isVersionGreater "$espeakVersion" "1.44.0" ); then
   if [ $( echo "$espeakOptions" |grep -wc "\-\-pho" ) -lt 1 ]; then
     _message="Detected version $espeakVersion of espeak which needs --pho option. You should add it to your configuration file ($CONFIG_KEY.tool.options)."
-    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_SPEECH
+    ! isCheckModeConfigOnly && errorMessage "$_message" $ERROR_SPEECH
     warning "$_message"
   fi
 fi
@@ -51,7 +51,7 @@ declare -r mbrolaLanguageFile="$LAST_READ_CONFIG"
 [ "$language" != "$DEFAULT_LANGUAGE" ] && writeMessage "Using default language '$DEFAULT_LANGUAGE' (requested language '$language' is not supported with espeak+mbrola mode)"
 
 # Checks if espeak and mbrola are working together.
-if [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ]; then
+if isCheckModeConfigOnly; then
   espeakTmpFile="$h_workDir/$h_fileDate"-"CheckConfig-espeak+mbrola.tmp"
   LANG=C "$espeakBin" -v "$DEFAULT_LANGUAGE" $espeakOptions "Checking configuration" > "$espeakTmpFile" 2>&1 || exit $ERROR_SPEECH
 
@@ -67,6 +67,10 @@ fi
 # Usage: speechSentence <sentence> [<additional options>]
 function speechSentence() {
   local _sentence="$1" _additionalOptions="${2:-}"
+
+
+  # TODO: need to remove all characters not supported ...
+  # e.g. something like: _sentence=$( echo "$_sentence" |sed -E 's/[^a-zA-Z0-9]/ /g;' )
 
   espeakTmpFile="$h_workDir/$h_fileDate"-"espeak.tmp"
 

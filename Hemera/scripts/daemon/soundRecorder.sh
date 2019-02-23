@@ -54,7 +54,7 @@ options=""
 while getopts "XDSTKvh" opt
 do
  case "$opt" in
-        X) MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X) MODE_CHECK_CONFIG=1;;
         S)
           action="start"
           outputFile="$LOG_FILE.soundRecorder"
@@ -74,7 +74,7 @@ declare -r soundRecorderBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.soundRecorder.options" "$CONFIG_TYPE_OPTION"
 declare -r soundRecorderOptions="$LAST_READ_CONFIG"
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 # Ensures action is defined.

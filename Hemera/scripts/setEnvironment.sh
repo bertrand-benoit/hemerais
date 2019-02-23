@@ -39,7 +39,7 @@ GLOBAL_CONFIG_FILE="/etc/hemera.conf"
 
 # Ensures environment is OK.
 checkEnvironment || $ERROR_ENVIRONMENT
-checkOSLocale || $ERROR_ENVIRONMENT
+checkLocale || $ERROR_ENVIRONMENT
 
 # Updates configuration.
 declare -rx h_libDir="$installDir/lib"
@@ -72,7 +72,7 @@ checkAndSetConfig "hemera.thirdParty.path" "$CONFIG_TYPE_PATH" "$installDir"
 declare -rx h_tpDir="$LAST_READ_CONFIG"
 if [[ "$h_tpDir" == "$CONFIG_NOT_FOUND" ]]; then
   _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:Install"
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_ENVIRONMENT
+  ! isCheckModeConfigOnly && errorMessage "$_message" $ERROR_ENVIRONMENT
   warning "$_message"
   minConfigOK=0
 fi
@@ -121,7 +121,7 @@ declare -rx h_coreDir="$installDir/scripts/core"
 if isRootUser; then
   # If 'check config and quit' mode is not activated yet (like when a script is launched with -X option),
   #  ensures that it will be performing short-circuit tests on arguments.
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && [ $( echo "$*" |grep -wEc "\-X|\-Xh|\-hX" ) -eq 0 ] && errorMessage "root user can only use -X and -h options with this command." $ERROR_ENVIRONMENT
+  ! isCheckModeConfigOnly && [ $( echo "$*" |grep -wEc "\-X|\-Xh|\-hX" ) -eq 0 ] && errorMessage "root user can only use -X and -h options with this command." $ERROR_ENVIRONMENT
 
   # Completes minimal configuration needed to perform check config of all components.
   declare -rx h_minConfigOK="$minConfigOK"
@@ -184,7 +184,7 @@ fi
 
 # Further environment set is no more needed for 'check configuration and quit' mode.
 declare -rx h_minConfigOK="$minConfigOK"
-if [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ]; then
+if isCheckModeConfigOnly; then
   declare -x LOG_FILE="$H_DEFAULT_LOG.checkConfig-$( whoami )"
   return 0
 fi
@@ -233,5 +233,5 @@ if [[ "$LOG_FILE" == "$H_DEFAULT_LOG" ]]; then
   fi
 
   # Doesn't inform in 'checkConfigAndQuit' mode.
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && writeMessage "$messagePrefix LogFile: $LOG_FILE"
+  ! isCheckModeConfigOnly && writeMessage "$messagePrefix LogFile: $LOG_FILE"
 fi

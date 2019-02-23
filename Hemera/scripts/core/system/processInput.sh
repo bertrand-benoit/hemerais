@@ -252,7 +252,7 @@ VERBOSE=${VERBOSE:-0}
 while getopts "i:S:vhX" opt
 do
  case "$opt" in
-        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X)      MODE_CHECK_CONFIG=1;;
         i)      inputName="$OPTARG";;
         S)      inputString="$OPTARG";;
         v)      VERBOSE=1;;
@@ -262,7 +262,7 @@ done
 
 ## Configuration check.
 # Nothing specific to check.
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 [ -z "${inputName:-}" ] && usage

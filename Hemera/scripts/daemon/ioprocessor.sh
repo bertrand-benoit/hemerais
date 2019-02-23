@@ -61,7 +61,7 @@ options=""
 while getopts "XSTKDRvh" opt
 do
  case "$opt" in
-        X) MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X) MODE_CHECK_CONFIG=1;;
         S)
           # Removes potential speech running lock file, and speech to play list.
           rm -f "$h_speechRunningLockFile" "$h_speechToPlayList"
@@ -85,7 +85,7 @@ declare -r monitorBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.options" "$CONFIG_TYPE_OPTION"
 declare -r monitorOptions="$LAST_READ_CONFIG"
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 # Ensures action is defined.

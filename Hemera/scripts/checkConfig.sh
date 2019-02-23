@@ -25,7 +25,7 @@
 ## CONFIGURATION
 currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
-MODE_CHECK_CONFIG_AND_QUIT=1
+MODE_CHECK_CONFIG=1
 CATEGORY="check"
 source "$currentDir/setEnvironment.sh"
 
@@ -93,7 +93,7 @@ fi
 ## Ensures minimal configuration has been done before requesting various Hemera components.
 # If third-party tools directory, or hemera log, run or tmp directories are not defined,
 #  there is no sense to check config -> it will fail for each script because the -X option
-#  will not have been managed yet (defining MODE_CHECK_CONFIG_AND_QUIT flag), and setEnvironment will fail.
+#  will not have been managed yet (defining MODE_CHECK_CONFIG flag), and setEnvironment will fail.
 if [ $h_minConfigOK -eq 0 ]; then
   warning "Hemera must be setup and configured for advanced configuration check."
   exit $ERROR_CHECK_CONFIG

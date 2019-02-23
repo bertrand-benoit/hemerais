@@ -117,7 +117,7 @@ convert=1
 while getopts "f:l:d:Z:P:R:CFvhX" opt
 do
  case "$opt" in
-        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X)      MODE_CHECK_CONFIG=1;;
         f)      mode=$SOURCE_MODE_SOUND_FILE; path="$OPTARG";;
         l)      mode=$SOURCE_MODE_LIST_FILE; path="$OPTARG";;
         d)      mode=$SOURCE_MODE_DIR; path="$OPTARG";;
@@ -136,16 +136,16 @@ checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
 declare -r moduleMode="$LAST_READ_CONFIG"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$moduleMode"; then
-  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG" mode.
   _message="Unsupported mode: $moduleMode. Update your configuration."
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message"
+  ! isCheckModeConfigOnly && errorMessage "$_message"
   warning "$_message"
 else
-  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG" mode.
   # "Not yet implemented" message to help adaptation with potential futur mode.
   if [[ "$moduleMode" != "sphinx3" ]]; then
     _message="Not yet implemented mode: $moduleMode"
-    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    ! isCheckModeConfigOnly && errorMessage "$_message" $ERROR_MODE
     warning "$_message"
   fi
 fi
@@ -159,13 +159,13 @@ declare -r soundConverterOptions="$LAST_READ_CONFIG"
 # N.B.: specific configuration will be checked asap the script is sourced.
 declare -r specModScript="$currentDir/speechRecognition_$moduleMode"
 if [ -f "$specModScript" ]; then
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
+  isCheckModeConfigOnly && writeMessage "Checking configuration specific to mode '$moduleMode' ..."
   source "$specModScript"
-elif [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ]; then
+elif ! isCheckModeConfigOnly; then
   errorMessage "Unable to find the core module sub-script '$specModScript'" $ERROR_MODE
 fi
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 # Checks if special mode or analyzing log file.

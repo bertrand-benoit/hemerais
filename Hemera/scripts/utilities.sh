@@ -191,9 +191,9 @@ function getMappedCommand() {
 function manageTomcatHome() {
   local tomcatDir="$h_tpDir/webServices/bin/tomcat"
   if [ ! -d "$tomcatDir" ]; then
-    # It is a fatal error but in 'MODE_CHECK_CONFIG_AND_QUIT' mode.
+    # It is a fatal error but in 'MODE_CHECK_CONFIG' mode.
     local _errorMessage="Apache Tomcat '$tomcatDir' not found. You must either disable Tomcat activation (hemera.run.activation.tomcat), or install it/create a symbolic link."
-    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_errorMessage" $ERROR_CONFIG_VARIOUS
+    ! isCheckModeConfigOnly && errorMessage "$_errorMessage" $ERROR_CONFIG_VARIOUS
     warning "$_errorMessage" && return 0
   fi
 

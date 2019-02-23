@@ -27,7 +27,7 @@ currentDir=$( dirname "$( which "$0" )" )
 installDir=$( dirname "$currentDir" )
 CATEGORY="hemera"
 # Special short-circuit allowing to activate 'check config and quit' mode asap.
-#[ $# -eq 1 ] && [[ "$1"=="-X" ]] && MODE_CHECK_CONFIG_AND_QUIT=1
+#[ $# -eq 1 ] && [[ "$1"=="-X" ]] && MODE_CHECK_CONFIG=1
 
 # Each call to this main script must log in same logFile.
 LOG_FILE_APPEND_MODE=1
@@ -93,7 +93,7 @@ action=""
 while getopts "STKvhX" opt
 do
  case "$opt" in
-        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X)      MODE_CHECK_CONFIG=1;;
         S)      action="start";;
         T)      action="status";;
         K)      action="stop";;
@@ -107,16 +107,16 @@ checkAndSetConfig "$CONFIG_KEY.mode" "$CONFIG_TYPE_OPTION"
 declare -r hemeraMode="$LAST_READ_CONFIG"
 # Ensures configured mode is supported, and then it is implemented.
 if ! checkAvailableValue "$SUPPORTED_MODE" "$hemeraMode"; then
-  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG" mode.
   _message="Unsupported mode: $hemeraMode. Update your configuration."
-  [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message"
+  ! isCheckModeConfigOnly && errorMessage "$_message"
   warning "$_message"
 else
-  # It is not a fatal error if in "MODE_CHECK_CONFIG_AND_QUIT" mode.
+  # It is not a fatal error if in "MODE_CHECK_CONFIG" mode.
   # "Not yet implemented" message to help adaptation with potential futur mode.
   if [[ "$hemeraMode" != "local" ]]; then
     _message="Not yet implemented mode: $hemeraMode"
-    [ $MODE_CHECK_CONFIG_AND_QUIT -eq 0 ] && errorMessage "$_message" $ERROR_MODE
+    ! isCheckModeConfigOnly && errorMessage "$_message" $ERROR_MODE
     warning "$_message"
   fi
 fi
@@ -130,7 +130,7 @@ declare -r soundRecorderActivation="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.activation.tomcat" "$CONFIG_TYPE_OPTION"
 declare -r tomcatActivation="$LAST_READ_CONFIG"
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 # Ensures action is defined.

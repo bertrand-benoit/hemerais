@@ -64,7 +64,7 @@ VERBOSE=${VERBOSE:-0}
 while getopts "PCSp:f:vhX" opt
 do
  case "$opt" in
-        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X)      MODE_CHECK_CONFIG=1;;
         p)      pidFile="$OPTARG";;
         f)      action="play";soundFile="$OPTARG";;
         P)      action="pause";;
@@ -81,7 +81,7 @@ declare -r soundPlayerBin="$LAST_READ_CONFIG"
 checkAndSetConfig "hemera.core.speech.soundPlayer.options" "$CONFIG_TYPE_OPTION"
 declare -r soundPlayerOptions="$LAST_READ_CONFIG"
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 [ -z "${action:-}" ] && usage

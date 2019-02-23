@@ -59,7 +59,7 @@ VERBOSE=${VERBOSE:-0}
 while getopts "Xf:vh" opt
 do
  case "$opt" in
-        X)      MODE_CHECK_CONFIG_AND_QUIT=1;;
+        X)      MODE_CHECK_CONFIG=1;;
         f)      soundFile="$OPTARG";;
         v)      VERBOSE=1;;
         h|[?]) usage;;
@@ -72,7 +72,7 @@ declare -r soundFeatureCreatorBin="$LAST_READ_CONFIG"
 checkAndSetConfig "$CONFIG_KEY.soundFeatureCreator.options" "$CONFIG_TYPE_OPTION"
 declare -r soundFeatureCreatorOptions="$LAST_READ_CONFIG"
 
-[ $MODE_CHECK_CONFIG_AND_QUIT -eq 1 ] && exit 0
+isCheckModeConfigOnly && exit 0
 
 ## Command line arguments check.
 [ -z "${soundFile:-}" ] && usage
