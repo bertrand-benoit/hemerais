@@ -137,7 +137,7 @@ function manageRecognitionResult() {
   wordsCount=$( extractRecognitionResultWordCount "$_inputPath" )
 
   # Manages special commands like "mode" (e.g. to allow stopping 'parrot' mode).
-  if matchesOneOf "${MODE_CMD_PATTERN_I18N[*]}" "$potentialCommand"; then
+  if matchesOneOf "$potentialCommand" "${MODE_CMD_PATTERN_I18N[@]}"; then
     source "$commandScriptDir/mode"
     checkCoherence "$_inputPath" "$wordsCount" || notifyErrInput
     execute "$_inputPath" "$inputString" && notifyDoneInput || notifyErrInput
