@@ -1,44 +1,57 @@
-Hemera is a Virtual Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form/motion recognition ...); with applications in day tasks, domotics and robotics ...
+# Hemera - Intelligent System
+Created in 2010, Hemera aims to be a generic Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form/motion recognition, machine learning ...); with applications in day tasks, domotics and robotics.
 
+## Features
+-   speech synthesis
+-   speech recognition
+-   interpretation of recognized commands
+-   highly configurable
+-   robust (lots of check are performed)
+-   internationalization ability
 
-Features
----------
- * speech synthesis
- * speech recognition
- * interpretation of recognized commands
- * highly configurable
- * robust (lots of check are performed)
- * internationalization ability
+## Quick Start
+You can quick start with this [Guide](http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart).
 
+### Get last Hemera release version
+You can download [release Tarball](https://github.com/bertrand-benoit/hemerais/releases) (or [here](https://sourceforge.net/projects/hemerais/files/Hemera/) if you are interested in very first old versions).
 
-Quick Start
------------
-Quick Start Guide: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart
+### Get last Hemera development version
+Clone the repository:
+```bash
+git clone https://github.com/bertrand-benoit/hemerais.git
+```
 
-Demo: check files in the Samples/ sub-directory
+### Demo
+You can get demonstration files in **Samples/** sub-directory.
 
-Clone source code: git clone https://github.com/bertrand-benoit/hemerais.git
+## Help
+At any time, you can yet help on available commands, launching the following script (you should update your environment, for instance via your **~/.bashrc** file, to get it in your **PATH**):
+```bash
+Hemera/scripts/help.sh
+```
 
-Download Tarball: https://sourceforge.net/projects/hemerais/files/Hemera/
+## All you want to know about Hemera
+See [online documentation](http://hemerais.bertrand-benoit.net/doc).
 
-Get help on available commands: launch Hemera/scripts/help.sh
+In any tarball, you can get documentation in **doc/** sub-directory.
 
+## Notes
+In 2019, Hemera environment is going to change from its current Desktop version to a new dedicated Robotics one.
+Update and information will come before end of the year.
 
-All you want to know about Hemera
-------------------
-See online documentation: http://hemerais.bertrand-benoit.net/doc
-
-In any tarball, you can get documentation in doc/ sub-directory
-
-
-Notes
-------
 In January 2015, to provide you the best experience:
- * the Web Site has been migrated from sourceforge.net to http://hemerais.bertrand-benoit.net
- * the source code has been migrated from sourceforge.net to https://github.com/bertrand-benoit/hemerais.git
+ * the Website has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/) to a [dedicated Website](http://hemerais.bertrand-benoit.net)
+ * the source code has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/code/) to [GitHub](https://github.com/bertrand-benoit/hemerais.git)
 
+## Contributing
+Don't hesitate to [contribute](https://opensource.guide/how-to-contribute/) or to contact me if you want to improve the project.
+You can [report issues or request features](https://github.com/bertrand-benoit/hemerais/issues) and propose [pull requests](https://github.com/bertrand-benoit/hemerais/pulls).
 
-License
--------
-Hemera is developed under the GNU General Public License version 3.0 (GPLv3).
-See LICENSE or COPYING file.
+## Versioning
+The versioning scheme we use is [SemVer](http://semver.org/).
+
+## Authors
+[Bertrand BENOIT](mailto:contact@bertrand-benoit.net)
+
+## License
+This project is under the GPLv3 License - see the [LICENSE](LICENSE) file for details
