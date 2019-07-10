@@ -44,13 +44,6 @@
 # /ThirdParty/webServices/bin/
 /ThirdParty/webServices/bin/*
 
-# /WebModule/
-/WebModule/work
-/WebModule/build
-
-# /WebModule/WEB-INF/
-/WebModule/WEB-INF/classes
-
 # /tools/SpeechRecognition/build/
 /tools/SpeechRecognition/build/*
 

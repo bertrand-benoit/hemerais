@@ -79,23 +79,11 @@ if [ "$target" = "clean" ]; then
   echo " done"
 fi
 
-if [ "$target" != "webModule" ]; then
-  writeMessageSL "Making Hemera target: $target ... "
-  ! "$ANT" -v -f "$buildAntFile" "$target" >> "$LOG_FILE" 2>&1 && echo -e "error (See $LOG_FILE)" && exit 1
+writeMessageSL "Making Hemera target: $target ... "
+! "$ANT" -v -f "$buildAntFile" "$target" >> "$LOG_FILE" 2>&1 && echo -e "error (See $LOG_FILE)" && exit 1
 
-  # Ensures the log file still exists (it won't be the case after "cleaning").
-  [ ! -f "$LOG_FILE" ] && echo "done" || echo "done" |tee -a "$LOG_FILE"
-fi
+# Ensures the log file still exists (it won't be the case after "cleaning").
+[ ! -f "$LOG_FILE" ] && echo "done" || echo "done" |tee -a "$LOG_FILE"
 
-# Checks if "all" or "webModule" target has been specified, and checks if corresponding
-#  project is available.
-[ "$target" != "all" ] && [ "$target" != "webModule" ] && exit 0
-declare -r webModuleDir="$installDir/../HemeraWebModule"
-if [ ! -d "$webModuleDir" ]; then
-  [ "$target" = "webModule" ] && echo -e "Unable to find Hemera Web module ('$webModuleDir'). You must install it in the same parent directory." && exit 2
-  exit 0
-fi
-
-writeMessageSL "Making Hemera Web module ... "
-! "$ANT" -v -f "$webModuleDir/engineering/build.xml" >> "$LOG_FILE" 2>&1 && echo -e "error (See $LOG_FILE)" && exit 1
-echo "done" |tee -a "$LOG_FILE"
+# All is completed.
+exit 0
