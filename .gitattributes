@@ -66,9 +66,5 @@ tools/          export-ignore
 Samples/        export-ignore
 distrib/        export-ignore
 
-# Until next version, ignores WebModule.
-WebModule/      export-ignore
-
-
 ## Diff tools.
 *.wav diff=wav
