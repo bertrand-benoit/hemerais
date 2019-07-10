@@ -21,11 +21,20 @@
 # Version: 2.0
 # Description: generates static Hemera documentation from local mediaWiki, in which online documentation has been imported.
 
+currentDir=$( dirname "$( which "$0" )" )
+repoDir="$currentDir/../.."
+installDir="$repoDir/Hemera"
+source "$installDir/scripts/setEnvironment.sh"
+
 #########################
 ## CONFIGURATION
 HEMERA_ONLINE_DOC="http://hemerais.bertrand-benoit.net/doc/index.php"
 HEMERA_BOOK_NAME="HemeraBook"
+DUMP_HTML_PHP_FILEPATH="/var/www/html/wiki/extensions/DumpHTML/dumpHTML.php"
 hemeraDocRootDir="${HEMERA_DOC_DIR:-/tmp/hemeraDoc}"
+
+checkBin php
+checkPath "$DUMP_HTML_PHP_FILEPATH"
 
 #########################
 ## Functions
@@ -63,7 +72,8 @@ done
 [ $export -eq 0 ] && [ $create -eq 0 ] && echo -e "You must at least 'export' or 'create'." >&2 && usage
 
 # Ensures output directory exists if specified.
-[ -n "$outDir" ] && [ ! -d "$outDir" ] && echo -e "Specify output directory '$outDir' does not exist." >&2 && usage
+[ -z "${outDir:-}" ] && echo -e "You must specify output directory." >&2 && usage
+[ -n "${outDir:-}" ] && [ ! -d "$outDir" ] && echo -e "Specify output directory '$outDir' does not exist." >&2 && usage
 
 # Defines output directory if needed.
 if [ -z "$outDir" ]; then
@@ -140,7 +150,7 @@ fi
 # Manages offline documentation generation, if requested.
 if [ $create -eq 1 ]; then
   ## Dumps HTML from mediawiki.
-  /usr/bin/php /var/www/html/wiki/extensions/DumpHTML/dumpHTML.php -d "$docDir" -k modern --image-snapshot --force-copy --no-shared-desc
+  php "$DUMP_HTML_PHP_FILEPATH" -d "$docDir" -k modern --image-snapshot --force-copy --no-shared-desc
 
   # Removes useless files.
   echo "Removing useless files"

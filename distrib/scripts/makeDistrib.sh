@@ -29,7 +29,7 @@
 ## CONFIGURATION
 # general
 currentDir=$( dirname "$( which "$0" )" )
-repoDir=$( dirname "$currentDir" )"/.."
+repoDir="$currentDir/../.."
 installDir="$repoDir/Hemera"
 
 # Ensures hemera main project is available in the same root directory.
@@ -41,8 +41,6 @@ export LOG_FILE="/tmp/"$( date +'%s' )"-makeDistrib.log"
 source "$installDir/scripts/setEnvironment.sh"
 
 # Ensures git repository is currently on master branch, to have up-to-date gitattributes information.
-cd "$repoDir"
-[ $( git branch |grep -c "* master" ) -ne 1 ] && errorMessage "'master' branch of GIT repository must be checkout (ensuring having up to date gitattributes)." $ERROR_ENVIRONMENT
 
 # Informs about log file now that functions are available.
 writeMessage "LogFile: $LOG_FILE"
@@ -99,6 +97,7 @@ done
 [ ! -d "$destDir" ] && errorMessage "Destination directory '$destDir' not found." $ERROR_BAD_CLI
 
 writeMessage "Looking for version '$version' on GIT repository ... " 0
+cd "$repoDir"
 ! git describe $version --always >/dev/null 2>&1 && echo "failed" && exit $ERROR_ENVIRONMENT
 writeOK
 
