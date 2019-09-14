@@ -37,7 +37,7 @@ In any tarball, you can get documentation in **doc/** sub-directory.
 
 ## Notes
 In 2019, Hemera environment is going to change from its current Desktop version to a new dedicated Robotics one.
-Update and information will come before end of the year.
+Update and information will come at end of 2019 / begin of 2020.
 
 In January 2015, to provide you the best experience:
  * the Website has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/) to a [dedicated Website](http://hemerais.bertrand-benoit.net)
