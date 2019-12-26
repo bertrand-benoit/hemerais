@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
-# Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
+# Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+# Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #########################
 ## CONFIGURATION
-HEMERA_ONLINE_DOC="http://hemerais.bertrand-benoit.net/doc/index.php"
+HEMERA_ONLINE_DOC="https://github.com/bertrand-benoit/hemerais/wiki"
 HEMERA_BOOK_NAME="HemeraBook"
 hemeraDocRootDir="${HEMERA_DOC_DIR:-/tmp/hemeraDoc}"
 
@@ -209,7 +209,7 @@ End-of-Message
 
 cat >> "$htmlPage" << End-of-Message
 <a href="http://www.mediawiki.org">Powered by MediaWiki</a>, its <a href="http://www.mediawiki.org/wiki/Extension:DumpHTML">DumpHTML extension</a> has been used to generate this offline version of Hemera Book at $generationDate<br />
-See updated <a href="http://hemerais.bertrand-benoit.net/doc">online documentation</a>
+See updated <a href="https://github.com/bertrand-benoit/hemerais/wiki">online documentation</a>
 </div><br />
 </body></html>
 End-of-Message
