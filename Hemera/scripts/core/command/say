@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
-# Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
+# Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+# Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

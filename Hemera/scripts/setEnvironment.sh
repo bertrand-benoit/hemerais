@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
-# Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
+# Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+# Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ minConfigOK=1
 checkAndSetConfig "hemera.thirdParty.path" "$CONFIG_TYPE_PATH" "$installDir"
 declare -rx h_tpDir="$LAST_READ_CONFIG"
 if [[ "$h_tpDir" == "$CONFIG_NOT_FOUND" ]]; then
-  _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:Install"
+  _message="Hemera must be setup (contact admin), or update one of configuration files to define third-party tools root directory. See documentation: https://github.com/bertrand-benoit/hemerais/wiki/Hemera:Install"
   ! isCheckModeConfigOnly && errorMessage "$_message" $ERROR_ENVIRONMENT
   warning "$_message"
   minConfigOK=0

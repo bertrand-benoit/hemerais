@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<!-- Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
-     Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
+<!-- Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+     Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 
      This program is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -97,7 +97,7 @@
 
         <Footer><![CDATA[<center>Hemera - Intelligent System<br/>Javadoc</center>]]></Footer>
 
-        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010-2015&nbsp;&nbsp;<a href="mailto:hemerais@bertrand-benoit.net">Bertrand Benoit</a>, <a href="http://hemerais.bertrand-benoit.net/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
+        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010-2020&nbsp;&nbsp;<a href="mailto:hemerais@bertrand-benoit.net">Bertrand Benoit</a>, <a href="https://github.com/bertrand-benoit/hemerais/wiki/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
     </javadoc>
   </target>
 

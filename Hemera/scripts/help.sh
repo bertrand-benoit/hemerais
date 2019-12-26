@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (http://hemerais.bertrand-benoit.net)
-# Copyright (C) 2010-2015 Bertrand Benoit <hemerais@bertrand-benoit.net>
+# Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+# Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -61,9 +61,9 @@ function showScriptDescription() {
 ## INSTRUCTIONS
 echo -e "Hemera - Intelligent System - Help"
 [ -n "$offlineDocPath" ] && echo -e "Offline documentation:\t$offlineDocPath"
-echo -e "Online documentation:\thttp://hemerais.bertrand-benoit.net/doc"
-echo -e "Quick Start:\t\thttp://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart"
-echo -e "Troubleshooting:\thttp://hemerais.bertrand-benoit.net/doc/index.php?title=Troubleshooting"
+echo -e "Online documentation:\thttps://github.com/bertrand-benoit/hemerais/wiki"
+echo -e "Quick Start:\t\thttps://github.com/bertrand-benoit/hemerais/wiki/Hemera:QuickStart"
+echo -e "Troubleshooting:\thttps://github.com/bertrand-benoit/hemerais/wiki/Troubleshooting"
 echo -e "Request Help:\t\thttps://github.com/bertrand-benoit/hemerais/issues"
 echo -e "Check your config.:\tscripts/checkConfig.sh"
 echo -e "In case of problem with a command, check the generated log which contains lots of information."

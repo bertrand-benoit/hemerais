@@ -10,7 +10,7 @@ Created in 2010, Hemera aims to be a generic Intelligent System aggregating some
 -   internationalization ability
 
 ## Quick Start
-You can quick start with this [Guide](http://hemerais.bertrand-benoit.net/doc/index.php?title=Hemera:QuickStart).
+You can quick start with this [Guide](https://github.com/bertrand-benoit/hemerais/wiki/Hemera:QuickStart).
 
 ### Get last Hemera release version
 You can download [release Tarball](https://github.com/bertrand-benoit/hemerais/releases) (or [here](https://sourceforge.net/projects/hemerais/files/Hemera/) if you are interested in very first old versions).
@@ -31,7 +31,7 @@ Hemera/scripts/help.sh
 ```
 
 ## All you want to know about Hemera
-See [online documentation](http://hemerais.bertrand-benoit.net/doc).
+See [online documentation](https://github.com/bertrand-benoit/hemerais/wiki).
 
 In any tarball, you can get documentation in **doc/** sub-directory.
 
@@ -40,7 +40,7 @@ In 2019, Hemera environment is going to change from its current Desktop version 
 Update and information will come at end of 2019 / begin of 2020.
 
 In January 2015, to provide you the best experience:
- * the Website has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/) to a [dedicated Website](http://hemerais.bertrand-benoit.net)
+ * the Website has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/) to a [dedicated Website](https://github.com/bertrand-benoit/hemerais/wiki)
  * the source code has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/code/) to [GitHub](https://github.com/bertrand-benoit/hemerais.git)
 
 ## Contributing
