@@ -97,7 +97,7 @@
 
         <Footer><![CDATA[<center>Hemera - Intelligent System<br/>Javadoc</center>]]></Footer>
 
-        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010-2020&nbsp;&nbsp;<a href="mailto:hemerais@bertrand-benoit.net">Bertrand Benoit</a>, <a href="https://github.com/bertrand-benoit/hemerais/wiki/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
+        <bottom><![CDATA[<br><center><i>Copyright &#169; 2010-2020&nbsp;&nbsp;<a href="mailto:hemerais@bertrand-benoit.net">Bertrand Benoit</a>, <a href="https://gitlab.com/bertrand-benoit/hemerais/wikis/" target="_blank">Hemera - Intelligent System</a>.</i></center>]]></bottom>
     </javadoc>
   </target>
 
