@@ -1,5 +1,9 @@
+:warning: This project is now hosted on [Gitlab](https://gitlab.com/bertrand-benoit/hemerais); switch to it to get newer versions.
+
 # Hemera - Intelligent System
 Created in 2010, Hemera aims to be a generic Intelligent System aggregating some more advanced Artificial Intelligence Technologies (speech, speech recognition, facial recognition, form/motion recognition, machine learning ...); with applications in day tasks, domotics and robotics.
+
+This script uses my [scripts-common](https://gitlab.com/bertrand-benoit/scripts-common) project.
 
 ## Features
 -   speech synthesis
@@ -9,16 +13,31 @@ Created in 2010, Hemera aims to be a generic Intelligent System aggregating some
 -   robust (lots of check are performed)
 -   internationalization ability
 
+## First time you clone this repository
+After the first time you clone this repository, you need to initialize git submodule:
+```bash
+git submodule init
+git submodule update
+```
+
+This way, [scripts-common](https://gitlab.com/bertrand-benoit/scripts-common) project will be available and you can use this tool.
+
+## Configuration files
+This tools uses the configuration file feature of the [scripts-common](https://gitlab.com/bertrand-benoit/scripts-common) project.
+You can start with **Hemera/config/hemera.conf.sample** sample configuration file.
+
+See [online documentation](https://gitlab.com/bertrand-benoit/hemerais/-/wikis/Hemera:Install) for complete information.
+
 ## Quick Start
-You can quick start with this [Guide](https://github.com/bertrand-benoit/hemerais/wiki/Hemera:QuickStart).
+You can quick start with this [Guide](https://gitlab.com/bertrand-benoit/hemerais/-/wikis/Hemera:QuickStart).
 
 ### Get last Hemera release version
-You can download [release Tarball](https://github.com/bertrand-benoit/hemerais/releases) (or [here](https://sourceforge.net/projects/hemerais/files/Hemera/) if you are interested in very first old versions).
+You can download [release Tarball](https://gitlab.com/bertrand-benoit/hemerais/releases) (previous versions: [here]( https://github.com/bertrand-benoit/hemerais/releases) and [here](https://sourceforge.net/projects/hemerais/files/Hemera/)).
 
 ### Get last Hemera development version
 Clone the repository:
 ```bash
-git clone https://github.com/bertrand-benoit/hemerais.git
+git clone https://gitlab.com/bertrand-benoit/hemerais.git
 ```
 
 ### Demo
@@ -31,21 +50,22 @@ Hemera/scripts/help.sh
 ```
 
 ## All you want to know about Hemera
-See [online documentation](https://github.com/bertrand-benoit/hemerais/wiki).
+See [online documentation](https://gitlab.com/bertrand-benoit/hemerais/wikis).
 
 In any tarball, you can get documentation in **doc/** sub-directory.
 
 ## Notes
-In 2019, Hemera environment is going to change from its current Desktop version to a new dedicated Robotics one.
-Update and information will come at end of 2019 / begin of 2020.
+Since 2019, Hemera environment changes from its Desktop version to a new dedicated Robotics one.
 
-In January 2015, to provide you the best experience:
- * the Website has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/) to a [dedicated Website](https://github.com/bertrand-benoit/hemerais/wiki)
- * the source code has been migrated from [SourceForge](https://sourceforge.net/p/hemerais/code/) to [GitHub](https://github.com/bertrand-benoit/hemerais.git)
+In 2015, and then 2020, source code and website have been migrated (from SourceForge to Github, then to Gitlab) to provide you the best experience.
+
+If you are interested in original version:
+ * the Website on [SourceForge](https://sourceforge.net/p/hemerais/wiki/Home/)
+ * the source code on [SourceForge](https://sourceforge.net/p/hemerais/code/)
 
 ## Contributing
 Don't hesitate to [contribute](https://opensource.guide/how-to-contribute/) or to contact me if you want to improve the project.
-You can [report issues or request features](https://github.com/bertrand-benoit/hemerais/issues) and propose [pull requests](https://github.com/bertrand-benoit/hemerais/pulls).
+You can [report issues or request features](https://gitlab.com/bertrand-benoit/hemerais/issues) and propose [merge requests](https://gitlab.com/bertrand-benoit/hemerais/merge_requests).
 
 ## Versioning
 The versioning scheme we use is [SemVer](http://semver.org/).
