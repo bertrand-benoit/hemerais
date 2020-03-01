@@ -1,5 +1,5 @@
 /*
- * Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+ * Hemera - Intelligent System
  * Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
  *
  * This program is free software; you can redistribute it and/or modify
