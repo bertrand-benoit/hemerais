@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Hemera - Intelligent System (https://github.com/bertrand-benoit/hemerais)
+# Hemera - Intelligent System
 # Copyright (C) 2010-2020 Bertrand Benoit <hemerais@bertrand-benoit.net>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -32,11 +32,10 @@
 source "$installDir/scripts/defineConstants.sh"
 
 # Uses the former utilities which is now generic, and in dedicated scripts-common project.
-source "$installDir/scripts-common/utilities.sh"
-
-# Dumps function call in case of error, or when exiting with something else than status 0.
-trap '_status=$?; dumpFuncCall $_status' ERR
-trap '_status=$?; [ $_status -ne 0 ] && dumpFuncCall $_status' EXIT
+scriptsCommonUtilities="$installDir/scripts-common/utilities.sh"
+[ ! -f "$scriptsCommonUtilities" ] && echo -e "ERROR: scripts-common utilities not found, you must initialize your git submodule once after you cloned the repository:\ngit submodule init\ngit submodule update" >&2 && exit 1
+# shellcheck disable=1090
+. "$scriptsCommonUtilities"
 
 #########################
 ## Global variables
