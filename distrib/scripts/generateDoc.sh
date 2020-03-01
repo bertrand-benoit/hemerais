@@ -23,7 +23,7 @@
 
 #########################
 ## CONFIGURATION
-HEMERA_ONLINE_DOC="https://github.com/bertrand-benoit/hemerais/wiki"
+HEMERA_ONLINE_DOC="https://gitlab.com/bertrand-benoit/hemerais/wikis"
 HEMERA_BOOK_NAME="HemeraBook"
 hemeraDocRootDir="${HEMERA_DOC_DIR:-/tmp/hemeraDoc}"
 
@@ -209,7 +209,7 @@ End-of-Message
 
 cat >> "$htmlPage" << End-of-Message
 <a href="http://www.mediawiki.org">Powered by MediaWiki</a>, its <a href="http://www.mediawiki.org/wiki/Extension:DumpHTML">DumpHTML extension</a> has been used to generate this offline version of Hemera Book at $generationDate<br />
-See updated <a href="https://github.com/bertrand-benoit/hemerais/wiki">online documentation</a>
+See updated <a href="https://gitlab.com/bertrand-benoit/hemerais/wikis">online documentation</a>
 </div><br />
 </body></html>
 End-of-Message

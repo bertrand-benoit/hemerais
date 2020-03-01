@@ -5,7 +5,7 @@ Currently it only supports French language.
 
 Full documentation
 ------------------
-You should prefer online documentation: https://github.com/bertrand-benoit/hemerais/wiki
+You should prefer online documentation: https://gitlab.com/bertrand-benoit/hemerais/wikis
 
 Quick Start
 -----------
@@ -19,4 +19,4 @@ The createModels.sh script will check for these tools availability.
 
 Installation
 ------------
-See online documentation: https://github.com/bertrand-benoit/hemerais/wiki/Third-party%3ASpeechRecognition%3AModels%3Acreate
+See online documentation: https://gitlab.com/bertrand-benoit/hemerais/wikis/Third-party%3ASpeechRecognition%3AModels%3Acreate
